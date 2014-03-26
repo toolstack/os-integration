@@ -4,6 +4,7 @@ https://github.com/chrisbliss18/php-ico
 http://stackoverflow.com/questions/1056104/php-gd-how-to-copy-a-circle-from-one-image-to-another
 http://www.php.net/manual/en/imagick.compositeimage.php
 http://msdn.microsoft.com/en-us/library/ie/hh761491.aspx
+http://msdn.microsoft.com/en-us/library/windows/apps/br212859.aspx
 
 iOS Icons (apple-touch-icon-???x???.png)
 iPhone and iPod touch		57x57

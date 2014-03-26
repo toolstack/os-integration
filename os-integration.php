@@ -2,7 +2,7 @@
 /*
 Plugin Name: OS Integration
 Description: Integrate your site in to your users OS, Windows Live Tiles, proper Icons for Apple, Android and Windows Phone and more!
-Version: 0.5
+Version: 0.6
 Plugin URI: http://toolstack.com/os-integration
 Author: Greg Ross
 Author URI: http://toolstack.com
@@ -25,7 +25,7 @@ Plugin Variables and Defines Starts Here
 */
 
 // Define the plugin version.
-DEFINE( OSINTVER, 0.5 );
+DEFINE( OSINTVER, 0.6 );
 
 // Define the name of the WordPress option to use.
 DEFINE( ISINTOPTIONNAME, 'osintegration_options' );
@@ -374,7 +374,8 @@ function osintegration_validate_options( $input )
 			osintegration_composite_images( $item['name'], $item['logo'], $x, $y );
 			
 			// Store the url
-			$input[$item['tag'] . $item['y']] = $base . basename( $item['name'] );
+			$desc = $item['tag'] . $item['y'];
+			$input[$desc] = $base . basename( $item['name'] );
 			}
 			
 		// Generate the ICO file
@@ -523,7 +524,7 @@ function osintegration_output()
 	
 	
 	// If we're supporting iOS, output the required code now.
-	if( $options['enableios'] && osintegration_getOption( 'ios_icon_144', $options ) && ( stristr( 'iphone', $_SERVER['HTTP_USER_AGENT'] ) !== FALSE || stristr( 'ipad', $_SERVER['HTTP_USER_AGENT'] ) !== FALSE ) ) 
+	if( $options['enableios'] && osintegration_getOption( 'ios_icon_144', $options ) && ( stristr( $_SERVER['HTTP_USER_AGENT'], 'iphone' ) !== FALSE || stristr( $_SERVER['HTTP_USER_AGENT'], 'ipad' ) !== FALSE ) ) 
 		{
 		$statusbarstyle = 'black-translucent';
 		if( $options['statusbarstyle'] == 1 ) { $statusbarstyle = 'black'; }
