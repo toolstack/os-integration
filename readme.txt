@@ -3,7 +3,7 @@ Contributors: GregRoss
 Tags: Windows 8, Internet Explorer, IE10, IE11, live tile, RSS, App, tiles, start screen, pinned site, branding, favicon, apple, icons, Android
 Requires at least: 3.5
 Tested up to: 3.8.1
-Stable tag: 0.6
+Stable tag: 1.0
 Description: Integrate your site in to your users OS, Windows Live Tiles, icons for Apple and Android!
 License: GPLv2
 
@@ -52,6 +52,9 @@ The Image Magic code is still in development and may not function at this time.
 6. About page.
 
 == Changelog ==
+= 1.0 =
+* Incremented version to 1.0.
+
 = 0.6 =
 * Fixed: iOS image settings not saving correctly.
 * Fixed: iOS html output not being generated.
@@ -60,8 +63,8 @@ The Image Magic code is still in development and may not function at this time.
 * Initial code.
 
 == Upgrade Notice ==
-= 0.6 =
-* Initial release.
+= 1.0 =
+* None.
 
 == Roadmap ==
 * Add featured image support to live tile custom xml.
