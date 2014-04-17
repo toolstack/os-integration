@@ -7,11 +7,12 @@
 
 	$help_screen->add_help_tab(
 		array(
-			'title'    => 	__('Images/Colors'),
-			'id'       => 	'images_colors_tab',
+			'title'    => 	__('General'),
+			'id'       => 	'general_tab',
 			'content'  => 	'<p>' . __('<b>Square Image</b>: This is a square image file to use to generate the various display items.  This image MUST be GREATER than 450x450 px, if it is not then some items will not display correctly or at all.') . '</p>' .
 							'<p>' . __('<b>Wide Image</b>: This is a wide image file to use to generate display items in a wide screen format.  If this is left blank the square image above will be used.  This image MUST be GREATER than 450x218 px, if it is not then some items will not display correctly or at all.') . '</p>' .
-							'<p>' . __('<b>Background Color</b>: This is the background color to use in icons and live tiles.') . '</p>'
+							'<p>' . __('<b>Background Color</b>: This is the background color to use in icons and live tiles.') . '</p>' .
+							'<p>' . __('<b>SIte Title</b>: This will be the text displayed on your Live Title or iOS app icon, by default this will be your blog title.') . '</p>'
 			,
 			'callback' => 	false
 		)
@@ -37,8 +38,7 @@
 			'content'  => 	'<p>' . __('<b>Enable Live Tile</b>: This will enable Windows Live Tile support.  Multiple sizes and Live Tile updates are available via <a href="http://buildmypinnedsite.com" target=_blank>buildmypinnedsite.com</a>.') . '</p>' .
 							'<p>' . __('<b>RSS Feed URL</b>: The RSS feed URL to pass to buildmypinnedsite.com.') . '</p>' .
 							'<p>' . __('<b>Local XML File</b>: By default, buildmypinnedsite.com is used to proxy your XML updates for Live Tiles.  If you wish to use your own site to host the updates you can do so, however Microsoft\'s site offers image support which is not available on locally hosted feeds at this time.') . '</p>' .
-							'<p>' . __('<b>Update Interval</b>: This is how often the Windows Live Tile will update it\'s data.  If you update your site often, set this lower.  If you update your site less often, set it higher.') . '</p>' .
-							'<p>' . __('<b>Tile Title</b>: This will be the text displayed on you Live Title, by default this will be your blog title.') . '</p>'
+							'<p>' . __('<b>Update Interval</b>: This is how often the Windows Live Tile will update it\'s data.  If you update your site often, set this lower.  If you update your site less often, set it higher.') . '</p>'
 			,
 			'callback' => 	false
 		)

@@ -505,7 +505,6 @@ function osintegration_output()
 	if( $options['enablelivetile'] && osintegration_getOption( 'img_square_310', $options ) ) 
 		{
 ?>
-
 <!-- For pinned live tiles in Windows 8.1 start screens -->	
 <meta name="application-name" content="<?php echo osintegration_getOption( 'title', $options ); ?>" />
 <meta name="msapplication-TileColor" content="<?php echo osintegration_getOption( 'background-color', $options ); ?>" />
@@ -530,21 +529,22 @@ function osintegration_output()
 		if( $options['statusbarstyle'] == 1 ) { $statusbarstyle = 'black'; }
 		if( $options['statusbarstyle'] == 2 ) { $statusbarstyle = 'default'; }
 		
-?>	
-
+?>
 <!-- For iOS home screen icons -->
 <link href="<?php echo osintegration_getOption( 'ios_icon_57', $options ); ?>" rel="apple-touch-icon" sizes="57x57" />
 <link href="<?php echo osintegration_getOption( 'ios_icon_114', $options ); ?>" rel="apple-touch-icon" sizes="114x114" />
 <link href="<?php echo osintegration_getOption( 'ios_icon_72', $options ); ?>" rel="apple-touch-icon" sizes="72x72" />
 <link href="<?php echo osintegration_getOption( 'ios_icon_144', $options ); ?>" rel="apple-touch-icon" sizes="144x144" />
 
+<!-- Override the default page name for iOS -->
+<meta name="apple-mobile-web-app-title" content="<?php echo osintegration_getOption( 'title', $options );?>”>
+
 <?php 
 
 		// If we're supporting iOS web app, output the required code now.
 		if( $options['enablewebapp'] ) 
 			{
-?>	
-
+?>
 <!-- For iOS Web App -->
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="<?php echo $statusbarstyle; ?>" />

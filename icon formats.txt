@@ -37,6 +37,10 @@ favicons (favicon-??x??.png)
 							160x160
 Opera						256x160
 							196x196
+
+Apple code:
+
+<meta name="apple-mobile-web-app-title" content="[your title]" />
 							
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <script type="text/javascript">

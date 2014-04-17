@@ -1,6 +1,6 @@
 === OS Integration ===
 Contributors: GregRoss
-Tags: Windows 8, Internet Explorer, IE10, IE11, live tile, RSS, App, tiles, start screen, pinned site, branding, favicon, apple, icons, Android
+Tags: Windows 8, Internet Explorer, IE10, IE11, live tile, RSS, App, tiles, start screen, pinned site, branding, favicon, apple, icons, Android, Windows Phone 8.1
 Requires at least: 3.5
 Tested up to: 3.9
 Stable tag: 1.0
@@ -16,6 +16,7 @@ OS Integration supports the following features:
 * PNG favicon support in multiple resolutions (16, 32, 96, 160 and 196px)
 * Windows 8 and 8.1 Live Tiles in all sizes
 * Windows 8 Live Tile update feeds (both through buildmypinnedsite.com and local XML files)
+* Support for Windows Phone 8.1 Live Tiles
 * iOS Touch Icon support in multiple resolutions (57, 72, 114, 144px)
 * iOS Web App support including loading screen
 
@@ -52,6 +53,11 @@ The Image Magic code is still in development and may not function at this time.
 6. About page.
 
 == Changelog ==
+= 1.1 =
+* Added support for iOS icon and WebApp titles.
+* Tested with Windows Phone 8.1 Live Tiles.
+* Tested with WordPress 3.9.
+
 = 1.0 =
 * Incremented version to 1.0.
 

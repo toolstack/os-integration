@@ -33,7 +33,7 @@
 		<?php settings_fields( 'osintegration_plugin_options' ); ?>
 		<div id="tabs">
 			<ul>
-				<li><a href="#fragment-1"><span><?php _e('Images/Colors');?></span></a></li>
+				<li><a href="#fragment-1"><span><?php _e('General');?></span></a></li>
 				<li><a href="#fragment-2"><span><?php _e('Fav Icon');?></span></a></li>
 				<li><a href="#fragment-3"><span><?php _e('Windows');?></span></a></li>
 				<li><a href="#fragment-4"><span><?php _e('iOS');?></span></a></li>
@@ -67,6 +67,14 @@
 						<th scope="row">Background Color</th>
 						<td colspan="2">
 							<input type="text" id="color" class="color-field" name="osintegration_options[background-color]" value="<?php echo $options['background-color']; ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Site Title</th>
+						<td>
+							<input type="text" id="title" name="osintegration_options[title]" value="<?php echo $options['title']; ?>" />
+							<br><br>
+							<em>This will be used in Windows Live Tiles and iOS instead of the default WordPress site title.</em>
 						</td>
 					</tr>
 					<tr>
@@ -143,12 +151,6 @@
 								<option value="1440" <?php selected( $options['notification_frequency'], 1440 ); ?>>1 day</option>
 							</select>
 						</p></td>
-					</tr>
-					<tr>
-						<th scope="row">Tile Title</th>
-						<td>
-							<input type="text" id="title" name="osintegration_options[title]" value="<?php echo $options['title']; ?>" />
-						</td>
 					</tr>
 					<tr>
 						<td>
