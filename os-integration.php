@@ -537,7 +537,7 @@ function osintegration_output()
 <link href="<?php echo osintegration_getOption( 'ios_icon_144', $options ); ?>" rel="apple-touch-icon" sizes="144x144" />
 
 <!-- Override the default page name for iOS -->
-<meta name="apple-mobile-web-app-title" content="<?php echo osintegration_getOption( 'title', $options );?>”>
+<meta name="apple-mobile-web-app-title" content="<?php echo osintegration_getOption( 'title', $options );?>">
 
 <?php 
 
