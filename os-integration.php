@@ -30,6 +30,8 @@ DEFINE( OSINTVER, '1.1' );
 // Define the name of the WordPress option to use.
 DEFINE( ISINTOPTIONNAME, 'osintegration_options' );
 
+include_once dirname( __FILE__ ) . '/widget.php';
+
 /* 
 ****************************
 Plugin Functions Starts Here
