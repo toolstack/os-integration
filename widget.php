@@ -13,22 +13,34 @@
 		
 		$options = get_option( ISINTOPTIONNAME );
 
-		echo $before_widget;
-		echo $before_title . "Bookmark or Pin us!" . $after_title;
-		
-		
-		echo "<p>" . get_bloginfo('name') . "  supports many popular OS's for bookmarking and pinning!</p>";
-		echo "<p>Supported platforms include:</p>";
-		echo "<ul>";
-		
-		if( $options['enablefavicon'] ) { echo "<li>FavIcons for desktop and mobile browsers</li>"; }
-		if( $options['enablelivetile'] ) { echo "<li>Windows 8 and Windows Phone 8.1 Live Tiles</li>"; }
-		if( $options['enableios'] ) { echo "<li>iOS Home Screen Icons</li>"; }
-		if( $options['enablewebapp'] ) { echo "<li>iOS WebApp</li>"; }
-		
-		echo "</ul>";
-		
-		echo $after_widget;
+		// If at least one of the options is enabled, output the widget.
+		if( $options['enablefavicon'] || $options['enablelivetile'] || $options['enableios'] || $options['enablewebapp'] )
+			{
+			$bookmark = "";
+			$pin = "";
+			$or = "";
+			
+			if( $options['enablefavicon'] ) { $bookmark = "Bookmark"; }
+			if( $options['enablelivetile'] || $options['enableios'] || $options['enablewebapp'] ) { $pin = "Pin"; }
+			
+			if( $bookmark != "" && $pin != "" ) { $or = " or "; }
+			
+			echo $before_widget;
+			echo $before_title . $bookmark . $or . $pin . " us!" . $after_title;
+						
+			echo "<p>" . get_bloginfo('name') . "  supports many popular operating systems!</p>";
+			echo "<p>Supported platforms include:</p>";
+			echo "<ul>";
+			
+			if( $options['enablefavicon'] ) { echo "<li>FavIcons for desktop and mobile browsers</li>"; }
+			if( $options['enablelivetile'] ) { echo "<li>Windows 8 and Windows Phone 8.1 Live Tiles</li>"; }
+			if( $options['enableios'] ) { echo "<li>iOS Home Screen Icons</li>"; }
+			if( $options['enablewebapp'] ) { echo "<li>iOS WebApp</li>"; }
+			
+			echo "</ul>";
+			
+			echo $after_widget;
+		}
 	}
 
 ?>
