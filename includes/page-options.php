@@ -176,6 +176,12 @@
 						</td>
 					</tr>
 					<tr>
+						<th scope="row">Enable Link Override</th>
+						<td>
+							<input type="checkbox" id="enablelinkoverride" name="osintegration_options[enablelinkoverride]"<?php if( $options['enablelinkoverride'] ) { echo " CHECKED"; } ?>/>
+						</td>
+					</tr>
+					<tr>
 						<th scope="row">Use wide image for web app loading screen</th>
 						<td>
 							<input type="checkbox" id="widewebapp" name="osintegration_options[widewebapp]"<?php if( $options['widewebapp'] ) { echo " CHECKED"; } ?>/>

@@ -50,6 +50,7 @@
 			'id'       => 	'ios_tab',
 			'content'  => 	'<p>' . __('<b>Enable iOS</b>: This will enable iOS Icon support.  Both standard and HD icons are supported.') . '</p>' .
 							'<p>' . __('<b>Enable Web App Support</b>: This will enable Web App suppport on iOS for your site including load screens.  Note that Web App support is limited to the first page you load, when a user selects a link that takes them to another page it will open in Safari and leave the Web App.') . '</p>' .
+							'<p>' . __('<b>Enable Link Override</b>: This will enable a JavaScript function that will keep the user in the Web App when they click on a link to another page on your site.  If the user clicks on a link to an external site it will take them to Safari.  NOTE:  This code can have a performance impact on your site responding to clicks and some advanced controls may not work with it.  You should test this option before deploying it to a production site.') . '</p>' .
 							'<p>' . __('<b>Use wide image for web app loading screen</b>: By default the square image is used on the loading screen for the Web App, this option will instead use the wide image.') . '</p>' .
 							'<p>' . __('<b>Web App Logo Location</b>: The location to place the image on the loading screen.') . '</p>' .
 							'<p>' . __('<b>Web App Status Bar Style</b>: the iOS status bar can be set to be the default, black or transparent.') . '</p>'

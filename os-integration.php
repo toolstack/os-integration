@@ -416,7 +416,9 @@ function osintegration_validate_options( $input )
 			{
 			if( !isset( $input[$tag] ) ) 
 				{
-				if( substr( $tag, 0, 4 ) == 'img_' )
+				$chop = substr( $tag, 0, 4 );
+				
+				if( $chop == 'img_' || $chop == 'ios_' )
 					{
 					$input[$tag] = $options[$tag];
 					}
@@ -523,9 +525,8 @@ function osintegration_output()
 
 	$user_agent = $_SERVER['HTTP_USER_AGENT'];
 	
-	
 	// If we're supporting iOS, output the required code now.
-	if( $options['enableios'] && osintegration_getOption( 'ios_icon_144', $options ) && ( stristr( $_SERVER['HTTP_USER_AGENT'], 'iphone' ) !== FALSE || stristr( $_SERVER['HTTP_USER_AGENT'], 'ipad' ) !== FALSE ) ) 
+	if( $options['enableios'] && osintegration_getOption( 'ios_icon_144', $options ) && ( stristr( $user_agent, 'iphone' ) !== FALSE || stristr( $user_agent, 'ipad' ) !== FALSE ) ) 
 		{
 		$statusbarstyle = 'black-translucent';
 		if( $options['statusbarstyle'] == 1 ) { $statusbarstyle = 'black'; }
@@ -552,6 +553,37 @@ function osintegration_output()
 <meta name="apple-mobile-web-app-status-bar-style" content="<?php echo $statusbarstyle; ?>" />
 
 <script type="text/javascript">
+<?php 	
+if( $options['enablelinkoverride'] ) 
+	{?>
+	// If we're in a webapp window, avoid leaving it every time a user clicks on a link.
+	if (window.navigator.standalone == true) 
+		{
+		// Capture all clicks on the page.
+		jQuery( document ).on("click",
+			function( event )
+				{
+				// Find the root page location.
+				var root = (location.protocol + '//' + location.host + location.pathname);
+				
+				// If whatever we clicked on has is a link to something on our own site, prevent the webapp window for switching to Safari.
+				// Otherwise let it switch to the external site.
+			    if( event.srcElement.href.indexOf( root ) == 0 )
+					{
+					// Stop the default behavior of the browser, which
+					// is to change the URL of the page.
+					event.preventDefault();
+
+					// Manually change the location of the page to stay in
+					// "Standalone" mode and change the URL at the same time.
+					location.href = jQuery( event.target ).attr( "href" );
+					}
+				}
+			);
+		}
+
+<?php
+	} ?>
 	(function(){
 		var image 				= false;
 		var land_image			= false;
