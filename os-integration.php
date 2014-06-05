@@ -1,12 +1,12 @@
 <?php
 /*
 Plugin Name: OS Integration
-Description: Integrate your site in to your users OS, Windows Live Tiles, proper Icons for Apple, Android and Windows Phone and more!
-Version: 1.2
+Description: Integrate your site in to your users OS, Windows Live Tiles, icons for Apple and Android, iOS Web App!
+Version: 1.5
 Plugin URI: http://toolstack.com/os-integration
 Author: Greg Ross
 Author URI: http://toolstack.com
-Tags: Windows 8, Windows 8.1, Internet Explorer, IE10, IE11, live tile, RSS, App, tiles, start screen, pinned site, branding, favicon
+Tags: Windows 8, Internet Explorer, IE10, IE11, live tile, RSS, App, tiles, start screen, pinned site, branding, favicon, apple, icons, Android, Windows Phone 8.1, WebApp, web app
 License: GPL
 
 Compatible with WordPress 3.5+.
@@ -25,7 +25,7 @@ Plugin Variables and Defines Starts Here
 */
 
 // Define the plugin version.
-DEFINE( OSINTVER, '1.2' );
+DEFINE( OSINTVER, '1.5' );
 
 // Define the name of the WordPress option to use.
 DEFINE( ISINTOPTIONNAME, 'osintegration_options' );
