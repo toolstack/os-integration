@@ -25,10 +25,10 @@ Plugin Variables and Defines Starts Here
 */
 
 // Define the plugin version.
-DEFINE( OSINTVER, '1.5' );
+DEFINE( 'OSINTVER', '1.5' );
 
 // Define the name of the WordPress option to use.
-DEFINE( ISINTOPTIONNAME, 'osintegration_options' );
+DEFINE( 'ISINTOPTIONNAME', 'osintegration_options' );
 
 include_once dirname( __FILE__ ) . '/widget.php';
 
