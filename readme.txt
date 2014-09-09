@@ -63,7 +63,7 @@ The Image Magic code is still in development and may not function at this time.
 
 = 1.5 =
 * Fixed issue with ios icons being 'forgotten' if you changed settings with an image rebuild required.
-* Added support for link overriding in WebApp mo
+* Added support for link overriding in WebApp mode
 
 = 1.2 =
 * Added widget to let users know they can bookmark or pin the site.
