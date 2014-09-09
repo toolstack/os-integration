@@ -3,7 +3,7 @@ Contributors: GregRoss
 Tags: Windows 8, Internet Explorer, IE10, IE11, live tile, RSS, App, tiles, start screen, pinned site, branding, favicon, apple, icons, Android, Windows Phone 8.1, WebApp, web app
 Requires at least: 3.5
 Tested up to: 3.9.1
-Stable tag: 1.5
+Stable tag: 1.6
 Description: Integrate your site in to your users OS, Windows Live Tiles, icons for Apple and Android, iOS Web App!
 License: GPLv2
 
@@ -56,6 +56,11 @@ The Image Magic code is still in development and may not function at this time.
 7. Notification widget.
 
 == Changelog ==
+= 1.6 =
+* Updated: Widget code now adhears to WordPress standards.
+* Fixed: Missing quotation marks around DEFINE name which caused a WP_DEBUG message.
+* Removed: Screen shots from the distribution archive and in to the WordPress assets directory.
+
 = 1.5 =
 * Fixed issue with ios icons being 'forgotten' if you changed settings with an image rebuild required.
 * Added support for link overriding in WebApp mo
@@ -79,8 +84,8 @@ The Image Magic code is still in development and may not function at this time.
 * Initial code.
 
 == Upgrade Notice ==
-= 1.2 =
-* None.
+= 1.6 =
+* If you have used the sidebar widget you'll have to re-add it to your sidebar as the internal widget name has change (sorry, unavoidable).  Also if you have styled the widget the new class name will be 'widget_osintegration_widget' instead of 'os_integraton_show_widget'.
 
 == Roadmap ==
 * Add featured image support to live tile custom xml.
