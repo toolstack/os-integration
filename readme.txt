@@ -2,7 +2,7 @@
 Contributors: GregRoss
 Tags: Windows 8, Internet Explorer, IE10, IE11, live tile, RSS, App, tiles, start screen, pinned site, branding, favicon, apple, icons, Android, Windows Phone 8.1, WebApp, web app
 Requires at least: 3.5
-Tested up to: 3.9.1
+Tested up to: 4.0
 Stable tag: 1.6
 Description: Integrate your site in to your users OS, Windows Live Tiles, icons for Apple and Android, iOS Web App!
 License: GPLv2
