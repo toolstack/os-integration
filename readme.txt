@@ -2,7 +2,7 @@
 Contributors: GregRoss
 Tags: Windows 8, Internet Explorer, IE10, IE11, live tile, RSS, App, tiles, start screen, pinned site, branding, favicon, apple, icons, Android, Windows Phone 8.1, WebApp, web app
 Requires at least: 3.5
-Tested up to: 4.0
+Tested up to: 4.0.1
 Stable tag: 1.6
 Description: Integrate your site in to your users OS, Windows Live Tiles, icons for Apple and Android, iOS Web App!
 License: GPLv2
@@ -56,8 +56,12 @@ The Image Magic code is still in development and may not function at this time.
 7. Notification widget.
 
 == Changelog ==
+= 1.7 =
+* Added: If no wide image is provided, one will be auto generated based on the square image being centred in the wide icon.
+* Added: Check to see if both images are readable before compositing them together (avoid fatal errors if an intermediate image failed to be created correctly).
+
 = 1.6 =
-* Updated: Widget code now adhears to WordPress standards.
+* Updated: Widget code now adheres to WordPress standards.
 * Fixed: Missing quotation marks around DEFINE name which caused a WP_DEBUG message.
 * Removed: Screen shots from the distribution archive and in to the WordPress assets directory.
 
