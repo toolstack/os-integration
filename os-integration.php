@@ -176,9 +176,6 @@ function osintegration_validate_options( $input )
 		$square_image_path = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $input['squareimgurl'] );
 		$wide_image_path = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $input['wideimgurl'] );
 
-		// If no wide image was provided, use the square one.
-		if( $wide_image_path == '' ) { $wide_image_path = $square_image_path; }
-		
 		// Load the square image in to the WordPress image editor and make the required sizes.
 		$squareimg = wp_get_image_editor( $square_image_path );
 
@@ -260,6 +257,34 @@ function osintegration_validate_options( $input )
 			$input['error_message'] .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path: " . $image_path . '<br>';
 			}
 
+		// If a wide image doesn't exist, create one from the square image (assuming of course it exists :)
+		if( !file_exists( $wide_image_path ) && file_exists( $square_image_path ) ) 
+			{
+			// Get the file path information for the square image.
+			$img_path_info = pathinfo($square_image_path);
+			
+			$wide_image_path = trailingslashit( $upload_base_dir ) . 'os-integration/' . $img_path_info['filename'] . '-wide.' . $img_path_info['extension'];
+			
+			// Get the image size so we can calculate the wide image size.
+			$imgsize = $squareimg->get_size();
+			
+			$wide_imgsize = $imgsize;
+			$wide_imgsize['width'] = $imgsize['height'] * (451 / 219);
+			
+			// Create the blank background image.
+			osintegration_new_png( $wide_image_path, $wide_imgsize['width'], $wide_imgsize['height'], $input['background-color'] );
+			// Determine the location of the logo on the background.
+			$x = (int)( ( $wide_imgsize['width'] - $imgsize['width'] ) / 2 );
+			$y = 0;
+			
+			// Add the logo to the background image.
+			osintegration_composite_images( $wide_image_path, $square_image_path, $x, $y );
+			
+			// Store the url
+			$wide_image_url = str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $wide_image_path );
+			$input['wideimgurl'] = $wide_image_url;
+			}
+			
 		// Load the wide image in to the WordPress image editor and make the required sizes.
 		$wideimg = wp_get_image_editor( $wide_image_path );
 		
@@ -662,6 +687,8 @@ if( $options['enablelinkoverride'] )
 // Needs GD or ImageMagic to function, will return FALSE if they don't exist.
 function osintegration_composite_images( $first, $second, $x, $y )
 	{
+	if( !is_readable( $first ) || !is_readable( $second ) ) { return FALSE; }
+	
 	// First try using the GD library, then Image Magic, otherwise just fail.
 	if( function_exists( 'imagecopy' ) )
 		{
