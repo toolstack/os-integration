@@ -1,6 +1,6 @@
 === OS Integration ===
 Contributors: GregRoss
-Tags: Windows 8, Internet Explorer, IE10, IE11, live tile, RSS, App, tiles, start screen, pinned site, branding, favicon, apple, icons, Android, Windows Phone 8.1, WebApp, web app
+Tags: Windows 8, Internet Explorer, IE10, IE11, live tile, RSS, App, tiles, start screen, pinned site, branding, favicon, apple, icons, Android, Windows Phone 8.1, WebApp, web app, site icon
 Requires at least: 3.5
 Tested up to: 4.2
 Stable tag: 1.7
@@ -9,6 +9,8 @@ License: GPLv2
 
 == Description ==
 User's have all kinds of devices these days and your site needs to look the best it can when being displayed, pinned or added to your users system.
+
+WordPress 4.3 has introduced the "Site Icon" option in settings but it's far too limited, OS Integration does what it can't!
 
 OS Integration supports the following features:
 
@@ -36,7 +38,7 @@ Why use 2, 3 or 4 other plugins when OS Integration does all the work for you!
 == Frequently Asked Questions ==
 = Some image sizes are not generating? =
 
-You must provide an image larger than 450x450 (or 450x281 for the wide image).  If a smaller image is supplied it the code will not resize them to a larger format.
+You must provide an image larger than 450x450 (or 450x281 for the wide image).  If a smaller image is supplied the code will not resize them to a larger format.
 
 = What libraries are required? =
 
@@ -47,7 +49,7 @@ The WordPress image editor is used to resize the images, which supports both GD 
 The Image Magic code is still in development and may not function at this time.
 
 == Screenshots ==
-1. Image and Colors settings.
+1. Image and Color settings.
 2. Fav Icon settings.
 3. Windows settings.
 4. iOS settings.
@@ -56,6 +58,12 @@ The Image Magic code is still in development and may not function at this time.
 7. Notification widget.
 
 == Changelog ==
+= 1.8 =
+* Release date: December 6, 2014
+* Added: Hooked in to the admin header load to support favicons in the admin panel.
+* Added: Strip WordPress 4.3's Site Icon meta data so we don't get a conflict.
+* Updated: Only add the custom local XML feed for Windows Live Tiles if the local option has been selected and Live Tiles are enabled.
+
 = 1.7 =
 * Release date: December 6, 2014
 * Added: If no wide image is provided, one will be auto generated based on the square image being centred in the wide icon.
@@ -96,8 +104,8 @@ The Image Magic code is still in development and may not function at this time.
 * Initial code.
 
 == Upgrade Notice ==
-= 1.6 =
-* If you have used the sidebar widget you'll have to re-add it to your sidebar as the internal widget name has change (sorry, unavoidable).  Also if you have styled the widget the new class name will be 'widget_osintegration_widget' instead of 'os_integraton_show_widget'.
+= 1.8 =
+* If you have upgraded to WordPress 4.3, OS Integration will override the Site Icon's settings and strip the meta information from the page headers.  If you wish to use WordPress 4.3's Site Icons, you can override this behaviour in the OS Integration advanced settings page.
 
 == Roadmap ==
 * Add featured image support to live tile custom xml.

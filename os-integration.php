@@ -877,9 +877,29 @@ function osintegration_get_logo_position( $x, $y, $logoposition, $logox, $logoy 
 	return array( $posx, $posy );
 	}
 	
-function osintegration_addxmlfeed()
+function osintegration_site_icon_meta_tags_filter( $meta_tags )
 	{
-	add_feed( 'mslivetile', 'osintegration_outputxmlfeed' );
+	return array();
+	}
+	
+function osintegration_wpinit()
+	{
+	// Get the current plugin options;
+	$options = get_option( ISINTOPTIONNAME );
+
+	// If the Windows Live Tile is enabled and we're using a local XML feed, add it to WordPress.
+	if( $options['localxml'] && $options['enablelivetile'] ) 
+		{
+		add_feed( 'mslivetile', 'osintegration_outputxmlfeed' );
+		}
+	
+	// If we're running WordPress 4.3 or above, disable the Site Icon meta data because we're going to generate our own.
+	GLOBAL $wp_version; 
+	
+	if( version_compare( $wp_version, '4.2.99', '>' ) && ! $options['wpsiteiconmeta'] && $options['squareimgurl'] )
+		{
+		add_filter( 'site_icon_meta_tags', 'osintegration_site_icon_meta_tags_filter', 99, 1);
+		}
 	}
 
 function osintegration_outputxmlfeed()
@@ -952,4 +972,5 @@ if( isset( $_GET['page']) && $_GET['page'] == 'os-integration/os-integration.php
 
 // Add the HTML to the header.
 add_action( 'wp_head', 'osintegration_output' );
-add_action( 'init', 'osintegration_addxmlfeed' );
+add_action( 'admin_head', 'osintegration_output' );
+add_action( 'init', 'osintegration_wpinit' );

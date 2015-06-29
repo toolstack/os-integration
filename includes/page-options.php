@@ -224,6 +224,16 @@
 			</div>
 			<div id="fragment-5">
 				<table class="form-table">
+<?php GLOBAL $wp_version; if( version_compare( $wp_version, '4.2.99', '>' ) ) { ?>
+				<tr>
+						<th scope="row">Allow WordPress Site Icon</th>
+						<td>
+							<input type="checkbox" id="wpsiteiconmeta" name="osintegration_options[wpsiteiconmeta]"<?php if( $options['wpsiteiconmeta'] ) { echo " CHECKED"; } ?>/><br>
+							<br>
+							<i>OS Integration will override WordPress's Site Icon settings and strip the meta information from the page headers.  If you wish to use WordPress's Site Icons, you can override this behaviour by checking this option.</i>
+						</td>
+					</tr>
+<?php } ?>
 					<tr>
 						<th scope="row">Force rebuild</th>
 						<td>
