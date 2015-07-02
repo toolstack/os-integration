@@ -44,10 +44,6 @@ You must provide an image larger than 450x450 (or 450x281 for the wide image).  
 
 The WordPress image editor is used to resize the images, which supports both GD and Image Magic.
 
-= I don't have GD but I do have Image Magic, but the Apple Icons are broken, what's wrong? =
-
-The Image Magic code is still in development and may not function at this time.
-
 == Screenshots ==
 1. Image and Color settings.
 2. Fav Icon settings.
@@ -63,6 +59,7 @@ The Image Magic code is still in development and may not function at this time.
 * Added: Hooked in to the admin header load to support favicons in the admin panel.
 * Added: Strip WordPress 4.3's Site Icon meta data so we don't get a conflict.
 * Updated: Only add the custom local XML feed for Windows Live Tiles if the local option has been selected and Live Tiles are enabled.
+* Fixed: Image Magic code now works!
 
 = 1.7 =
 * Release date: December 6, 2014

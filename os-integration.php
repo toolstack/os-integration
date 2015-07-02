@@ -13,7 +13,7 @@ Compatible with WordPress 3.5+.
 
 Read the accompanying readme.txt file for instructions and documentation.
 
-Copyright (c) 2014 by Greg Ross
+Copyright (c) 2014-15 by Greg Ross
 
 This software is released under the GPL v2.0, see license.txt for details
 */
@@ -103,6 +103,7 @@ function osintegration_add_options_page()
 	add_action( 'load-' . $page, 'osintegration_create_help_screen' );
 	}
 
+// Load the help screens for the settings page.
 function osintegration_create_help_screen()
 	{
 	include_once( 'includes/help-options.php' );
@@ -720,7 +721,7 @@ function osintegration_composite_images( $first, $second, $x, $y )
 		
 		$dest->flattenImages();
 		
-		$dest->writeImage();
+		$dest->writeImage( $first );
 		
 		$dest->destroy();
 		$src->destroy();
@@ -768,11 +769,11 @@ function osintegration_new_png( $filename, $x, $y, $fill )
 		{
 		$img = new Imagick();
 		
-		$img->newImage( $x, $y, $fill, 'PNG32' );
+    	$img->newImage( $x, $y, new ImagickPixel( $fill ), 'PNG32' );
 		$img->setFilename( $filename );
-		$img->writeImage();
+		$img->writeImage( $filename );
 		
-		$img->destory();
+		$img->destroy();
 		
 		return FALSE;
 		}
@@ -877,11 +878,14 @@ function osintegration_get_logo_position( $x, $y, $logoposition, $logox, $logoy 
 	return array( $posx, $posy );
 	}
 	
+// WordPress 4.3 introduces the site icon feature, since we're doing all that work, this function removes
+// WP's output of site icon meta info from the page header.
 function osintegration_site_icon_meta_tags_filter( $meta_tags )
 	{
 	return array();
 	}
 	
+// This function adds the rss feed for the MS Live Tile support and disables WP 4.3's site icon support.
 function osintegration_wpinit()
 	{
 	// Get the current plugin options;
@@ -902,6 +906,7 @@ function osintegration_wpinit()
 		}
 	}
 
+// This function generates the XML file for use by MS Live Tiles if it is being generated locally.
 function osintegration_outputxmlfeed()
 	{
 	$args = array(
@@ -970,7 +975,7 @@ if( isset( $_GET['page']) && $_GET['page'] == 'os-integration/os-integration.php
 	add_action( 'admin_enqueue_scripts', 'osintegration_admin_scripts' );
 	}
 
-// Add the HTML to the header.
+// Setup the header and init hooks for the plugin.
 add_action( 'wp_head', 'osintegration_output' );
 add_action( 'admin_head', 'osintegration_output' );
 add_action( 'init', 'osintegration_wpinit' );
