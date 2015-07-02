@@ -40,7 +40,7 @@ Why use 2, 3 or 4 other plugins when OS Integration does all the work for you!
 
 You must provide an image larger than 450x450 (or 450x281 for the wide image).  If a smaller image is supplied the code will not resize them to a larger format.
 
-= What libraries are required? =
+= What PHP libraries are required? =
 
 The WordPress image editor is used to resize the images, which supports both GD and Image Magic.
 
@@ -54,12 +54,15 @@ The WordPress image editor is used to resize the images, which supports both GD 
 7. Notification widget.
 
 == Changelog ==
-= 1.8 =
+= 2.0 =
 * Release date: December 6, 2014
 * Added: Hooked in to the admin header load to support favicons in the admin panel.
 * Added: Strip WordPress 4.3's Site Icon meta data so we don't get a conflict.
 * Updated: Only add the custom local XML feed for Windows Live Tiles if the local option has been selected and Live Tiles are enabled.
 * Fixed: Image Magic code now works!
+* Fixed: Check to make sure the os-integration directory exists in the uploads before trying to use it.
+* Fixed: Check to make sure the user has uploaded an PNG file before trying to use it and show an error message if not.
+* Fixed: Don't try to generate the iOS files if an error has occurred due to the square or wide image generation.
 
 = 1.7 =
 * Release date: December 6, 2014

@@ -162,6 +162,31 @@ function osintegration_validate_options( $input )
 		
 		$path = trailingslashit( $upload_base_dir ) . 'os-integration/';
 
+		// By default the media selector returns a url, some hosting providers disable remote file wrappers for security,
+		// so let's convert the "local" url to a local path.
+		$square_image_path = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $input['squareimgurl'] );
+		$wide_image_path = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $input['wideimgurl'] );
+
+		// Check to make sure the square image is a PNG file.
+		if( strtolower( substr( $square_image_path, -4 ) ) != '.png' && $square_image_path != '' )
+			{
+			$input['error_message'] = "<p><b>Error - Square image file is not a PNG!</b></p>";
+			return $input;
+			}
+		
+		// Check to make sure the wide image is a PNG file.
+		if( strtolower( substr( $wide_image_path, -4 ) ) != '.png' && $wide_image_path != '') 
+			{
+			$input['error_message'] = "<p><b>Error - Wide image file is not a PNG!</b></p>";
+			
+			return $input;
+			}
+
+		if( !is_dir( $path ) ) 
+			{
+			mkdir( $path, null, true );
+			}
+			
 		// Flush out any old files before we create the new images.
 		$files_to_delete = scandir( $path );
 		foreach( $files_to_delete as $file ) 
@@ -172,11 +197,6 @@ function osintegration_validate_options( $input )
 				}
 			}
 		
-		// By default the media selector returns a url, some hosting providers disable remote file wrappers for security,
-		// so let's convert the "local" url to a local path.
-		$square_image_path = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $input['squareimgurl'] );
-		$wide_image_path = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $input['wideimgurl'] );
-
 		// Load the square image in to the WordPress image editor and make the required sizes.
 		$squareimg = wp_get_image_editor( $square_image_path );
 
@@ -353,73 +373,77 @@ function osintegration_validate_options( $input )
 			$input['error_message'] .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path: " . $image_path . '<br>';
 			}
 
-		// Create the iOS icon and web app backgrounds.
-		$path = trailingslashit( $upload_base_dir ) . 'os-integration/';
-		$base = trailingslashit($upload_dir['baseurl']) . 'os-integration/';
-		
-		if( $input['widewebapp'] ) 
+		// Make sure we didn't have an error above.
+		if( $input['error_message'] == '' ) 
 			{
-			$iOSfilenames = array(  
-									array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-57x57.png', 'x' => 57, 'y' => 57, 'logo' => $path . basename( $input['img_square_57'] ), 'logo-position' => 1, 'logo-x' => 57, 'logo-y' => 57 ),
-									array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-72x72.png', 'x' => 72, 'y' => 72, 'logo' => $path . basename( $input['img_square_72'] ), 'logo-position' => 1, 'logo-x' => 72, 'logo-y' => 72 ),
-									array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-114x114.png', 'x' => 114, 'y' => 114, 'logo' => $path . basename( $input['img_square_114'] ), 'logo-position' => 1, 'logo-x' => 114, 'logo-y' => 114 ),
-									array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-144x144.png', 'x' => 144, 'y' => 144, 'logo' => $path . basename( $input['img_square_144'] ), 'logo-position' => 1, 'logo-x' => 144, 'logo-y' => 144 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-320x460.png', 'x' => 320, 'y' => 460, 'logo' => $path . basename( $input['img_wide_96'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 96, 'logo-y' => 46 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-640x920.png', 'x' => 640, 'y' => 920, 'logo' => $path . basename( $input['img_wide_196'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 196, 'logo-y' => 95 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-640x1096.png', 'x' => 640, 'y' => 1096, 'logo' => $path . basename( $input['img_wide_196'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 196, 'logo-y' => 95 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-768x1004.png', 'x' => 768, 'y' => 1004, 'logo' => $path . basename( $input['img_wide_230'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 230, 'logo-y' => 112 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-748x1024.png', 'x' => 748, 'y' => 1024, 'logo' => $path . basename( $input['img_wide_230'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 230, 'logo-y' => 112 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-1536x2008.png', 'x' => 1536, 'y' => 2008, 'logo' => $path . basename( $input['img_wide_450'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 450, 'logo-y' => 218 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-1496x2048.png', 'x' => 1496, 'y' => 2048, 'logo' => $path . basename( $input['img_wide_450'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 450, 'logo-y' => 218 )
-								);
-			}
-		else
-			{
-			$iOSfilenames = array(  
-									array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-57x57.png', 'x' => 57, 'y' => 57, 'logo' => $path . basename( $input['img_square_57'] ), 'logo-position' => 1, 'logo-x' => 57, 'logo-y' => 57 ),
-									array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-72x72.png', 'x' => 72, 'y' => 72, 'logo' => $path . basename( $input['img_square_72'] ), 'logo-position' => 1, 'logo-x' => 72, 'logo-y' => 72 ),
-									array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-114x114.png', 'x' => 114, 'y' => 114, 'logo' => $path . basename( $input['img_square_114'] ), 'logo-position' => 1, 'logo-x' => 114, 'logo-y' => 114 ),
-									array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-144x144.png', 'x' => 144, 'y' => 144, 'logo' => $path . basename( $input['img_square_144'] ), 'logo-position' => 1, 'logo-x' => 144, 'logo-y' => 144 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-320x460.png', 'x' => 320, 'y' => 460, 'logo' => $path . basename( $input['img_square_96'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 96, 'logo-y' => 96 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-640x920.png', 'x' => 640, 'y' => 920, 'logo' => $path . basename( $input['img_square_196'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 196, 'logo-y' => 196 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-640x1096.png', 'x' => 640, 'y' => 1096, 'logo' => $path . basename( $input['img_square_196'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 196, 'logo-y' => 196 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-768x1004.png', 'x' => 768, 'y' => 1004, 'logo' => $path . basename( $input['img_square_230'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 230, 'logo-y' => 230 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-748x1024.png', 'x' => 748, 'y' => 1024, 'logo' => $path . basename( $input['img_square_230'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 230, 'logo-y' => 230 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-1536x2008.png', 'x' => 1536, 'y' => 2008, 'logo' => $path . basename( $input['img_square_450'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 450, 'logo-y' => 450 ),
-									array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-1496x2048.png', 'x' => 1496, 'y' => 2048, 'logo' => $path . basename( $input['img_square_450'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 450, 'logo-y' => 450 )
-								);
-			}
+			// Create the iOS icon and web app backgrounds.
+			$path = trailingslashit( $upload_base_dir ) . 'os-integration/';
+			$base = trailingslashit($upload_dir['baseurl']) . 'os-integration/';
+			
+			if( $input['widewebapp'] ) 
+				{
+				$iOSfilenames = array(  
+										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-57x57.png', 'x' => 57, 'y' => 57, 'logo' => $path . basename( $input['img_square_57'] ), 'logo-position' => 1, 'logo-x' => 57, 'logo-y' => 57 ),
+										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-72x72.png', 'x' => 72, 'y' => 72, 'logo' => $path . basename( $input['img_square_72'] ), 'logo-position' => 1, 'logo-x' => 72, 'logo-y' => 72 ),
+										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-114x114.png', 'x' => 114, 'y' => 114, 'logo' => $path . basename( $input['img_square_114'] ), 'logo-position' => 1, 'logo-x' => 114, 'logo-y' => 114 ),
+										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-144x144.png', 'x' => 144, 'y' => 144, 'logo' => $path . basename( $input['img_square_144'] ), 'logo-position' => 1, 'logo-x' => 144, 'logo-y' => 144 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-320x460.png', 'x' => 320, 'y' => 460, 'logo' => $path . basename( $input['img_wide_96'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 96, 'logo-y' => 46 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-640x920.png', 'x' => 640, 'y' => 920, 'logo' => $path . basename( $input['img_wide_196'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 196, 'logo-y' => 95 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-640x1096.png', 'x' => 640, 'y' => 1096, 'logo' => $path . basename( $input['img_wide_196'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 196, 'logo-y' => 95 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-768x1004.png', 'x' => 768, 'y' => 1004, 'logo' => $path . basename( $input['img_wide_230'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 230, 'logo-y' => 112 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-748x1024.png', 'x' => 748, 'y' => 1024, 'logo' => $path . basename( $input['img_wide_230'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 230, 'logo-y' => 112 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-1536x2008.png', 'x' => 1536, 'y' => 2008, 'logo' => $path . basename( $input['img_wide_450'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 450, 'logo-y' => 218 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-1496x2048.png', 'x' => 1496, 'y' => 2048, 'logo' => $path . basename( $input['img_wide_450'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 450, 'logo-y' => 218 )
+									);
+				}
+			else
+				{
+				$iOSfilenames = array(  
+										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-57x57.png', 'x' => 57, 'y' => 57, 'logo' => $path . basename( $input['img_square_57'] ), 'logo-position' => 1, 'logo-x' => 57, 'logo-y' => 57 ),
+										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-72x72.png', 'x' => 72, 'y' => 72, 'logo' => $path . basename( $input['img_square_72'] ), 'logo-position' => 1, 'logo-x' => 72, 'logo-y' => 72 ),
+										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-114x114.png', 'x' => 114, 'y' => 114, 'logo' => $path . basename( $input['img_square_114'] ), 'logo-position' => 1, 'logo-x' => 114, 'logo-y' => 114 ),
+										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-144x144.png', 'x' => 144, 'y' => 144, 'logo' => $path . basename( $input['img_square_144'] ), 'logo-position' => 1, 'logo-x' => 144, 'logo-y' => 144 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-320x460.png', 'x' => 320, 'y' => 460, 'logo' => $path . basename( $input['img_square_96'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 96, 'logo-y' => 96 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-640x920.png', 'x' => 640, 'y' => 920, 'logo' => $path . basename( $input['img_square_196'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 196, 'logo-y' => 196 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-640x1096.png', 'x' => 640, 'y' => 1096, 'logo' => $path . basename( $input['img_square_196'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 196, 'logo-y' => 196 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-768x1004.png', 'x' => 768, 'y' => 1004, 'logo' => $path . basename( $input['img_square_230'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 230, 'logo-y' => 230 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-748x1024.png', 'x' => 748, 'y' => 1024, 'logo' => $path . basename( $input['img_square_230'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 230, 'logo-y' => 230 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-1536x2008.png', 'x' => 1536, 'y' => 2008, 'logo' => $path . basename( $input['img_square_450'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 450, 'logo-y' => 450 ),
+										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-1496x2048.png', 'x' => 1496, 'y' => 2048, 'logo' => $path . basename( $input['img_square_450'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 450, 'logo-y' => 450 )
+									);
+				}
 
-		foreach( $iOSfilenames as $item ) 
-			{
-			// Create the blank background image.
-			osintegration_new_png( $item['name'], $item['x'], $item['y'], $input['background-color'] );
+			foreach( $iOSfilenames as $item ) 
+				{
+				// Create the blank background image.
+				osintegration_new_png( $item['name'], $item['x'], $item['y'], $input['background-color'] );
+				
+				// Determine the location of the logo on the background.
+				list( $x, $y ) = osintegration_get_logo_position( $item['x'], $item['y'], $item['logo-position'], $item['logo-x'], $item['logo-y'] );
+				
+				// Add the logo to the background image.
+				osintegration_composite_images( $item['name'], $item['logo'], $x, $y );
+				
+				// Store the url
+				$desc = $item['tag'] . $item['y'];
+				$input[$desc] = $base . basename( $item['name'] );
+				}
+				
+			// Generate the ICO file
+			require_once( dirname( __FILE__ ) . '/includes/php-ico/class-php-ico.php' );
+
+			$destination = dirname( __FILE__ ) . '/example.ico';
 			
-			// Determine the location of the logo on the background.
-			list( $x, $y ) = osintegration_get_logo_position( $item['x'], $item['y'], $item['logo-position'], $item['logo-x'], $item['logo-y'] );
+			$ico_lib = new PHP_ICO();
 			
-			// Add the logo to the background image.
-			osintegration_composite_images( $item['name'], $item['logo'], $x, $y );
+			if( $input['favicon96'] ) { $ico_lib->add_image( $path . basename( $input['img_square_96'] ), array( 96, 96 ) ); }
+			if( $input['favicon64'] ) { $ico_lib->add_image( $path . basename( $input['img_square_64'] ), array( 64, 64 ) ); }
+			$ico_lib->add_image( $path . basename( $input['img_square_32'] ), array( 32, 32 ) );
+			$ico_lib->add_image( $path . basename( $input['img_square_16'] ), array( 16, 16 ) );
 			
-			// Store the url
-			$desc = $item['tag'] . $item['y'];
-			$input[$desc] = $base . basename( $item['name'] );
+			$ico_lib->save_ico( trailingslashit( $input['faviconpath'] ) . 'favicon.ico' );
 			}
 			
-		// Generate the ICO file
-		require_once( dirname( __FILE__ ) . '/includes/php-ico/class-php-ico.php' );
-
-		$destination = dirname( __FILE__ ) . '/example.ico';
-		
-		$ico_lib = new PHP_ICO();
-		
-		if( $input['favicon96'] ) { $ico_lib->add_image( $path . basename( $input['img_square_96'] ), array( 96, 96 ) ); }
-		if( $input['favicon64'] ) { $ico_lib->add_image( $path . basename( $input['img_square_64'] ), array( 64, 64 ) ); }
-		$ico_lib->add_image( $path . basename( $input['img_square_32'] ), array( 32, 32 ) );
-		$ico_lib->add_image( $path . basename( $input['img_square_16'] ), array( 16, 16 ) );
-		
-		$ico_lib->save_ico( trailingslashit( $input['faviconpath'] ) . 'favicon.ico' );
-
 		// Deal with a user override of individual items
 		foreach( $input as $key => $value )
 			{
