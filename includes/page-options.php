@@ -1,5 +1,5 @@
 <?php
-	$options = get_option( ISINTOPTIONNAME );
+	$options = get_option( OSINTOPTIONNAME );
 	
 	if( !array_key_exists( 'notification_frequency', $options ) ) 
 		{

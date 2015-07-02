@@ -28,7 +28,7 @@ Plugin Variables and Defines Starts Here
 DEFINE( 'OSINTVER', '1.7' );
 
 // Define the name of the WordPress option to use.
-DEFINE( 'ISINTOPTIONNAME', 'osintegration_options' );
+DEFINE( 'OSINTOPTIONNAME', 'osintegration_options' );
 
 include_once dirname( __FILE__ ) . '/widget.php';
 
@@ -41,7 +41,7 @@ Plugin Functions Starts Here
 // Delete options table entries ONLY when plugin deactivated AND deleted.
 function osintegration_delete_plugin_options() 
 	{
-	delete_option( ISINTOPTIONNAME );
+	delete_option( OSINTOPTIONNAME );
 	}
 	
 // Display a Settings link on the main plugins page.
@@ -62,11 +62,11 @@ function osintegration_plugin_action_links( $links, $file )
 function osintegration_add_defaults() 
 	{
 	// Check to see if we already have options set.
-	$tmp = get_option( ISINTOPTIONNAME );
+	$tmp = get_option( OSINTOPTIONNAME );
 	
     if( !is_array( $tmp ) ) 
 		{
-		delete_option( ISINTOPTIONNAME );
+		delete_option( OSINTOPTIONNAME );
 		
 		$arr = array(
 					'plugin_version' 			=> OSINTVER,
@@ -79,7 +79,7 @@ function osintegration_add_defaults()
 					'rssurl'					=> get_bloginfo( 'rss2_url' )
 		);
 		
-		update_option( ISINTOPTIONNAME, $arr );
+		update_option( OSINTOPTIONNAME, $arr );
 		
 		add_feed( 'msxmllivetile', 'osintegration_outputxmlfeed' );
 		
@@ -93,7 +93,7 @@ function osintegration_add_defaults()
 // Init plugin options to white list our options.
 function osintegration_init()
 	{
-	register_setting( 'osintegration_plugin_options', ISINTOPTIONNAME, 'osintegration_validate_options' );
+	register_setting( 'osintegration_plugin_options', OSINTOPTIONNAME, 'osintegration_validate_options' );
 	}
 
 // Add us to the settings menu.
@@ -138,7 +138,7 @@ function osintegration_options_page()
 function osintegration_validate_options( $input ) 
 	{
 	// Get the old options for reference.
-	$options = get_option( ISINTOPTIONNAME );
+	$options = get_option( OSINTOPTIONNAME );
 
 	// Sanitize inputs.
 	$input['title'] = sanitize_text_field( $input['title'] );
@@ -482,7 +482,7 @@ function osintegration_validate_options( $input )
 // Get a option value.
 function osintegration_getOption( $option, $options = null ) 
 	{
-	if( $options == null ) { $options = get_option( ISINTOPTIONNAME ); }
+	if( $options == null ) { $options = get_option( OSINTOPTIONNAME ); }
 		
 	if( array_key_exists( $option, $options ) )
 		{
@@ -497,7 +497,7 @@ function osintegration_getOption( $option, $options = null )
 // Output the HTML for the os integration options.
 function osintegration_output() 
 	{
-	$options = get_option( ISINTOPTIONNAME );
+	$options = get_option( OSINTOPTIONNAME );
 
 	// Get our RSS2 feed url.
 	if( !isset( $options['rssurl'] ) )
@@ -509,8 +509,8 @@ function osintegration_output()
 	
 	if( $options['localxml'] ) 
 		{
-		// If we're using our own feed, use the feed url for rss2 but replace it with 'mslivetile'.
-		$feed_url = str_ireplace( 'rss2', 'mslivetile', $feed_url );
+		// If we're using our own feed, construct the url for it.
+		$feed_url =  site_url() . '/mslivetile';
 		
 		// Setup the pooling uri for our own feed.
 		$polling_uri  = $feed_url . '&amp;id=1;' .
@@ -913,7 +913,7 @@ function osintegration_site_icon_meta_tags_filter( $meta_tags )
 function osintegration_wpinit()
 	{
 	// Get the current plugin options;
-	$options = get_option( ISINTOPTIONNAME );
+	$options = get_option( OSINTOPTIONNAME );
 
 	// If the Windows Live Tile is enabled and we're using a local XML feed, add it to WordPress.
 	if( $options['localxml'] && $options['enablelivetile'] ) 
@@ -960,17 +960,76 @@ function osintegration_outputxmlfeed()
 	echo '			<text id="2">' . $recent_posts[1]["post_title"] . '</text>' . "\n";
 	echo '			<text id="3">' . $recent_posts[2]["post_title"] . '</text>' . "\n";
 	echo '		</binding>' . "\n";
+
+	echo '		<binding template="TileSquare310x310SmallImagesAndTextList02" branding="logo">' . "\n";
+	echo '			<image id="1" src="' . osintegration_get_post_first_image( $recent_posts[0]['ID'], $recent_posts[0]['post_content'] ) . '"/>' . "\n";
+	echo '			<image id="2" src="' . osintegration_get_post_first_image( $recent_posts[1]['ID'], $recent_posts[1]['post_content'] ) . '"/>' . "\n";
+	echo '			<image id="3" src="' . osintegration_get_post_first_image( $recent_posts[2]['ID'], $recent_posts[2]['post_content'] ) . '"/>' . "\n";
+	echo '			<text id="1">' . $recent_posts[0]["post_title"] . '</text>' . "\n";
+	echo '			<text id="2">' . $recent_posts[1]["post_title"] . '</text>' . "\n";
+	echo '			<text id="3">' . $recent_posts[2]["post_title"] . '</text>' . "\n";
+	echo '		</binding>' . "\n";
+/*
 	echo '		<binding template="TileSquare310x310TextList02" branding="logo">' . "\n";
 	echo '			<text id="1">' . $recent_posts[0]["post_title"] . '</text>' . "\n";
 	echo '			<text id="2">' . $recent_posts[1]["post_title"] . '</text>' . "\n";
 	echo '			<text id="3">' . $recent_posts[2]["post_title"] . '</text>' . "\n";
 	echo '		</binding>' . "\n";
+*/
 	echo '	</visual>' . "\n";
 	echo '</tile>' . "\n";
 
 	exit();
 	}
 	
+function osintegration_get_post_first_image( $postID, $post_content ) 
+	{
+	$args = array(
+		'numberposts' => 1,
+		'order' => 'ASC',
+		'post_mime_type' => 'image',
+		'post_parent' => $postID,
+		'post_status' => null,
+		'post_type' => 'attachment',
+		);
+
+	if( has_post_thumbnail( $postID ) ) {
+		
+		// Get the first child image of the post.
+		$attachments = get_children( $args );
+
+		// See if we found any.
+		if( is_array( $attachments ) && !empty( $attachments ) ) 
+			{
+			// The returned array is NOT zero based, instead the post_id of the attachement is used, so do a foreach loop through the array of 1.
+			foreach( $attachments as $attachment ) 
+				{
+				return wp_get_attachment_thumb_url( $attachment->ID );
+				}
+			}
+		}
+		
+	// We didn't find any attachments, so let's check the content.
+	
+	// First process any shortcodes that may be embedded.
+	$content = do_shortcode( $post_content );
+
+	if( $content != '' ) 
+		{
+		$doc = new DOMDocument();
+		$doc->loadHTML( $content );
+		$xpath = new DOMXPath( $doc );
+		$src = $xpath->evaluate( "string(//img/@src)" ); 
+		
+		if( $src != '' )
+			{
+			return $src;
+			}
+		}
+		
+	// If we still didn't find anything, return a default image.
+	return plugins_url( 'wordpress-logo.png', __FILE__ );
+	}	
 /* 
 ***********************
 Plugin Code Starts Here
