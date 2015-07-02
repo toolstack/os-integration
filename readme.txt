@@ -56,6 +56,7 @@ The WordPress image editor is used to resize the images, which supports both GD 
 == Changelog ==
 = 2.0 =
 * Release date: December 6, 2014
+* Added: Featured images are now supported in locally hosted XML Live Tiles.
 * Added: Hooked in to the admin header load to support favicons in the admin panel.
 * Added: Strip WordPress 4.3's Site Icon meta data so we don't get a conflict.
 * Updated: Only add the custom local XML feed for Windows Live Tiles if the local option has been selected and Live Tiles are enabled.
@@ -106,6 +107,3 @@ The WordPress image editor is used to resize the images, which supports both GD 
 == Upgrade Notice ==
 = 1.8 =
 * If you have upgraded to WordPress 4.3, OS Integration will override the Site Icon's settings and strip the meta information from the page headers.  If you wish to use WordPress 4.3's Site Icons, you can override this behaviour in the OS Integration advanced settings page.
-
-== Roadmap ==
-* Add featured image support to live tile custom xml.
