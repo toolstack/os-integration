@@ -4,7 +4,12 @@ jQuery(document).ready(function(){
 					change: function(event, ui) {
 						jQuery('#osintbgpreview').css('background-color', ui.color);
 					}});
-	
+
+	// When the "clear" button is clicked it does not fire a change event so let's update the preview manually.
+	jQuery('.wp-picker-clear').on( 'click', function( event ) {
+						jQuery('#osintbgpreview').css('background-color', 'transparent');
+					});
+					
 	// File uploader
 	var file_frame;
 	jQuery('#square_img_button').on('click', function( event ){

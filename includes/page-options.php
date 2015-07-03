@@ -87,8 +87,8 @@
 						<td rowspan="2" width="150px" align="center" valign="top">
 							<h2>Preview</h2>
 							<hr>
-							<div id="osintbgpreview" style="background-color: <?php echo $options['background-color']; ?>;">
-							<img id="osintimgpreview" width="150px" height="150px" src="<?php echo $options['squareimgurl']; ?>">
+							<div id="osintbgpreview" style="background-color: <?php echo $options['background-color']; ?>; width: 150px; height: 150px;">
+								<img id="osintimgpreview" width="150px" height="150px" src="<?php echo $options['squareimgurl']; ?>">
 							</div>
 						</td>
 					</tr>
