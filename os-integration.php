@@ -1068,7 +1068,7 @@ function osintegration_get_post_first_image( $postID, $post_content, $options )
 		}
 		
 	// If we still didn't find anything, return a WordPress logo image as a last resort.
-	return plugins_url( 'wordpress-logo.png', __FILE__ );
+	return plugins_url( 'images/wordpress-logo.png', __FILE__ );
 	}	
 /* 
 ***********************
@@ -1077,20 +1077,18 @@ Plugin Code Starts Here
 */
 
 // Set-up Action and Filter Hooks
-if ( is_admin() )
-	{
-	// Runs osintegartion_add_defaults() each time the plugin is activated.
-	register_activation_hook( __FILE__, 'osintegration_add_defaults' );
-	// Runs osintegartion_delete_plugin_options() when the plugin uninstalled.
-	register_uninstall_hook( __FILE__, 'osintegration_delete_plugin_options' );
-	
-	// Registers the settings with WordPress.
-	add_action( 'admin_init', 'osintegration_init' );
-	// Adds the options page to the settings menu.
-	add_action( 'admin_menu', 'osintegration_add_options_page' );
-	// Adds a link to our settings in the plugin list.
-	add_filter( 'plugin_action_links', 'osintegration_plugin_action_links', 10, 2 );
-	}
+
+// Runs osintegartion_add_defaults() each time the plugin is activated.
+register_activation_hook( __FILE__, 'osintegration_add_defaults' );
+// Runs osintegartion_delete_plugin_options() when the plugin uninstalled.
+register_uninstall_hook( __FILE__, 'osintegration_delete_plugin_options' );
+
+// Registers the settings with WordPress.
+add_action( 'admin_init', 'osintegration_init' );
+// Adds the options page to the settings menu.
+add_action( 'admin_menu', 'osintegration_add_options_page' );
+// Adds a link to our settings in the plugin list.
+add_filter( 'plugin_action_links', 'osintegration_plugin_action_links', 10, 2 );
 
 if( isset( $_GET['page']) && $_GET['page'] == 'os-integration/os-integration.php' ) 
 	{

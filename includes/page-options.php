@@ -20,7 +20,7 @@
 			width: 100%;
 		}
 	</style>
-	<script type="text/javascript">jQuery(document).ready(function() { jQuery("#tabs").tabs(); } );</script>
+	<script type="text/javascript">jQuery(document).ready(function() { jQuery("#tabs").tabs(); jQuery("#tabs").tabs("option", "active",1);} );</script>
 	<h2>OS Integration Settings</h2>
 	<br>
 	<?php if( osintegration_getOption( 'error_message', $options ) ) { echo '<div class="error">' . osintegration_getOption( 'error_message', $options ) . '</div>'; } ?>
@@ -28,6 +28,7 @@
 		<?php settings_fields( 'osintegration_plugin_options' ); ?>
 		<div id="tabs">
 			<ul>
+				<li><a href="#fragment-0"><span><?php _e('Current Images');?></span></a></li>
 				<li><a href="#fragment-1"><span><?php _e('General');?></span></a></li>
 				<li><a href="#fragment-2"><span><?php _e('Fav Icon');?></span></a></li>
 				<li><a href="#fragment-3"><span><?php _e('Windows');?></span></a></li>
@@ -35,6 +36,42 @@
 				<li><a href="#fragment-5"><span><?php _e('Advanced');?></span></a></li>
 				<li><a href="#fragment-6"><span><?php _e('About');?></span></a></li>
 			</ul>
+
+			<div id="fragment-0">
+				<h2>ICO</h2>
+				<hr>
+				<img src="<?php echo $options['img_square_16'];?>">
+				<br>
+				<br>
+
+				<h2>Fav Icons</h2>
+				<hr>
+				<img src="<?php echo $options['img_square_150'];?>">
+				<br>
+				<br>
+				
+				<h2>Live Tiles</h2>
+				<hr>
+				<img src="<?php echo $options['img_square_150'];?>">
+				<br>
+				<br>
+				<img src="<?php echo $options['img_wide_310'];?>">
+				<br>
+				<br>
+
+				<h2>iOS Icons</h2>
+				<hr>
+				<img src="<?php echo $options['ios_icon_144'];?>">
+				<br>
+				<br>
+
+				<h2>iOS Web App</h2>
+				<hr>
+				<img src="<?php echo $options['ios_web_app_460'];?>">
+				<br>
+				<br>
+
+			</div>
 
 			<div id="fragment-1">
 				<table class="form-table">
@@ -294,14 +331,58 @@ foreach( $options as $key => $option )
 			</div>
 			
 			<div id="fragment-6">
-				<h2><?php printf( __( 'OS Integration Version %s' ), OSINTVER );?></h2>
-				<p><?php _e( 'by' );?> <a href="https://profiles.wordpress.org/gregross" target=_blank>Greg Ross</a></p>
-				<p>&nbsp;</p>
-				<p><?php printf( __( 'Licenced under the %sGPL Version 2%s' ), '<a href="http://www.gnu.org/licenses/gpl-2.0.html" target=_blank>', '</a>' );?></p>
-				<p><?php printf( __( 'To find out more, please visit the %sWordPress Plugin Directory page%s or the plugin home page on %sToolStack.com%s' ), '<a href="http://wordpress.org/plugins/os-integration/" target=_blank>', '</a>', '<a href="http://toolstack.com/os-integration" target=_blank>', '</a>' );?></p>
-				<p>&nbsp;</p>
-				<p><?php printf( __( "Don't forget to %srate and review%s it too!" ), '<a href="http://wordpress.org/support/view/plugin-reviews/os-integration" target=_blank>', '</a>' );?></p>
-			</div>
+				<table class="form-table">
+					<tbody>
+						<tr valign="top">
+							<td scope="row" align="center"><img src="<?php echo plugins_url('os-integration/images/logo-250.png'); ?>"></td>
+						</tr>
+
+						<tr valign="top">
+							<td scope="row" align="center"><h2><?php echo sprintf(__('OS Integration V%s'), OSINTVER); ?></h2></td>
+						</tr>
+
+						<tr valign="top">
+							<td scope="row" align="center"><hr /></td>
+						</tr>
+
+						<tr valign="top">
+							<td scope="row" colspan="2"><h2><?php _e('Rate and Review at WordPress.org'); ?></h2></td>
+						</tr>
+						
+						<tr valign="top">
+							<td scope="row" colspan="2"><?php _e('Thanks for installing OS Integration, I encourage you to submit a ');?> <a href="http://wordpress.org/support/view/plugin-reviews/os-integration" target="_blank"><?php _e('rating and review'); ?></a> <?php _e('over at WordPress.org.  Your feedback is greatly appreciated!');?></td>
+						</tr>
+						
+						<tr valign="top">
+							<td scope="row" colspan="2"><h2><?php _e('Support'); ?></h2></td>
+						</tr>
+
+						<tr valign="top">
+							<td scope="row" colspan="2">
+								<p><?php _e("Here are a few things to do submitting a support request:"); ?></p>
+
+								<ul style="list-style-type: disc; list-style-position: inside; padding-left: 25px;">
+									<li><?php echo sprintf( __('Have you read the %s?' ), '<a title="' . __('FAQs') . '" href="http://os-integration.com/?page_id=19" target="_blank">' . __('FAQs'). '</a>');?></li>
+									<li><?php echo sprintf( __('Have you search the %s for a similar issue?' ), '<a href="http://wordpress.org/support/plugin/os-integration" target="_blank">' . __('support forum') . '</a>');?></li>
+									<li><?php _e('Have you search the Internet for any error messages you are receiving?' );?></li>
+									<li><?php _e('Make sure you have access to your PHP error logs.' );?></li>
+								</ul>
+
+								<p><?php _e('And a few things to double-check:' );?></p>
+
+								<ul style="list-style-type: disc; list-style-position: inside; padding-left: 25px;">
+									<li><?php _e('Have you double checked the plugin settings?' );?></li>
+									<li><?php _e('Do you have all the required PHP extensions installed?' );?></li>
+									<li><?php _e('Are you getting a blank or incomplete page displayed in your browser?  Did you view the source for the page and check for any fatal errors?' );?></li>
+									<li><?php _e('Have you checked your PHP and web server error logs?' );?></li>
+								</ul>
+
+								<p><?php _e('Still not having any luck?' );?> <?php echo sprintf(__('Then please open a new thread on the %s.' ), '<a href="http://wordpress.org/support/plugin/os-integration" target="_blank">' . __('WordPress.org support forum') . '</a>');?></p>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>			</div>
 		</div>
 
 	</form>

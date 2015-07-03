@@ -59,7 +59,9 @@ The WordPress image editor is used to resize the images, which supports both GD 
 * Added: Featured images are now supported in locally hosted XML Live Tiles.
 * Added: Hooked in to the admin header load to support favicons in the admin panel.
 * Added: Strip WordPress 4.3's Site Icon meta data so we don't get a conflict.
+* Added: Tab to settings page to display current images.
 * Updated: Only add the custom local XML feed for Windows Live Tiles if the local option has been selected and Live Tiles are enabled.
+* Updated: About tab.
 * Fixed: Image Magic code now works!
 * Fixed: Check to make sure the os-integration directory exists in the uploads before trying to use it.
 * Fixed: Check to make sure the user has uploaded an PNG file before trying to use it and show an error message if not.
@@ -107,5 +109,6 @@ The WordPress image editor is used to resize the images, which supports both GD 
 * Initial code.
 
 == Upgrade Notice ==
-= 1.8 =
+= 2.0 =
 * If you have upgraded to WordPress 4.3, OS Integration will override the Site Icon's settings and strip the meta information from the page headers.  If you wish to use WordPress 4.3's Site Icons, you can override this behaviour in the OS Integration advanced settings page.
+* If you are using the local XML feed, please check for the new options to include featured images in the settings page.
