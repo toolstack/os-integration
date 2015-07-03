@@ -37,8 +37,12 @@
 			'id'       => 	'windows_tab',
 			'content'  => 	'<p>' . __('<b>Enable Live Tile</b>: This will enable Windows Live Tile support.  Multiple sizes and Live Tile updates are available via <a href="http://buildmypinnedsite.com" target=_blank>buildmypinnedsite.com</a>.') . '</p>' .
 							'<p>' . __('<b>RSS Feed URL</b>: The RSS feed URL to pass to buildmypinnedsite.com.') . '</p>' .
-							'<p>' . __('<b>Local XML File</b>: By default, buildmypinnedsite.com is used to proxy your XML updates for Live Tiles.  If you wish to use your own site to host the updates you can do so, however Microsoft\'s site offers image support which is not available on locally hosted feeds at this time.') . '</p>' .
-							'<p>' . __('<b>Update Interval</b>: This is how often the Windows Live Tile will update it\'s data.  If you update your site often, set this lower.  If you update your site less often, set it higher.') . '</p>'
+							'<p>' . __('<b>Update Interval</b>: This is how often the Windows Live Tile will update it\'s data.  If you update your site often, set this lower.  If you update your site less often, set it higher.') . '</p>' .
+							'<p>' . __('<b>Local XML File</b>: By default, buildmypinnedsite.com is used to proxy your XML updates for Live Tiles.  If you wish to use your own site to host the updates you can do so.') . '</p>' .
+							'<p>' . __('<b>Enabled Local XML</b>: Enable the local XML feed support.') . '</p>' .
+							'<p>' . __('<b>Include featured image</b>: Include the featured image from the posts in the XML feed.') . '</p>' .
+							'<p>' . __('<b>Search body for featured image</b>: If your theme doesn\'t support a featured image or you don\'t use them, OS Integration can search the body of your post for the first image and use it instead.') . '</p>' .
+							'<p>' . __('<b>Use square image if no image found</b>: If no image is found, this option will instead use your square image for the post.  Note if this is not enabled and featured images are enabled, a default WordPress logo will appear.') . '</p>'
 			,
 			'callback' => 	false
 		)

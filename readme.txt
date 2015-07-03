@@ -64,6 +64,8 @@ The WordPress image editor is used to resize the images, which supports both GD 
 * Fixed: Check to make sure the os-integration directory exists in the uploads before trying to use it.
 * Fixed: Check to make sure the user has uploaded an PNG file before trying to use it and show an error message if not.
 * Fixed: Don't try to generate the iOS files if an error has occurred due to the square or wide image generation.
+* Fixed: Some WordPress installs would not generate the local XML feed URL correctly.
+* Fixed: A really new WordPress installs (where there were not 3 posts yets) the local XML feed would create blank entries on the live tiles.
 
 = 1.7 =
 * Release date: December 6, 2014

@@ -11,11 +11,6 @@
 		echo '<div id="message" class="error fade"><p>' . __( 'PHP GD/Image Magic library is not installed, you will not be able to generate images!' ) . '</p></div>' . "\n";
 		}
 
-	if( !function_exists( 'imagecreatetruecolor' ) && class_exists( 'Imagick' ) )
-		{
-		echo '<div id="message" class="error fade"><p>' . __( 'PHP GD not installed! Image Magic library will be used, however this is still experimental and may not work.' ) . '</p></div>' . "\n";
-		}
-		
 ?>
 <div class="wrap">
 	<style type="text/css">
@@ -86,6 +81,7 @@
 					</tr>
 				</table>
 			</div>
+			
 			<div id="fragment-2">
 				<table class="form-table">
 					<tr>
@@ -121,6 +117,7 @@
 					</tr>
 				</table>
 			</div>
+			
 			<div id="fragment-3">
 				<table class="form-table">
 					<tr>
@@ -136,12 +133,6 @@
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Local XML file</th>
-						<td>
-							<input type="checkbox" id="localxml" name="osintegration_options[localxml]"<?php if( $options['localxml'] ) { echo " CHECKED"; } ?>/>
-						</td>
-					</tr>
-					<tr>
 						<th>Update Interval</th>
 						<td><select name="osintegration_options[notification_frequency]">
 								<option value="30" <?php selected( $options['notification_frequency'], 30 ); ?>>30 minutes</option>
@@ -153,6 +144,33 @@
 						</p></td>
 					</tr>
 					<tr>
+						<th scope="row" colspan=2><h2>Local XML File</h2></th>
+					</tr>
+					<tr>
+						<th scope="row">Enable Local XML</th>
+						<td>
+							<input type="checkbox" id="localxml" name="osintegration_options[localxml]"<?php if( $options['localxml'] ) { echo " CHECKED"; } ?>/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Include featured image</th>
+						<td>
+							<input type="checkbox" id="localfimage" name="osintegration_options[localfimage]"<?php if( $options['localfimage'] ) { echo " CHECKED"; } ?>/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Search body for featured image</th>
+						<td>
+							<input type="checkbox" id="searchbody" name="osintegration_options[searchbody]"<?php if( $options['searchbody'] ) { echo " CHECKED"; } ?>/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Use square image if no image found</th>
+						<td>
+							<input type="checkbox" id="xmldefaultimage" name="osintegration_options[xmldefaultimage]"<?php if( $options['xmldefaultimage'] ) { echo " CHECKED"; } ?>/>
+						</td>
+					</tr>
+					<tr>
 						<td>
 							<p class="submit">
 								<input type="submit" class="button-primary" value="Save Changes" />
@@ -161,6 +179,7 @@
 					</tr>
 				</table>
 			</div>
+			
 			<div id="fragment-4">
 				<table class="form-table">
 					<tr>
@@ -222,6 +241,7 @@
 					</tr>
 				</table>
 			</div>
+			
 			<div id="fragment-5">
 				<table class="form-table">
 <?php GLOBAL $wp_version; if( version_compare( $wp_version, '4.2.99', '>' ) ) { ?>
@@ -272,6 +292,7 @@ foreach( $options as $key => $option )
 					</tr>
 				</table>
 			</div>
+			
 			<div id="fragment-6">
 				<h2><?php printf( __( 'OS Integration Version %s' ), OSINTVER );?></h2>
 				<p><?php _e( 'by' );?> <a href="https://profiles.wordpress.org/gregross" target=_blank>Greg Ross</a></p>

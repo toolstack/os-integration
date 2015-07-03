@@ -76,7 +76,10 @@ function osintegration_add_defaults()
 					'enablefavicon'				=> 'on',
 					'enablelivetile'			=> 'on',
 					'enableios'					=> 'on',
-					'rssurl'					=> get_bloginfo( 'rss2_url' )
+					'rssurl'					=> get_bloginfo( 'rss2_url' ),
+					'localfimage'				=> 'on',
+					'searchbody'				=> 'on',
+					'xmldefaultimage'			=> 'on',
 		);
 		
 		update_option( OSINTOPTIONNAME, $arr );
@@ -933,6 +936,9 @@ function osintegration_wpinit()
 // This function generates the XML file for use by MS Live Tiles if it is being generated locally.
 function osintegration_outputxmlfeed()
 	{
+	// Get the current plugin options;
+	$options = get_option( OSINTOPTIONNAME );
+
 	$args = array(
 					'numberposts' => 3,
 					'offset' => 0,
@@ -949,40 +955,66 @@ function osintegration_outputxmlfeed()
 				);
 
     $recent_posts = wp_get_recent_posts( $args, ARRAY_A );
+
+	if( $options['localfimage'] ) 
+		{
+		$fimages = array( '', '', '' );
+		if( array_key_exists( 0, $recent_posts ) ) { $fimages[0] = '			<image id="1" src="' . osintegration_get_post_first_image( $recent_posts[0]['ID'], $recent_posts[0]['post_content'], $options ) . '"/>' . "\n"; }
+		if( array_key_exists( 1, $recent_posts ) ) { $fimages[1] = '			<image id="2" src="' . osintegration_get_post_first_image( $recent_posts[1]['ID'], $recent_posts[1]['post_content'], $options ) . '"/>' . "\n"; }
+		if( array_key_exists( 2, $recent_posts ) ) { $fimages[2] = '			<image id="3" src="' . osintegration_get_post_first_image( $recent_posts[2]['ID'], $recent_posts[2]['post_content'], $options ) . '"/>' . "\n"; }
+		}
+		
+	$titles = array( '', '', '' );
+	if( array_key_exists( 0, $recent_posts ) ) { $titles[0] = '			<text id="1">' . $recent_posts[0]["post_title"] . '</text>' . "\n"; }
+	if( array_key_exists( 1, $recent_posts ) ) { $titles[1] = '			<text id="2">' . $recent_posts[1]["post_title"] . '</text>' . "\n"; }
+	if( array_key_exists( 2, $recent_posts ) ) { $titles[2] = '			<text id="3">' . $recent_posts[2]["post_title"] . '</text>' . "\n"; }
 	
 	echo '<tile>' . "\n";
 	echo '	<visual lang="en-US" version="2">' . "\n";
 	echo '		<binding template="TileSquare150x150Text04" branding="logo" fallback="TileSquareImage">' . "\n";
-	echo '			<text id="1">' . $recent_posts[0]["post_title"] . '</text>' . "\n";
-	echo '		</binding>' . "\n";
-	echo '		<binding template="TileWide310x150Text05" branding="logo" fallback="TileWideText05">' . "\n";
-	echo '			<text id="1">' . $recent_posts[0]["post_title"] . '</text>' . "\n";
-	echo '			<text id="2">' . $recent_posts[1]["post_title"] . '</text>' . "\n";
-	echo '			<text id="3">' . $recent_posts[2]["post_title"] . '</text>' . "\n";
+	echo $titles[0];
 	echo '		</binding>' . "\n";
 
-	echo '		<binding template="TileSquare310x310SmallImagesAndTextList02" branding="logo">' . "\n";
-	echo '			<image id="1" src="' . osintegration_get_post_first_image( $recent_posts[0]['ID'], $recent_posts[0]['post_content'] ) . '"/>' . "\n";
-	echo '			<image id="2" src="' . osintegration_get_post_first_image( $recent_posts[1]['ID'], $recent_posts[1]['post_content'] ) . '"/>' . "\n";
-	echo '			<image id="3" src="' . osintegration_get_post_first_image( $recent_posts[2]['ID'], $recent_posts[2]['post_content'] ) . '"/>' . "\n";
-	echo '			<text id="1">' . $recent_posts[0]["post_title"] . '</text>' . "\n";
-	echo '			<text id="2">' . $recent_posts[1]["post_title"] . '</text>' . "\n";
-	echo '			<text id="3">' . $recent_posts[2]["post_title"] . '</text>' . "\n";
+	if( $options['localfimage'] ) 
+		{
+		echo '		<binding template="TileWide310x150ImageAndText01" branding="logo" fallback="TileWideImage">' . "\n";
+		echo $fimages[0];
+		echo $titles[0];
+		}
+	else
+		{
+		echo '		<binding template="TileWide310x150Text05" branding="logo" fallback="TileWideText05">' . "\n";
+		echo $titles[0];
+		echo $titles[1];
+		echo $titles[2];
+		}
+
 	echo '		</binding>' . "\n";
-/*
-	echo '		<binding template="TileSquare310x310TextList02" branding="logo">' . "\n";
-	echo '			<text id="1">' . $recent_posts[0]["post_title"] . '</text>' . "\n";
-	echo '			<text id="2">' . $recent_posts[1]["post_title"] . '</text>' . "\n";
-	echo '			<text id="3">' . $recent_posts[2]["post_title"] . '</text>' . "\n";
+
+		
+	if( $options['localfimage'] ) 
+		{
+		echo '		<binding template="TileSquare310x310SmallImagesAndTextList02" branding="logo">' . "\n";
+		echo $fimages[0];
+		echo $fimages[1];
+		echo $fimages[2];
+		}
+	else
+		{
+		echo '		<binding template="TileSquare310x310TextList02" branding="logo">' . "\n";
+		}
+
+		echo $titles[0];
+		echo $titles[1];
+		echo $titles[2];
 	echo '		</binding>' . "\n";
-*/
 	echo '	</visual>' . "\n";
 	echo '</tile>' . "\n";
 
 	exit();
 	}
 	
-function osintegration_get_post_first_image( $postID, $post_content ) 
+function osintegration_get_post_first_image( $postID, $post_content, $options ) 
 	{
 	$args = array(
 		'numberposts' => 1,
@@ -1009,25 +1041,33 @@ function osintegration_get_post_first_image( $postID, $post_content )
 			}
 		}
 		
-	// We didn't find any attachments, so let's check the content.
-	
-	// First process any shortcodes that may be embedded.
-	$content = do_shortcode( $post_content );
-
-	if( $content != '' ) 
+	// We didn't find any attachments, so let's check the content if enabled.
+	if( $options['searchbody'] ) 
 		{
-		$doc = new DOMDocument();
-		$doc->loadHTML( $content );
-		$xpath = new DOMXPath( $doc );
-		$src = $xpath->evaluate( "string(//img/@src)" ); 
-		
-		if( $src != '' )
+		// First process any shortcodes that may be embedded.
+		$content = do_shortcode( $post_content );
+
+		if( $content != '' ) 
 			{
-			return $src;
+			$doc = new DOMDocument();
+			$doc->loadHTML( $content );
+			$xpath = new DOMXPath( $doc );
+			$src = $xpath->evaluate( "string(//img/@src)" ); 
+			
+			if( $src != '' )
+				{
+				return $src;
+				}
 			}
 		}
+	
+	// If enabled, return the square 150x150 image as the default image for the post, assuming we have one.
+	if( $options['xmldefaultimage'] && $options['img_square_150'] )
+		{
+		return $options['img_square_150'];
+		}
 		
-	// If we still didn't find anything, return a default image.
+	// If we still didn't find anything, return a WordPress logo image as a last resort.
 	return plugins_url( 'wordpress-logo.png', __FILE__ );
 	}	
 /* 
