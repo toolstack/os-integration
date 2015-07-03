@@ -84,6 +84,13 @@
 							<br><br>
 							<em>This image will be cropped and resized for the various image sizes, you must use a PNG image larger than 450x450 px.</em>
 						</td>
+						<td rowspan="2" width="150px" align="center" valign="top">
+							<h2>Preview</h2>
+							<hr>
+							<div id="osintbgpreview" style="background-color: <?php echo $options['background-color']; ?>;">
+							<img id="osintimgpreview" width="150px" height="150px" src="<?php echo $options['squareimgurl']; ?>">
+							</div>
+						</td>
 					</tr>
 					<tr>
 						<th scope="row">Wide Image<br/></th>
@@ -103,14 +110,14 @@
 					</tr>
 					<tr>
 						<th scope="row">Site Title</th>
-						<td>
+						<td colspan="2">
 							<input type="text" id="title" name="osintegration_options[title]" value="<?php echo $options['title']; ?>" />
 							<br><br>
 							<em>This will be used in Windows Live Tiles and iOS instead of the default WordPress site title.</em>
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td colspan="3">
 							<p class="submit">
 								<input type="submit" class="button-primary" value="Save Changes" />
 							</p>

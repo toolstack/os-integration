@@ -2,7 +2,7 @@
 Contributors: GregRoss
 Tags: Windows 8, Internet Explorer, IE10, IE11, live tile, RSS, App, tiles, start screen, pinned site, branding, favicon, apple, icons, Android, Windows Phone 8.1, WebApp, web app, site icon
 Requires at least: 3.5
-Tested up to: 4.2
+Tested up to: 4.3
 Stable tag: 1.7
 Description: Integrate your site in to your users OS, Windows Live Tiles, icons for Apple and Android, iOS Web App!
 License: GPLv2
@@ -55,7 +55,8 @@ The WordPress image editor is used to resize the images, which supports both GD 
 
 == Changelog ==
 = 2.0 =
-* Release date: December 6, 2014
+* Release date: TBD
+* Added: Preview of image and background in the general tab.
 * Added: Featured images are now supported in locally hosted XML Live Tiles.
 * Added: Hooked in to the admin header load to support favicons in the admin panel.
 * Added: Strip WordPress 4.3's Site Icon meta data so we don't get a conflict.
