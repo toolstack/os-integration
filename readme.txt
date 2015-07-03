@@ -62,6 +62,7 @@ The WordPress image editor is used to resize the images, which supports both GD 
 * Added: Tab to settings page to display current images.
 * Updated: Only add the custom local XML feed for Windows Live Tiles if the local option has been selected and Live Tiles are enabled.
 * Updated: About tab.
+* Fixed: Rebuild the images when configuration changes make it necessary (like changing the background color, logo position and other settings).
 * Fixed: Image Magic code now works!
 * Fixed: Check to make sure the os-integration directory exists in the uploads before trying to use it.
 * Fixed: Check to make sure the user has uploaded an PNG file before trying to use it and show an error message if not.

@@ -153,8 +153,15 @@ function osintegration_validate_options( $input )
 		$input['notification_frequency'] = 360;
 		}
 
-	// Create the various image sizes if the image has been changed.
-	if( $options['squareimgurl'] != $input['squareimgurl'] || $options['wideimgurl'] != $input['wideimgurl'] || $input['forcerebuild'] ) 
+	// Create the various image sizes if the image or other options have been changed.
+	if( $options['squareimgurl'] != $input['squareimgurl'] 
+		|| $options['wideimgurl'] != $input['wideimgurl'] 
+		|| $options['background-color'] != $input['background-color'] 
+		|| $options['enablefavicon'] != $input['enablefavicon'] 
+		|| $options['faviconpath'] != $input['faviconpath'] 
+		|| $options['widewebapp'] != $input['widewebapp'] 
+		|| $options['logo-position'] != $input['logo-position'] 
+		|| $input['forcerebuild'] ) 
 		{
 		// If the user forced a rebuild of the images, unset it now so we don't save it later.
 		unset( $input['forcerebuild'] );
@@ -431,20 +438,23 @@ function osintegration_validate_options( $input )
 				$desc = $item['tag'] . $item['y'];
 				$input[$desc] = $base . basename( $item['name'] );
 				}
-				
-			// Generate the ICO file
-			require_once( dirname( __FILE__ ) . '/includes/php-ico/class-php-ico.php' );
 
-			$destination = dirname( __FILE__ ) . '/example.ico';
-			
-			$ico_lib = new PHP_ICO();
-			
-			if( $input['favicon96'] ) { $ico_lib->add_image( $path . basename( $input['img_square_96'] ), array( 96, 96 ) ); }
-			if( $input['favicon64'] ) { $ico_lib->add_image( $path . basename( $input['img_square_64'] ), array( 64, 64 ) ); }
-			$ico_lib->add_image( $path . basename( $input['img_square_32'] ), array( 32, 32 ) );
-			$ico_lib->add_image( $path . basename( $input['img_square_16'] ), array( 16, 16 ) );
-			
-			$ico_lib->save_ico( trailingslashit( $input['faviconpath'] ) . 'favicon.ico' );
+			if( $input['enablefavicon'] )
+				{
+				// Generate the ICO file
+				require_once( dirname( __FILE__ ) . '/includes/php-ico/class-php-ico.php' );
+
+				$destination = dirname( __FILE__ ) . '/example.ico';
+				
+				$ico_lib = new PHP_ICO();
+				
+				if( $input['favicon96'] ) { $ico_lib->add_image( $path . basename( $input['img_square_96'] ), array( 96, 96 ) ); }
+				if( $input['favicon64'] ) { $ico_lib->add_image( $path . basename( $input['img_square_64'] ), array( 64, 64 ) ); }
+				$ico_lib->add_image( $path . basename( $input['img_square_32'] ), array( 32, 32 ) );
+				$ico_lib->add_image( $path . basename( $input['img_square_16'] ), array( 16, 16 ) );
+				
+				$ico_lib->save_ico( trailingslashit( $input['faviconpath'] ) . 'favicon.ico' );
+				}
 			}
 			
 		// Deal with a user override of individual items
