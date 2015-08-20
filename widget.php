@@ -28,14 +28,17 @@
 			$options = get_option( OSINTOPTIONNAME );
 
 			// If at least one of the options is enabled, output the widget.
-			if( $options['enablefavicon'] || $options['enablelivetile'] || $options['enableios'] || $options['enablewebapp'] )
+			if( ( array_key_exists( 'enablefavicon', $options ) && $options['enablefavicon'] ) || 
+				( array_key_exists( 'enablelivetile', $options ) && $options['enablelivetile'] ) || 
+				( array_key_exists( 'enableios', $options ) && $options['enableios'] ) || 
+				( array_key_exists( 'enablewebapp', $options ) && $options['enablewebapp'] ) )
 				{
 				$bookmark = "";
 				$pin = "";
 				$or = "";
 				
-				if( $options['enablefavicon'] ) { $bookmark = "Bookmark"; }
-				if( $options['enablelivetile'] || $options['enableios'] || $options['enablewebapp'] ) { $pin = "Pin"; }
+				if( array_key_exists( 'enablefavicon', $options ) && $options['enablefavicon'] ) { $bookmark = "Bookmark"; }
+				if( array_key_exists( 'enablelivetile', $options ) && $options['enablelivetile'] || $options['enableios'] || $options['enablewebapp'] ) { $pin = "Pin"; }
 				
 				if( $bookmark != "" && $pin != "" ) { $or = " or "; }
 				
@@ -46,10 +49,10 @@
 				echo "<p>Supported platforms include:</p>";
 				echo "<ul>";
 				
-				if( $options['enablefavicon'] ) { echo "<li>FavIcons for desktop and mobile browsers</li>"; }
-				if( $options['enablelivetile'] ) { echo "<li>Windows 8 and Windows Phone 8.1 Live Tiles</li>"; }
-				if( $options['enableios'] ) { echo "<li>iOS Home Screen Icons</li>"; }
-				if( $options['enablewebapp'] ) { echo "<li>iOS WebApp</li>"; }
+				if( array_key_exists( 'enablefavicon', $options ) && $options['enablefavicon'] ) { echo "<li>FavIcons for desktop and mobile browsers</li>"; }
+				if( array_key_exists( 'enablelivetile', $options ) && $options['enablelivetile'] ) { echo "<li>Windows 8 and Windows Phone 8.1 Live Tiles</li>"; }
+				if( array_key_exists( 'enableios', $options ) && $options['enableios'] ) { echo "<li>iOS Home Screen Icons</li>"; }
+				if( array_key_exists( 'enablewebapp', $options ) && $options['enablewebapp'] ) { echo "<li>iOS WebApp</li>"; }
 				
 				echo "</ul>";
 				

@@ -937,6 +937,7 @@ function osintegration_wpinit()
 	// If we're running WordPress 4.3 or above, disable the Site Icon meta data because we're going to generate our own.
 	GLOBAL $wp_version; 
 	
+	if( ! array_key_exists( 'wpsiteiconmeta', $options ) ) { $options['wpsiteiconmeta'] = false; }
 	if( version_compare( $wp_version, '4.2.99', '>' ) && ! $options['wpsiteiconmeta'] && $options['squareimgurl'] )
 		{
 		add_filter( 'site_icon_meta_tags', 'osintegration_site_icon_meta_tags_filter', 99, 1);
