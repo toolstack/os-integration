@@ -349,6 +349,10 @@ foreach( $options as $key => $option )
 						</tr>
 
 						<tr valign="top">
+							<td scope="row" align="center"><p>by <a href="https://toolstack.com">Greg Ross</a></p></td>
+						</tr>
+
+						<tr valign="top">
 							<td scope="row" align="center"><hr /></td>
 						</tr>
 
