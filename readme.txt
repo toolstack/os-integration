@@ -3,7 +3,7 @@ Contributors: GregRoss
 Tags: Windows 8, Internet Explorer, IE10, IE11, live tile, RSS, App, tiles, start screen, pinned site, branding, favicon, apple, icons, Android, Windows Phone 8.1, WebApp, web app, site icon
 Requires at least: 3.5
 Tested up to: 4.3
-Stable tag: 2.0
+Stable tag: 2.1
 Description: Integrate your site in to your users OS, Windows Live Tiles, icons for Apple and Android, iOS Web App!
 License: GPLv2
 
@@ -55,8 +55,12 @@ The WordPress image editor is used to resize the images, which supports both GD 
 
 == Changelog ==
 = 2.1 =
-* Release date: TBD
+* Release date: September 9, 2016
 * Updated: PHP_ICO library to 1.0.3 to support PHP7.
+* Updated: About page.
+* Fixed: Various WP_DEBUG messages.
+* Fixed: Update the preview when clear button is clicked.
+* Fixed: Force the preview to a fixed size.
 
 = 2.0 =
 * Release date: July 3, 2015
