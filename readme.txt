@@ -54,6 +54,10 @@ The WordPress image editor is used to resize the images, which supports both GD 
 7. Notification widget.
 
 == Changelog ==
+= 2.1 =
+* Release date: TBD
+* Updated: PHP_ICO library to 1.0.3 to support PHP7.
+
 = 2.0 =
 * Release date: July 3, 2015
 * Added: Preview of image and background in the general tab.
