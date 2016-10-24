@@ -44,6 +44,20 @@ You must provide an image larger than 450x450 (or 450x281 for the wide image).  
 
 The WordPress image editor is used to resize the images, which supports both GD and Image Magic.
 
+= I've enabled SSL on my site, do I need to do anything? =
+
+OS Integration store the complete URL of the icon and images so if you enable SSL after generating the icons, you'll need to regenerate them to get the URL's updated.
+
+= I'm running a mix SSL site and getting a mix content warning on the SSL pages because of OS Integration, how do I fix it? =
+
+First, don't run mixed sites, you should enable SSL on your entire site.
+
+Having said that, the URL's for the icons and images are generated with the URL from your site configuration so you can switch it to https temporarily, generate the OS Integration files and then switch it back.
+
+This will use SSL for all of the OS Integration links and not cause mix content warnings.
+
+You should then look at enabling SSL on your entire site as you will otherwise have to do this each time you update your OS Integration settings.
+
 == Screenshots ==
 1. Image and Color settings.
 2. Fav Icon settings.
