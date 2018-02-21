@@ -18,7 +18,7 @@ Copyright (c) 2014-16 by Greg Ross
 This software is released under the GPL v2.0, see license.txt for details
 */
 
-/* 
+/*
 ****************************************
 Plugin Variables and Defines Starts Here
 ****************************************
@@ -32,42 +32,42 @@ DEFINE( 'OSINTOPTIONNAME', 'osintegration_options' );
 
 include_once dirname( __FILE__ ) . '/widget.php';
 
-/* 
+/*
 ****************************
 Plugin Functions Starts Here
 ****************************
 */
 
 // Delete options table entries ONLY when plugin deactivated AND deleted.
-function osintegration_delete_plugin_options() 
+function osintegration_delete_plugin_options()
 	{
 	delete_option( OSINTOPTIONNAME );
 	}
-	
+
 // Display a Settings link on the main plugins page.
-function osintegration_plugin_action_links( $links, $file ) 
+function osintegration_plugin_action_links( $links, $file )
 	{
-	if ( $file == plugin_basename( __FILE__ ) ) 
+	if ( $file == plugin_basename( __FILE__ ) )
 		{
 		$osintegration_links = '<a href="' . get_admin_url() . 'options-general.php?page=os-integration%2Fos-integration.php">' . __( 'Settings' ) . '</a>';
 
 		// Add our settings to the top of the list.
 		array_unshift( $links, $osintegration_links );
 		}
-		
+
 	return $links;
 	}
 
 // Define default option settings, called when the plugin is activated.
-function osintegration_add_defaults() 
+function osintegration_add_defaults()
 	{
 	// Check to see if we already have options set.
 	$tmp = get_option( OSINTOPTIONNAME );
-	
-    if( !is_array( $tmp ) ) 
+
+    if( !is_array( $tmp ) )
 		{
 		delete_option( OSINTOPTIONNAME );
-		
+
 		$arr = array(
 					'plugin_version' 			=> OSINTVER,
 					'notification_frequency' 	=> 360,
@@ -81,11 +81,11 @@ function osintegration_add_defaults()
 					'searchbody'				=> 'on',
 					'xmldefaultimage'			=> 'on',
 		);
-		
+
 		update_option( OSINTOPTIONNAME, $arr );
-		
+
 		add_feed( 'msxmllivetile', 'osintegration_outputxmlfeed' );
-		
+
 		//Ensure the $wp_rewrite global is loaded
 		global $wp_rewrite;
 		//Call flush_rules() as a method of the $wp_rewrite object
@@ -111,7 +111,7 @@ function osintegration_create_help_screen()
 	{
 	include_once( 'includes/help-options.php' );
 	}
-	
+
 // Prepare the media uploader and our admin scripts.
 function osintegration_admin_scripts()
 	{
@@ -119,18 +119,18 @@ function osintegration_admin_scripts()
 	wp_enqueue_media();
 	wp_enqueue_style( 'wp-color-picker' );
 	wp_enqueue_script( 'osintegration-admin', plugins_url( "/js/os-integration.js", __FILE__ ), array( 'wp-color-picker', 'jquery' ) );
-	
+
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('jquery-ui-core');
 	wp_enqueue_script('jquery-ui-tabs');
-	
-	global $wp_scripts; 
+
+	global $wp_scripts;
 	wp_register_style("jquery-ui-css", plugin_dir_url(__FILE__) . "css/jquery-ui-1.10.4.custom.css");
 	wp_enqueue_style("jquery-ui-css");
 	wp_register_style("jquery-ui-tabs-css", plugin_dir_url(__FILE__) . "css/jquery-ui-tabs.css");
 	wp_enqueue_style("jquery-ui-tabs-css");
 	}
-	
+
 // Display the options page.
 function osintegration_options_page()
 	{
@@ -138,7 +138,7 @@ function osintegration_options_page()
 	}
 
 // Sanitize and validate input. Accepts an array, return a sanitized array.
-function osintegration_validate_options( $input ) 
+function osintegration_validate_options( $input )
 	{
 	// Get the old options for reference.
 	$options = get_option( OSINTOPTIONNAME );
@@ -146,7 +146,7 @@ function osintegration_validate_options( $input )
 	// Sanitize inputs.
 	$input['title'] = sanitize_text_field( $input['title'] );
 	$input['notification_frequency'] = absint( $input['notification_frequency'] );
-	
+
 	// don't let users shoot themselves in the foot by trying to set a value other than those MS accepts.
 	if( !in_array( $input['notification_frequency'], array( 30, 60, 360, 720, 1440 ) ) )
 		{
@@ -154,22 +154,22 @@ function osintegration_validate_options( $input )
 		}
 
 	// Create the various image sizes if the image or other options have been changed.
-	if( $options['squareimgurl'] != $input['squareimgurl'] 
-		|| $options['wideimgurl'] != $input['wideimgurl'] 
-		|| $options['background-color'] != $input['background-color'] 
-		|| $options['enablefavicon'] != $input['enablefavicon'] 
-		|| $options['faviconpath'] != $input['faviconpath'] 
-		|| $options['widewebapp'] != $input['widewebapp'] 
-		|| $options['logo-position'] != $input['logo-position'] 
-		|| $input['forcerebuild'] ) 
+	if( $options['squareimgurl'] != $input['squareimgurl']
+		|| $options['wideimgurl'] != $input['wideimgurl']
+		|| $options['background-color'] != $input['background-color']
+		|| $options['enablefavicon'] != $input['enablefavicon']
+		|| $options['faviconpath'] != $input['faviconpath']
+		|| $options['widewebapp'] != $input['widewebapp']
+		|| $options['logo-position'] != $input['logo-position']
+		|| $input['forcerebuild'] )
 		{
 		// If the user forced a rebuild of the images, unset it now so we don't save it later.
 		unset( $input['forcerebuild'] );
-		
+
 		// We need a few variables to use later on, set them up now.
 		$upload_dir = wp_upload_dir();
 		$upload_base_dir = $upload_dir['basedir'];
-		
+
 		$path = trailingslashit( $upload_base_dir ) . 'os-integration/';
 
 		// By default the media selector returns a url, some hosting providers disable remote file wrappers for security,
@@ -183,39 +183,39 @@ function osintegration_validate_options( $input )
 			$input['error_message'] = "<p><b>Error - Square image file is not a PNG!</b></p>";
 			return $input;
 			}
-		
+
 		// Check to make sure the wide image is a PNG file.
-		if( strtolower( substr( $wide_image_path, -4 ) ) != '.png' && $wide_image_path != '') 
+		if( strtolower( substr( $wide_image_path, -4 ) ) != '.png' && $wide_image_path != '')
 			{
 			$input['error_message'] = "<p><b>Error - Wide image file is not a PNG!</b></p>";
-			
+
 			return $input;
 			}
 
-		if( !is_dir( $path ) ) 
+		if( !is_dir( $path ) )
 			{
 			mkdir( $path, null, true );
 			}
-			
+
 		// Flush out any old files before we create the new images.
 		$files_to_delete = scandir( $path );
-		foreach( $files_to_delete as $file ) 
+		foreach( $files_to_delete as $file )
 			{
-			if( !is_dir( $file ) ) 
+			if( !is_dir( $file ) )
 				{
 				@unlink( $path . $file );
 				}
 			}
-		
+
 		// Load the square image in to the WordPress image editor and make the required sizes.
 		$squareimg = wp_get_image_editor( $square_image_path );
 
 		// Make sure the image exists.
-		if( !is_wp_error( $squareimg ) ) 
+		if( !is_wp_error( $squareimg ) )
 			{
 			$imgsize = $squareimg->get_size();
 
-			if( $imgsize['width'] != $imgsize['height'] || $imgsize['width'] < 451 ) 
+			if( $imgsize['width'] != $imgsize['height'] || $imgsize['width'] < 451 )
 				{
 				$input['error_message'] .= "<p><b>Error - Square image has incorrect dimensions ({$imgsize['width']}x {$imgsize['height']})!</b></p>";
 				}
@@ -226,8 +226,8 @@ function osintegration_validate_options( $input )
 				$path = trailingslashit( $upload_base_dir ) . 'os-integration/';
 				$filename = $info['filename'];
 				$out = $squareimg->save( $path . $filename . '.png', 'image/png' );
-				
-				if( !is_wp_error( $out ) ) 
+
+				if( !is_wp_error( $out ) )
 					{
 					// Create the image sizes we needed.
 					$sizes_array = array(
@@ -247,11 +247,11 @@ function osintegration_validate_options( $input )
 										array( 'width' => 310, 'height' => 310, 'crop' => true ),
 										array( 'width' => 450, 'height' => 450, 'crop' => true )
 									);
-					
+
 					$resize = $squareimg->multi_resize( $sizes_array );
-					
+
 					// Save the new image URLs in the plugin options for use when we generate the HTML.
-					if ( !is_wp_error( $resize ) ) 
+					if ( !is_wp_error( $resize ) )
 						{
 						$base = trailingslashit($upload_dir['baseurl']) . 'os-integration/';
 						$input['img_square_16'] = $base . $resize[0]['file'];
@@ -289,56 +289,56 @@ function osintegration_validate_options( $input )
 			}
 
 		// If a wide image doesn't exist, create one from the square image (assuming of course it exists :)
-		if( !file_exists( $wide_image_path ) && file_exists( $square_image_path ) ) 
+		if( !file_exists( $wide_image_path ) && file_exists( $square_image_path ) )
 			{
 			// Get the file path information for the square image.
 			$img_path_info = pathinfo($square_image_path);
-			
+
 			$wide_image_path = trailingslashit( $upload_base_dir ) . 'os-integration/' . $img_path_info['filename'] . '-wide.' . $img_path_info['extension'];
-			
+
 			// Get the image size so we can calculate the wide image size.
 			$imgsize = $squareimg->get_size();
-			
+
 			$wide_imgsize = $imgsize;
 			$wide_imgsize['width'] = $imgsize['height'] * (451 / 219);
-			
+
 			// Create the blank background image.
 			osintegration_new_png( $wide_image_path, $wide_imgsize['width'], $wide_imgsize['height'], $input['background-color'] );
 			// Determine the location of the logo on the background.
 			$x = (int)( ( $wide_imgsize['width'] - $imgsize['width'] ) / 2 );
 			$y = 0;
-			
+
 			// Add the logo to the background image.
 			osintegration_composite_images( $wide_image_path, $square_image_path, $x, $y );
-			
+
 			// Store the url
 			$wide_image_url = str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $wide_image_path );
 			$input['wideimgurl'] = $wide_image_url;
 			}
-			
+
 		// Load the wide image in to the WordPress image editor and make the required sizes.
 		$wideimg = wp_get_image_editor( $wide_image_path );
-		
+
 		// Make sure the image exists.
-		if( !is_wp_error( $wideimg ) ) 
+		if( !is_wp_error( $wideimg ) )
 			{
 			$imgsize = $wideimg->get_size();
-			
-			if( $imgsize['height'] < 219 || $imgsize['width'] < 451 ) 
+
+			if( $imgsize['height'] < 219 || $imgsize['width'] < 451 )
 				{
 				$input['error_message'] .= "<p><b>Error - Wide image has incorrect dimensions ({$imgsize['width']}x {$imgsize['height']})!</b></p>";
 				}
 			else
 				{
 				// Save the image as a png in the dedicated os-integration folder before generating variants.
-				if( $square_image_path != $wide_image_path ) 
+				if( $square_image_path != $wide_image_path )
 					{
 					$info = pathinfo( $input['wideimgurl'] );
 					$path = trailingslashit( $upload_base_dir ) . 'os-integration/' . $info['filename'];
 					$out = $wideimg->save( $path . '.png', 'image/png' );
 					}
-				
-				if( !is_wp_error( $out ) ) 
+
+				if( !is_wp_error( $out ) )
 					{
 					// Create the image sizes we needed.
 					$sizes_array = array(
@@ -350,11 +350,11 @@ function osintegration_validate_options( $input )
 										array ( 'width' => 310, 'height' => 150, 'crop' => true ),
 										array ( 'width' => 450, 'height' => 218, 'crop' => true )
 									);
-					
+
 					$resize = $wideimg->multi_resize( $sizes_array );
-					
+
 					// Save the new image URLs in the plugin options for use when we generate the HTML.
-					if ( !is_wp_error( $resize ) ) 
+					if ( !is_wp_error( $resize ) )
 						{
 						$base = trailingslashit($upload_dir['baseurl']) . 'os-integration/';
 						$input['img_wide_96']  = $base . $resize[0]['file'];
@@ -384,15 +384,15 @@ function osintegration_validate_options( $input )
 			}
 
 		// Make sure we didn't have an error above.
-		if( $input['error_message'] == '' ) 
+		if( $input['error_message'] == '' )
 			{
 			// Create the iOS icon and web app backgrounds.
 			$path = trailingslashit( $upload_base_dir ) . 'os-integration/';
 			$base = trailingslashit($upload_dir['baseurl']) . 'os-integration/';
-			
-			if( $input['widewebapp'] ) 
+
+			if( $input['widewebapp'] )
 				{
-				$iOSfilenames = array(  
+				$iOSfilenames = array(
 										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-57x57.png', 'x' => 57, 'y' => 57, 'logo' => $path . basename( $input['img_square_57'] ), 'logo-position' => 1, 'logo-x' => 57, 'logo-y' => 57 ),
 										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-72x72.png', 'x' => 72, 'y' => 72, 'logo' => $path . basename( $input['img_square_72'] ), 'logo-position' => 1, 'logo-x' => 72, 'logo-y' => 72 ),
 										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-114x114.png', 'x' => 114, 'y' => 114, 'logo' => $path . basename( $input['img_square_114'] ), 'logo-position' => 1, 'logo-x' => 114, 'logo-y' => 114 ),
@@ -408,7 +408,7 @@ function osintegration_validate_options( $input )
 				}
 			else
 				{
-				$iOSfilenames = array(  
+				$iOSfilenames = array(
 										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-57x57.png', 'x' => 57, 'y' => 57, 'logo' => $path . basename( $input['img_square_57'] ), 'logo-position' => 1, 'logo-x' => 57, 'logo-y' => 57 ),
 										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-72x72.png', 'x' => 72, 'y' => 72, 'logo' => $path . basename( $input['img_square_72'] ), 'logo-position' => 1, 'logo-x' => 72, 'logo-y' => 72 ),
 										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-114x114.png', 'x' => 114, 'y' => 114, 'logo' => $path . basename( $input['img_square_114'] ), 'logo-position' => 1, 'logo-x' => 114, 'logo-y' => 114 ),
@@ -423,17 +423,17 @@ function osintegration_validate_options( $input )
 									);
 				}
 
-			foreach( $iOSfilenames as $item ) 
+			foreach( $iOSfilenames as $item )
 				{
 				// Create the blank background image.
 				osintegration_new_png( $item['name'], $item['x'], $item['y'], $input['background-color'] );
-				
+
 				// Determine the location of the logo on the background.
 				list( $x, $y ) = osintegration_get_logo_position( $item['x'], $item['y'], $item['logo-position'], $item['logo-x'], $item['logo-y'] );
-				
+
 				// Add the logo to the background image.
 				osintegration_composite_images( $item['name'], $item['logo'], $x, $y );
-				
+
 				// Store the url
 				$desc = $item['tag'] . $item['y'];
 				$input[$desc] = $base . basename( $item['name'] );
@@ -445,42 +445,42 @@ function osintegration_validate_options( $input )
 				require_once( dirname( __FILE__ ) . '/includes/php-ico/class-php-ico.php' );
 
 				$destination = dirname( __FILE__ ) . '/example.ico';
-				
+
 				$ico_lib = new PHP_ICO();
-				
+
 				if( $input['favicon96'] ) { $ico_lib->add_image( $path . basename( $input['img_square_96'] ), array( 96, 96 ) ); }
 				if( $input['favicon64'] ) { $ico_lib->add_image( $path . basename( $input['img_square_64'] ), array( 64, 64 ) ); }
 				$ico_lib->add_image( $path . basename( $input['img_square_32'] ), array( 32, 32 ) );
 				$ico_lib->add_image( $path . basename( $input['img_square_16'] ), array( 16, 16 ) );
-				
+
 				$ico_lib->save_ico( trailingslashit( $input['faviconpath'] ) . 'favicon.ico' );
 				}
 			}
-			
+
 		// Deal with a user override of individual items
 		foreach( $input as $key => $value )
 			{
 			if( substr( $key, 0, 7 ) == 'adv_'  )
 				{
 				$basekey = substr( $key, 4 );
-				
+
 				if( $value != '' )
 					{
 					$input[$basekey] = $value;
 					}
 				}
 			}
-		
+
 		}
 	else
 		{
 		// If we're not generating new images, copy the old image settings over from the previous options array.
 		foreach( $options as $tag => $item )
 			{
-			if( !isset( $input[$tag] ) ) 
+			if( !isset( $input[$tag] ) )
 				{
 				$chop = substr( $tag, 0, 4 );
-				
+
 				if( $chop == 'img_' || $chop == 'ios_' )
 					{
 					$input[$tag] = $options[$tag];
@@ -488,15 +488,15 @@ function osintegration_validate_options( $input )
 				}
 			}
 		}
-		
+
 	return $input;
 	}
-	
+
 // Get a option value.
-function osintegration_getOption( $option, $options = null ) 
+function osintegration_getOption( $option, $options = null )
 	{
 	if( $options == null ) { $options = get_option( OSINTOPTIONNAME ); }
-		
+
 	if( array_key_exists( $option, $options ) )
 		{
 		return $options[$option];
@@ -508,7 +508,7 @@ function osintegration_getOption( $option, $options = null )
 	}
 
 // Output the HTML for the os integration options.
-function osintegration_output() 
+function osintegration_output()
 	{
 	$options = get_option( OSINTOPTIONNAME );
 
@@ -517,14 +517,14 @@ function osintegration_output()
 		{
 		$options['rssurl'] = get_bloginfo( 'rss2_url' );
 		}
-		
+
 	$feed_url = $options['rssurl'];
-	
-	if( $options['localxml'] ) 
+
+	if( array_key_exists( 'localxml', $options ) && $options['localxml'] )
 		{
 		// If we're using our own feed, construct the url for it.
 		$feed_url =  site_url() . '/mslivetile';
-		
+
 		// Setup the pooling uri for our own feed.
 		$polling_uri  = $feed_url . '&amp;id=1;' .
 						$feed_url . '&amp;id=2;' .
@@ -541,7 +541,7 @@ function osintegration_output()
 						'polling-uri4=http://notifications.buildmypinnedsite.com/?feed=' . $feed_url . '&amp;id=4;' .
 						'polling-uri5=http://notifications.buildmypinnedsite.com/?feed=' . $feed_url . '&amp;id=5;';
 		}
-	
+
 	// Get the polling interval, if not set, default to 6 hours.
 	if( osintegration_getOption( 'notification_frequency', $options ) )
 		{
@@ -553,11 +553,11 @@ function osintegration_output()
 		}
 
 	// If we're supporting Fav Icons, output the required code now.
-	if( $options['enablefavicon'] && osintegration_getOption( 'img_square_16', $options ) ) 
+	if( $options['enablefavicon'] && osintegration_getOption( 'img_square_16', $options ) )
 		{
 ?>
 
-<!-- For PNG Fav Icons -->	
+<!-- For PNG Fav Icons -->
 <link rel="icon" type="image/png" href="<?php echo osintegration_getOption( 'img_square_196', $options ); ?>" sizes="196x196">
 <link rel="icon" type="image/png" href="<?php echo osintegration_getOption( 'img_square_160', $options ); ?>" sizes="160x160">
 <link rel="icon" type="image/png" href="<?php echo osintegration_getOption( 'img_square_96', $options ); ?>" sizes="96x96">
@@ -567,12 +567,12 @@ function osintegration_output()
 <?php
 		}
 		// End Fav Icon
-		
+
 	// If we're supporting Windows 8 live tiles, output the required code now.
-	if( $options['enablelivetile'] && osintegration_getOption( 'img_square_310', $options ) ) 
+	if( $options['enablelivetile'] && osintegration_getOption( 'img_square_310', $options ) )
 		{
 ?>
-<!-- For pinned live tiles in Windows 8.1 start screens -->	
+<!-- For pinned live tiles in Windows 8.1 start screens -->
 <meta name="application-name" content="<?php echo osintegration_getOption( 'title', $options ); ?>" />
 <meta name="msapplication-TileColor" content="<?php echo osintegration_getOption( 'background-color', $options ); ?>" />
 <meta name="msapplication-notification" content="frequency=<?php echo $polling_frequency; ?>;polling-uri=<?php echo $polling_uri; ?>; cycle=1" />
@@ -582,19 +582,19 @@ function osintegration_output()
 <meta name="msapplication-square70x70logo" content="<?php echo osintegration_getOption( 'img_square_70', $options ); ?>" />
 <meta name="msapplication-TileImage" content="<?php echo osintegration_getOption( 'img_square_144', $options ); ?>" />
 
-<?php 
-		}	
+<?php
+		}
 	// End Windows 8.
 
 	$user_agent = $_SERVER['HTTP_USER_AGENT'];
-	
+
 	// If we're supporting iOS, output the required code now.
-	if( $options['enableios'] && osintegration_getOption( 'ios_icon_144', $options ) && ( stristr( $user_agent, 'iphone' ) !== FALSE || stristr( $user_agent, 'ipad' ) !== FALSE ) ) 
+	if( $options['enableios'] && osintegration_getOption( 'ios_icon_144', $options ) && ( stristr( $user_agent, 'iphone' ) !== FALSE || stristr( $user_agent, 'ipad' ) !== FALSE ) )
 		{
 		$statusbarstyle = 'black-translucent';
 		if( $options['statusbarstyle'] == 1 ) { $statusbarstyle = 'black'; }
 		if( $options['statusbarstyle'] == 2 ) { $statusbarstyle = 'default'; }
-		
+
 ?>
 <!-- For iOS home screen icons -->
 <link href="<?php echo osintegration_getOption( 'ios_icon_57', $options ); ?>" rel="apple-touch-icon" sizes="57x57" />
@@ -605,22 +605,23 @@ function osintegration_output()
 <!-- Override the default page name for iOS -->
 <meta name="apple-mobile-web-app-title" content="<?php echo osintegration_getOption( 'title', $options );?>">
 
-<?php 
+<?php
 
 		// If we're supporting iOS web app, output the required code now.
-		if( $options['enablewebapp'] ) 
+		if( $options['enablewebapp'] )
 			{
 ?>
 <!-- For iOS Web App -->
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="<?php echo $statusbarstyle; ?>" />
+<meta name="viewport" content="width=device-width">
 
 <script type="text/javascript">
-<?php 	
-if( $options['enablelinkoverride'] ) 
+<?php
+if( $options['enablelinkoverride'] )
 	{?>
 	// If we're in a webapp window, avoid leaving it every time a user clicks on a link.
-	if (window.navigator.standalone == true) 
+	if (window.navigator.standalone == true)
 		{
 		// Capture all clicks on the page.
 		jQuery( document ).on("click",
@@ -628,7 +629,7 @@ if( $options['enablelinkoverride'] )
 				{
 				// Find the root page location.
 				var root = (location.protocol + '//' + location.host + location.pathname);
-				
+
 				// If whatever we clicked on has is a link to something on our own site, prevent the webapp window for switching to Safari.
 				// Otherwise let it switch to the external site.
 			    if( event.srcElement.href.indexOf( root ) == 0 )
@@ -657,9 +658,9 @@ if( $options['enablelinkoverride'] )
 		if( userAgent.indexOf( "iPhone" ) > -1)
 			{
 			if( devicePixelRatio > 1 )
-				{	
+				{
 				image = "<?php echo osintegration_getOption( 'ios_web_app_920', $options ); ?>";
-				
+
 				if( window.screen.height == 568 )
 					{
 					image = "<?php echo osintegration_getOption( 'ios_web_app_1096', $options ); ?>";
@@ -673,9 +674,9 @@ if( $options['enablelinkoverride'] )
 		else if( userAgent.indexOf( "iPad" ) > -1 )
 			{
 			ipad = true;
-			
+
 			if( devicePixelRatio > 1 )
-				{	
+				{
 				image 		= "<?php echo osintegration_getOption( 'ios_web_app_2008', $options ); ?>";
 				land_image 	= "<?php echo osintegration_getOption( 'ios_web_app_2048', $options ); ?>";
 				}
@@ -685,7 +686,7 @@ if( $options['enablelinkoverride'] )
 				land_image 	= "<?php echo osintegration_getOption( 'ios_web_app_1024', $options ); ?>";
 				}
 			}
-			
+
 		if( image )
 			{
 			var link 	= document.createElement( "link" );
@@ -699,7 +700,7 @@ if( $options['enablelinkoverride'] )
 
 			document.getElementsByTagName( "head" )[0].appendChild( link );
 			}
-			
+
 		if( land_image )
 			{
 			var link 	= document.createElement( "link" );
@@ -711,14 +712,14 @@ if( $options['enablelinkoverride'] )
 			}
 	})();
 </script>
-	
-<?php 
+
+<?php
 			}
 			// End web apps.
-		
-		} 	
+
+		}
 		// End iOS.
-	
+
 	}
 
 // This function will take two images ($first and $second) and overlay $second on to $first at $x/$y co-ordinates.
@@ -726,7 +727,7 @@ if( $options['enablelinkoverride'] )
 function osintegration_composite_images( $first, $second, $x, $y )
 	{
 	if( !is_readable( $first ) || !is_readable( $second ) ) { return FALSE; }
-	
+
 	// First try using the GD library, then Image Magic, otherwise just fail.
 	if( function_exists( 'imagecopy' ) )
 		{
@@ -736,33 +737,33 @@ function osintegration_composite_images( $first, $second, $x, $y )
 
 		// Use imagecopy NOT imagecopymerge, otherwise the transparency won't work.
 		imagecopy( $dest, $src, $x, $y, 0, 0, imagesx($src), imagesy($src) );
-		
+
 		// Save the merged image to a file.
 		imagepng( $dest, $first );
-		
+
 		// Get rid of the working copies.
 		imagedestroy( $dest );
 		imagedestroy( $src );
-		
+
 		return $first;
 		}
 	else if( class_exists( 'Imagick' ) )
 		{
 		$dest = new Imagick();
 		$src = new Imagick();
-		
+
 		$dest->readImage( $first );
 		$src->readImage( $second );
-		
+
 		$dest->compositeImage( $src, Imagick::COMPOSITE_DEFAULT, $x, $y );
-		
+
 		$dest->flattenImages();
-		
+
 		$dest->writeImage( $first );
-		
+
 		$dest->destroy();
 		$src->destroy();
-		
+
 		return FALSE;
 		}
 	else
@@ -770,8 +771,8 @@ function osintegration_composite_images( $first, $second, $x, $y )
 		return FALSE;
 		}
 	}
-	
-// This function creates a new PNG file ($filename) of a given size ($x/$y) and fills it with a solid color ($fill = array('R'=>int, 'G'=>int, 'B'=>int)) if $fill is an array.  
+
+// This function creates a new PNG file ($filename) of a given size ($x/$y) and fills it with a solid color ($fill = array('R'=>int, 'G'=>int, 'B'=>int)) if $fill is an array.
 // Needs GD or ImageMagic to function, will return FALSE if they don't exist.
 function osintegration_new_png( $filename, $x, $y, $fill )
 	{
@@ -779,12 +780,12 @@ function osintegration_new_png( $filename, $x, $y, $fill )
 	if( function_exists( 'imagecreatetruecolor' ) )
 		{
 		$color = osintegration_html2rgb( $fill );
-			
+
 		// We need to first create a new true color image, not just a standard pallet image, otherwise it won't work later when we try and overlay the logo on to the background.
 		$img = imagecreatetruecolor( $x, $y );
-		
+
 		// Check to make sure we were passed an array, if not, don't bother filling in the background.
-		if( is_array( $color ) ) 
+		if( is_array( $color ) )
 			{
 			// Get the selected background color to use.
 			$newcolor = imagecolorallocate( $img, $color['R'], $color['G'], $color['B'] );
@@ -792,26 +793,26 @@ function osintegration_new_png( $filename, $x, $y, $fill )
 			// Fill the entire new image.
 			imagefill( $img, 0, 0, $newcolor );
 			}
-		
+
 		// Write the PNG out to a file.
 		imagepng( $img, $filename );
 
 		// Free up the color and the temporary image.
 		imagecolordeallocate( $img, $newcolor );
 		imagedestroy( $img );
-		
+
 		return $filename;
 		}
 	else if( class_exists( 'Imagick' ) )
 		{
 		$img = new Imagick();
-		
+
     	$img->newImage( $x, $y, new ImagickPixel( $fill ), 'PNG32' );
 		$img->setFilename( $filename );
 		$img->writeImage( $filename );
-		
+
 		$img->destroy();
-		
+
 		return FALSE;
 		}
 	else
@@ -819,7 +820,7 @@ function osintegration_new_png( $filename, $x, $y, $fill )
 		return FALSE;
 		}
 	}
-	
+
 // This function converts an HTML style color (#ffffff) to an array ('R'=>int, 'G'=>int, 'B'=>int).
 function osintegration_html2rgb( $color )
 	{
@@ -862,66 +863,66 @@ function osintegration_get_logo_position( $x, $y, $logoposition, $logox, $logoy 
 	{
 	// Initalize our position.
 	$posx = $posy = 0;
-	
+
 	switch( $logoposition )
 		{
 		case 1:		// top left
 			$posx = 0;
 			$posy = 0;
-			
+
 			break;
 		case 2:		// top center
 			$posx = ( $x - $logox ) / 2;
 			$posy = 0;
-			
+
 			break;
 		case 3:		// top right
 			$posx = ( $x - $logox );
 			$posy = 0;
-			
+
 			break;
 		case 4:		// middle left
 			$posx = 0;
 			$posy = ( $y - $logoy ) / 2;
-			
+
 			break;
 		case 5:		// middle center
 			$posx = ( $x - $logox ) / 2;
 			$posy = ( $y - $logoy ) / 2;
-			
+
 			break;
 		case 6:		// middle right
 			$posx = ( $x - $logox );
 			$posy = ( $y - $logoy ) / 2;
-			
+
 			break;
 		case 7:		// bottom left
 			$posx = 0;
 			$posy = ( $y - $logoy );
-			
+
 			break;
 		case 8:		// bottom center
 			$posx = ( $x - $logox ) / 2;
 			$posy = ( $y - $logoy );
-			
+
 			break;
 		case 9:		// bottom right
 			$posx = ( $x - $logox );
 			$posy = ( $y - $logoy );
-			
+
 			break;
 		}
-		
+
 	return array( $posx, $posy );
 	}
-	
+
 // WordPress 4.3 introduces the site icon feature, since we're doing all that work, this function removes
 // WP's output of site icon meta info from the page header.
 function osintegration_site_icon_meta_tags_filter( $meta_tags )
 	{
 	return array();
 	}
-	
+
 // This function adds the rss feed for the MS Live Tile support and disables WP 4.3's site icon support.
 function osintegration_wpinit()
 	{
@@ -929,16 +930,16 @@ function osintegration_wpinit()
 	$options = get_option( OSINTOPTIONNAME );
 
 	// If the Windows Live Tile is enabled and we're using a local XML feed, add it to WordPress.
-	if( $options['localxml'] && $options['enablelivetile'] ) 
+	if( array_key_exists( 'localxml', $options ) && $options['localxml'] && array_key_exists( 'enablelivetile', $options ) && $options['enablelivetile'] )
 		{
 		add_feed( 'mslivetile', 'osintegration_outputxmlfeed' );
 		}
-	
+
 	// If we're running WordPress 4.3 or above, disable the Site Icon meta data because we're going to generate our own.
-	GLOBAL $wp_version; 
-	
+	GLOBAL $wp_version;
+
 	if( ! array_key_exists( 'wpsiteiconmeta', $options ) ) { $options['wpsiteiconmeta'] = false; }
-	if( version_compare( $wp_version, '4.2.99', '>' ) && ! $options['wpsiteiconmeta'] && $options['squareimgurl'] )
+	if( version_compare( $wp_version, '4.2.99', '>' ) && array_key_exists( 'wpsiteiconmeta', $options ) && ! $options['wpsiteiconmeta'] && array_key_exists( 'squareimgurl', $options ) && $options['squareimgurl'] )
 		{
 		add_filter( 'site_icon_meta_tags', 'osintegration_site_icon_meta_tags_filter', 99, 1);
 		}
@@ -962,31 +963,31 @@ function osintegration_outputxmlfeed()
 					'meta_value' => null,
 					'post_type' => 'post',
 					'post_status' => 'publish',
-					'suppress_filters' => true 
+					'suppress_filters' => true
 				);
 
     $recent_posts = wp_get_recent_posts( $args, ARRAY_A );
 
-	if( $options['localfimage'] ) 
+	if( $options['localfimage'] )
 		{
 		$fimages = array( '', '', '' );
 		if( array_key_exists( 0, $recent_posts ) ) { $fimages[0] = '			<image id="1" src="' . osintegration_get_post_first_image( $recent_posts[0]['ID'], $recent_posts[0]['post_content'], $options ) . '"/>' . "\n"; }
 		if( array_key_exists( 1, $recent_posts ) ) { $fimages[1] = '			<image id="2" src="' . osintegration_get_post_first_image( $recent_posts[1]['ID'], $recent_posts[1]['post_content'], $options ) . '"/>' . "\n"; }
 		if( array_key_exists( 2, $recent_posts ) ) { $fimages[2] = '			<image id="3" src="' . osintegration_get_post_first_image( $recent_posts[2]['ID'], $recent_posts[2]['post_content'], $options ) . '"/>' . "\n"; }
 		}
-		
+
 	$titles = array( '', '', '' );
 	if( array_key_exists( 0, $recent_posts ) ) { $titles[0] = '			<text id="1">' . $recent_posts[0]["post_title"] . '</text>' . "\n"; }
 	if( array_key_exists( 1, $recent_posts ) ) { $titles[1] = '			<text id="2">' . $recent_posts[1]["post_title"] . '</text>' . "\n"; }
 	if( array_key_exists( 2, $recent_posts ) ) { $titles[2] = '			<text id="3">' . $recent_posts[2]["post_title"] . '</text>' . "\n"; }
-	
+
 	echo '<tile>' . "\n";
 	echo '	<visual lang="en-US" version="2">' . "\n";
 	echo '		<binding template="TileSquare150x150Text04" branding="logo" fallback="TileSquareImage">' . "\n";
 	echo $titles[0];
 	echo '		</binding>' . "\n";
 
-	if( $options['localfimage'] ) 
+	if( $options['localfimage'] )
 		{
 		echo '		<binding template="TileWide310x150ImageAndText01" branding="logo" fallback="TileWideImage">' . "\n";
 		echo $fimages[0];
@@ -1002,8 +1003,8 @@ function osintegration_outputxmlfeed()
 
 	echo '		</binding>' . "\n";
 
-		
-	if( $options['localfimage'] ) 
+
+	if( $options['localfimage'] )
 		{
 		echo '		<binding template="TileSquare310x310SmallImagesAndTextList02" branding="logo">' . "\n";
 		echo $fimages[0];
@@ -1024,8 +1025,8 @@ function osintegration_outputxmlfeed()
 
 	exit();
 	}
-	
-function osintegration_get_post_first_image( $postID, $post_content, $options ) 
+
+function osintegration_get_post_first_image( $postID, $post_content, $options )
 	{
 	$args = array(
 		'numberposts' => 1,
@@ -1037,51 +1038,51 @@ function osintegration_get_post_first_image( $postID, $post_content, $options )
 		);
 
 	if( has_post_thumbnail( $postID ) ) {
-		
+
 		// Get the first child image of the post.
 		$attachments = get_children( $args );
 
 		// See if we found any.
-		if( is_array( $attachments ) && !empty( $attachments ) ) 
+		if( is_array( $attachments ) && !empty( $attachments ) )
 			{
 			// The returned array is NOT zero based, instead the post_id of the attachement is used, so do a foreach loop through the array of 1.
-			foreach( $attachments as $attachment ) 
+			foreach( $attachments as $attachment )
 				{
 				return wp_get_attachment_thumb_url( $attachment->ID );
 				}
 			}
 		}
-		
+
 	// We didn't find any attachments, so let's check the content if enabled.
-	if( $options['searchbody'] ) 
+	if( $options['searchbody'] )
 		{
 		// First process any shortcodes that may be embedded.
 		$content = do_shortcode( $post_content );
 
-		if( $content != '' ) 
+		if( $content != '' )
 			{
 			$doc = new DOMDocument();
 			$doc->loadHTML( $content );
 			$xpath = new DOMXPath( $doc );
-			$src = $xpath->evaluate( "string(//img/@src)" ); 
-			
+			$src = $xpath->evaluate( "string(//img/@src)" );
+
 			if( $src != '' )
 				{
 				return $src;
 				}
 			}
 		}
-	
+
 	// If enabled, return the square 150x150 image as the default image for the post, assuming we have one.
 	if( $options['xmldefaultimage'] && $options['img_square_150'] )
 		{
 		return $options['img_square_150'];
 		}
-		
+
 	// If we still didn't find anything, return a WordPress logo image as a last resort.
 	return plugins_url( 'images/wordpress-logo.png', __FILE__ );
-	}	
-/* 
+	}
+/*
 ***********************
 Plugin Code Starts Here
 ***********************
@@ -1101,7 +1102,7 @@ add_action( 'admin_menu', 'osintegration_add_options_page' );
 // Adds a link to our settings in the plugin list.
 add_filter( 'plugin_action_links', 'osintegration_plugin_action_links', 10, 2 );
 
-if( isset( $_GET['page']) && $_GET['page'] == 'os-integration/os-integration.php' ) 
+if( isset( $_GET['page']) && $_GET['page'] == 'os-integration/os-integration.php' )
 	{
 	// Load the JavaScript for the options page.
 	add_action( 'admin_enqueue_scripts', 'osintegration_admin_scripts' );
