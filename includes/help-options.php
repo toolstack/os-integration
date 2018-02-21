@@ -34,6 +34,22 @@ function osintegration_create_help_screen()
 
 	$help_screen->add_help_tab(
 		array(
+			'title'    => 	__('PWA'),
+			'id'       => 	'pwa_tab',
+			'content'  => 	'<p>' . __('<b>Enable Progressive Web App</b>: Enable the PWA supprt by generating a manifest.json file and <link> reference in the html header.  Note, a site must support https for PWA support to function.') . '</p>' .
+							'<p>' . __('<b>PWA Short Name</b>: This is a short nickname for the site, spaces are not allowed.') . '</p>' .
+							'<p>' . __('<b>PWA Name</b>: The full site name, spaces are allowed.') . '</p>' .
+							'<p>' . __('<b>PWA Landing URL</b>: The url to open when loading the PWA.') . '</p>' .
+							'<p>' . __('<b>Hide Browser Controls</b>: Hide the browser controls (address bar, etc.) in the PWA.') . '</p>' .
+							'<p>' . __('<b>Landscape Mode</b>: Start in landscape mode.') . '</p>' .
+							'<p>' . __('<b>Theme Color</b>: Theme color for the PWA.') . '</p>'
+			,
+			'callback' => 	false
+		)
+	);
+
+	$help_screen->add_help_tab(
+		array(
 			'title'    => 	__('Windows'),
 			'id'       => 	'windows_tab',
 			'content'  => 	'<p>' . __('<b>Enable Live Tile</b>: This will enable Windows Live Tile support.  Multiple sizes and Live Tile updates are available via <a href="http://buildmypinnedsite.com" target=_blank>buildmypinnedsite.com</a>.') . '</p>' .
