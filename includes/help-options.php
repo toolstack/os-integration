@@ -1,8 +1,9 @@
 <?php
-
+function osintegration_create_help_screen()
+	{
 	if( !is_admin() )
 		wp_die(__('Access denied!'));
-	
+
 	$help_screen = WP_Screen::get();
 
 	$help_screen->add_help_tab(
@@ -17,7 +18,7 @@
 			'callback' => 	false
 		)
 	);
-	
+
 	$help_screen->add_help_tab(
 		array(
 			'title'    => 	__('Fav Icon'),
@@ -75,4 +76,4 @@
 		)
 	);
 
-?>
+	}

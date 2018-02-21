@@ -1,4 +1,6 @@
 <?php
+function osintegration_options_page()
+	{
 	$options = get_option( OSINTOPTIONNAME );
 
 	if( !array_key_exists( 'notification_frequency', $options ) )
@@ -456,3 +458,5 @@ foreach( $options as $key => $option )
 
 	</form>
 </div>
+<?php
+	}
