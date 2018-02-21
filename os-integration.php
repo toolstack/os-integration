@@ -13,7 +13,7 @@ Compatible with WordPress 3.5+.
 
 Read the accompanying readme.txt file for instructions and documentation.
 
-Copyright (c) 2014-16 by Greg Ross
+Copyright (c) 2014-18 by Greg Ross
 
 This software is released under the GPL v2.0, see license.txt for details
 */
@@ -493,7 +493,7 @@ function osintegration_validate_options( $input )
 	}
 
 // Get a option value.
-function osintegration_getOption( $option, $options = null )
+function osintegration_getOption( $option, $options = null, $default = false )
 	{
 	if( $options == null ) { $options = get_option( OSINTOPTIONNAME ); }
 
@@ -503,7 +503,7 @@ function osintegration_getOption( $option, $options = null )
 		}
 	else
 		{
-		return false;
+		return $default;
 		}
 	}
 
