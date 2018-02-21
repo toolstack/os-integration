@@ -190,6 +190,24 @@
 						</td>
 					</tr>
 					<tr>
+						<th scope="row">Hide browser controls</th>
+						<td>
+							<input type="checkbox" id="pwahidebrowser" name="osintegration_options[pwahidebrowser]"<?php if( osintegration_getOption( 'pwahidebrowser', $options ) ) { echo " CHECKED"; } ?>/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Landscape mode</th>
+						<td>
+							<input type="checkbox" id="pwalandscape" name="osintegration_options[pwalandscape]"<?php if( osintegration_getOption( 'pwalandscape', $options ) ) { echo " CHECKED"; } ?>/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Theme Color</th>
+						<td colspan="2">
+							<input type="text" id="pwathemecolor" class="color-field" name="osintegration_options[pwathemecolor]" value="<?php echo osintegration_getOption( 'pwathemecolor', $options, '' ); ?>" />
+						</td>
+					</tr>
+					<tr>
 						<td colspan="3">
 							<p class="submit">
 								<input type="submit" class="button-primary" value="Save Changes" />

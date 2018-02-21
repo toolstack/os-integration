@@ -378,7 +378,7 @@ function osintegration_validate_options( $input )
 			}
 
 		// Make sure we didn't have an error above.
-		if( $input['error_message'] == '' )
+		if( array_key_exists( 'error_message', $input ) && $input['error_message'] == '' )
 			{
 			// Create the iOS icon and web app backgrounds.
 			$path = trailingslashit( $upload_base_dir ) . 'os-integration/';
@@ -467,20 +467,44 @@ function osintegration_validate_options( $input )
 
 		// Generate PWA Manifest
 		if( $input['enablepwa'] ) {
-			$manifest['shortname'] = $input['pwashortname'];
-			$manifest['name']      = $input['pwaname'];
-			$manifest['icons']     = array();
-			$manifest['start_url'] = $input['pwalandingurl'];
+			$path = trailingslashit( $upload_base_dir ) . 'os-integration/';
 
-			foreach( array( 48, 96, 192 ) as $size ) {
-				$icon['src']  = $input['img_square_' . $size];
-				$icon['type'] = "image/png";
-				$icon['sizes'] = $size . 'x' . $size;
+			$manifest['shortname']        = $input['pwashortname'];
+			$manifest['name']             = $input['pwaname'];
+			$manifest['icons']            = array();
+			$manifest['start_url']        = $input['pwalandingurl'];
+			$manifest['background_color'] = $input['background-color'];
+			$manifest['display']          = osintegration_getOption( 'pwahidebrowser', $input ) ? 'standalone' : 'browser';
 
-				$manifest['icons'][] = $icon;
+			if( osintegration_getOption( 'pwalandscape', $input ) ) {
+				$manifest['orientation']      = 'landscape';
 			}
 
-			var_dump( $manifest );
+			if( osintegration_getOption( 'pwathemecolor', $input ) ) {
+				$manifest['theme_color']      = $input['pwathemecolor'];
+			}
+
+			$sizes_array = array(
+								array( 'width' => 16, 'height' => 16, 'crop' => true ),
+								array( 'width' => 32, 'height' => 32, 'crop' => true ),
+								array( 'width' => 48, 'height' => 48, 'crop' => true ),
+								array( 'width' => 64, 'height' => 64, 'crop' => true ),
+								array( 'width' => 72, 'height' => 72, 'crop' => true ),
+								array( 'width' => 96, 'height' => 96, 'crop' => true ),
+								array( 'width' => 144, 'height' => 144, 'crop' => true ),
+								array( 'width' => 192, 'height' => 192, 'crop' => true ),
+								array( 'width' => 230, 'height' => 230, 'crop' => true ),
+								array( 'width' => 310, 'height' => 310, 'crop' => true ),
+								array( 'width' => 450, 'height' => 450, 'crop' => true )
+							);
+
+			foreach( $sizes_array as $size ) {
+				$icon['src']  = $input['img_square_' . $size['width']];
+				$icon['type'] = "image/png";
+				$icon['sizes'] = $size['width'] . 'x' . $size['width'];
+
+				$manifest['icons'][] = $icon;
+				}
 
 			file_put_contents( $path . 'manifest.json', json_encode( $manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . PHP_EOL );
 			}
@@ -589,7 +613,8 @@ function osintegration_output()
 		$upload_dir = wp_upload_dir();
 		$base = trailingslashit( $upload_dir['baseurl'] ) . 'os-integration/';
 
-		echo '<link rel="manifest" href="' . $base . 'manifest.json">' . PHP_EOL;
+		echo '<!-- For Progressive Web Apps -->' . PHP_EOL;
+		echo '<link rel="manifest" href="' . $base . 'manifest.json">' . PHP_EOL . PHP_EOL;
 		}
 
 	// If we're supporting Windows 8 live tiles, output the required code now.
