@@ -31,10 +31,11 @@
 				<li><a href="#fragment-0"><span><?php _e( 'Current Images' );?></span></a></li>
 				<li><a href="#fragment-1"><span><?php _e( 'General' );?></span></a></li>
 				<li><a href="#fragment-2"><span><?php _e( 'Fav Icon' );?></span></a></li>
-				<li><a href="#fragment-3"><span><?php _e( 'Windows' );?></span></a></li>
-				<li><a href="#fragment-4"><span><?php _e( 'iOS' );?></span></a></li>
-				<li><a href="#fragment-5"><span><?php _e( 'Advanced' );?></span></a></li>
-				<li><a href="#fragment-6"><span><?php _e( 'About' );?></span></a></li>
+				<li><a href="#fragment-3"><span><?php _e( 'Progress Web App' );?></span></a></li>
+				<li><a href="#fragment-4"><span><?php _e( 'Windows' );?></span></a></li>
+				<li><a href="#fragment-5"><span><?php _e( 'iOS' );?></span></a></li>
+				<li><a href="#fragment-6"><span><?php _e( 'Advanced' );?></span></a></li>
+				<li><a href="#fragment-7"><span><?php _e( 'About' );?></span></a></li>
 			</ul>
 
 			<div id="fragment-0">
@@ -165,6 +166,42 @@
 			<div id="fragment-3">
 				<table class="form-table">
 					<tr>
+						<th scope="row">Enable Progressive Web App</th>
+						<td>
+							<input type="checkbox" id="enablepwa" name="osintegration_options[enablepwa]"<?php if( osintegration_getOption( 'enablepwa', $options ) ) { echo " CHECKED"; } ?>/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">PWA Short Name</th>
+						<td>
+							<input type="text" id="pwashortname" name="osintegration_options[pwashortname]" value="<?php if( osintegration_getOption( 'pwashortname', $options ) ) { echo osintegration_getOption( 'pwashortname', $options, '' ); } else { echo substr( str_replace( ' ', '', get_bloginfo( 'name' ) ), 0, 12 ); } ?>" size="20"/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">PWA Name</th>
+						<td>
+							<input type="text" id="pwaname" name="osintegration_options[pwaname]" value="<?php if( osintegration_getOption( 'pwaname', $options ) ) { echo osintegration_getOption( 'pwaname', $options, '' ); } else { echo get_bloginfo( 'name' ); } ?>" size="50"/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">PWA Landing URL</th>
+						<td>
+							<input type="url" id="pwalandingurl" name="osintegration_options[pwalandingurl]" value="<?php if( ! isset( $options['pwalandingurl'] ) ) { echo get_bloginfo( 'url' ); } else { echo $options['pwalandingurl']; } ?>" size="50" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<p class="submit">
+								<input type="submit" class="button-primary" value="Save Changes" />
+							</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<div id="fragment-4">
+				<table class="form-table">
+					<tr>
 						<th scope="row">Enable Live Tile</th>
 						<td>
 							<input type="checkbox" id="enablelivetile" name="osintegration_options[enablelivetile]"<?php if( osintegration_getOption( 'enablelivetile', $options ) ) { echo " CHECKED"; } ?>/>
@@ -224,7 +261,7 @@
 				</table>
 			</div>
 
-			<div id="fragment-4">
+			<div id="fragment-5">
 				<table class="form-table">
 					<tr>
 						<th scope="row">Enable iOS Support</th>
@@ -288,7 +325,7 @@
 				</table>
 			</div>
 
-			<div id="fragment-5">
+			<div id="fragment-6">
 				<table class="form-table">
 <?php GLOBAL $wp_version; if( version_compare( $wp_version, '4.2.99', '>' ) ) { ?>
 				<tr>
@@ -322,7 +359,7 @@ foreach( $options as $key => $option )
 					<tr>
 						<th scope="row"><?php echo $key; ?>:</th>
 						<td>
-							<input type="url" id="adv_<?php echo $key;?>" name="osintegration_options[adv_<?php echo $key;?>]" value="<?php echo $options['adv_' . $key];?>" size="100"/>
+							<input type="url" id="adv_<?php echo $key;?>" name="osintegration_options[adv_<?php echo $key;?>]" value="<?php echo osintegration_getOption( 'adv_' . $key, $options, '' );?>" size="100"/>
 						</td>
 					</tr>
 <?php
@@ -339,15 +376,15 @@ foreach( $options as $key => $option )
 				</table>
 			</div>
 
-			<div id="fragment-6">
+			<div id="fragment-7">
 				<table class="form-table">
 					<tbody>
 						<tr valign="top">
-							<td scope="row" align="center"><img src="<?php echo plugins_url('os-integration/images/logo-250.png'); ?>"></td>
+							<td scope="row" align="center"><img src="<?php echo plugins_url( 'os-integration/images/logo-250.png' ); ?>"></td>
 						</tr>
 
 						<tr valign="top">
-							<td scope="row" align="center"><h2><?php echo sprintf(__('OS Integration V%s'), OSINTVER); ?></h2></td>
+							<td scope="row" align="center"><h2><?php echo sprintf( __( 'OS Integration V%s' ), OSINTVER ); ?></h2></td>
 						</tr>
 
 						<tr valign="top">
@@ -359,20 +396,20 @@ foreach( $options as $key => $option )
 						</tr>
 
 						<tr valign="top">
-							<td scope="row" colspan="2"><h2><?php _e('Rate and Review at WordPress.org'); ?></h2></td>
+							<td scope="row" colspan="2"><h2><?php _e( 'Rate and Review at WordPress.org' ); ?></h2></td>
 						</tr>
 
 						<tr valign="top">
-							<td scope="row" colspan="2"><?php _e('Thanks for installing OS Integration, I encourage you to submit a ');?> <a href="http://wordpress.org/support/view/plugin-reviews/os-integration" target="_blank"><?php _e('rating and review'); ?></a> <?php _e('over at WordPress.org.  Your feedback is greatly appreciated!');?></td>
+							<td scope="row" colspan="2"><?php _e( 'Thanks for installing OS Integration, I encourage you to submit a ' );?> <a href="http://wordpress.org/support/view/plugin-reviews/os-integration" target="_blank"><?php _e( 'rating and review' ); ?></a> <?php _e( 'over at WordPress.org.  Your feedback is greatly appreciated!' );?></td>
 						</tr>
 
 						<tr valign="top">
-							<td scope="row" colspan="2"><h2><?php _e('Support'); ?></h2></td>
+							<td scope="row" colspan="2"><h2><?php _e( 'Support' ); ?></h2></td>
 						</tr>
 
 						<tr valign="top">
 							<td scope="row" colspan="2">
-								<p><?php _e("Here are a few things to do submitting a support request:"); ?></p>
+								<p><?php _e( 'Here are a few things to do submitting a support request:' ); ?></p>
 
 								<ul style="list-style-type: disc; list-style-position: inside; padding-left: 25px;">
 									<li><?php echo sprintf( __('Have you read the %s?' ), '<a title="' . __('FAQs') . '" href="http://os-integration.com/?page_id=19" target="_blank">' . __('FAQs'). '</a>');?></li>
@@ -395,7 +432,8 @@ foreach( $options as $key => $option )
 						</tr>
 
 					</tbody>
-				</table>			</div>
+				</table>
+			</div>
 		</div>
 
 	</form>

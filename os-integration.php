@@ -161,6 +161,7 @@ function osintegration_validate_options( $input )
 		|| $options['faviconpath'] != $input['faviconpath']
 		|| $options['widewebapp'] != $input['widewebapp']
 		|| $options['logo-position'] != $input['logo-position']
+		|| $options['enablepwa'] != $input['enablepwa']
 		|| $input['forcerebuild'] )
 		{
 		// If the user forced a rebuild of the images, unset it now so we don't save it later.
@@ -233,6 +234,7 @@ function osintegration_validate_options( $input )
 					$sizes_array = array(
 										array( 'width' => 16, 'height' => 16, 'crop' => true ),
 										array( 'width' => 32, 'height' => 32, 'crop' => true ),
+										array( 'width' => 48, 'height' => 48, 'crop' => true ),
 										array( 'width' => 57, 'height' => 57, 'crop' => true ),
 										array( 'width' => 64, 'height' => 64, 'crop' => true ),
 										array( 'width' => 70, 'height' => 70, 'crop' => true ),
@@ -242,6 +244,7 @@ function osintegration_validate_options( $input )
 										array( 'width' => 144, 'height' => 144, 'crop' => true ),
 										array( 'width' => 150, 'height' => 150, 'crop' => true ),
 										array( 'width' => 160, 'height' => 160, 'crop' => true ),
+										array( 'width' => 192, 'height' => 192, 'crop' => true ),
 										array( 'width' => 196, 'height' => 196, 'crop' => true ),
 										array( 'width' => 230, 'height' => 230, 'crop' => true ),
 										array( 'width' => 310, 'height' => 310, 'crop' => true ),
@@ -254,21 +257,12 @@ function osintegration_validate_options( $input )
 					if ( !is_wp_error( $resize ) )
 						{
 						$base = trailingslashit($upload_dir['baseurl']) . 'os-integration/';
-						$input['img_square_16'] = $base . $resize[0]['file'];
-						$input['img_square_32'] = $base . $resize[1]['file'];
-						$input['img_square_57'] = $base . $resize[2]['file'];
-						$input['img_square_64'] = $base . $resize[3]['file'];
-						$input['img_square_70'] = $base . $resize[4]['file'];
-						$input['img_square_72'] = $base . $resize[5]['file'];
-						$input['img_square_96'] = $base . $resize[6]['file'];
-						$input['img_square_114'] = $base . $resize[7]['file'];
-						$input['img_square_144'] = $base . $resize[8]['file'];
-						$input['img_square_150'] = $base . $resize[9]['file'];
-						$input['img_square_160'] = $base . $resize[10]['file'];
-						$input['img_square_196'] = $base . $resize[11]['file'];
-						$input['img_square_230'] = $base . $resize[12]['file'];
-						$input['img_square_310'] = $base . $resize[13]['file'];
-						$input['img_square_450'] = $base . $resize[14]['file'];
+
+						$i = 0;
+						foreach( $sizes_array as $size ) {
+							$input['img_square_' . $size['width']] = $base . $resize[$i]['file'];
+							$i++;
+							}
 						}
 					else
 						{
@@ -471,6 +465,26 @@ function osintegration_validate_options( $input )
 				}
 			}
 
+		// Generate PWA Manifest
+		if( $input['enablepwa'] ) {
+			$manifest['shortname'] = $input['pwashortname'];
+			$manifest['name']      = $input['pwaname'];
+			$manifest['icons']     = array();
+			$manifest['start_url'] = $input['pwalandingurl'];
+
+			foreach( array( 48, 96, 192 ) as $size ) {
+				$icon['src']  = $input['img_square_' . $size];
+				$icon['type'] = "image/png";
+				$icon['sizes'] = $size . 'x' . $size;
+
+				$manifest['icons'][] = $icon;
+			}
+
+			var_dump( $manifest );
+
+			file_put_contents( $path . 'manifest.json', json_encode( $manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . PHP_EOL );
+			}
+
 		}
 	else
 		{
@@ -567,6 +581,16 @@ function osintegration_output()
 <?php
 		}
 		// End Fav Icon
+
+	// If we're supporting Progressive Web Apps, output the required code now.
+	if( $options['enablepwa'] )
+		{
+		// We need a few variables to use later on, set them up now.
+		$upload_dir = wp_upload_dir();
+		$base = trailingslashit( $upload_dir['baseurl'] ) . 'os-integration/';
+
+		echo '<link rel="manifest" href="' . $base . 'manifest.json">' . PHP_EOL;
+		}
 
 	// If we're supporting Windows 8 live tiles, output the required code now.
 	if( $options['enablelivetile'] && osintegration_getOption( 'img_square_310', $options ) )
