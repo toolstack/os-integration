@@ -171,6 +171,15 @@ function osintegration_options_page()
 						<th scope="row">Enable Progressive Web App</th>
 						<td>
 							<input type="checkbox" id="enablepwa" name="osintegration_options[enablepwa]"<?php if( osintegration_getOption( 'enablepwa', $options ) ) { echo " CHECKED"; } ?>/>
+							<?php
+								if( strtolower( substr( get_bloginfo( 'url' ), 8 ) ) !== 'https://' ) {
+							?>
+							<br>
+							<br>
+							<i>NOTE: Progressive Web Apps require your site to be delivered over https, you can still enable PWA if you do not have https enabled, but the clients will not see the "Add to home screen" option in their browser.</i>
+							<?php
+								}
+							?>
 						</td>
 					</tr>
 					<tr>
