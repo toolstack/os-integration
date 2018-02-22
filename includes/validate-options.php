@@ -149,7 +149,7 @@ function osintegration_validate_options( $input ) {
 			$wide_image_url = str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $wide_image_path );
 			$input['wideimgurl'] = $wide_image_url;
 		}
-			
+
 		// Load the wide image in to the WordPress image editor and make the required sizes.
 		$wideimg = wp_get_image_editor( $wide_image_path );
 
@@ -321,6 +321,23 @@ function osintegration_validate_options( $input ) {
 				$icon['sizes'] = $size['width'] . 'x' . $size['width'];
 
 				$manifest['icons'][] = $icon;
+			}
+
+			foreach( osintegration_store_list() as $store => $name ) {
+				$ra_url = osintegration_getoption( $store . 'url', $input );
+				$ra_id = osintegration_getoption( $store . 'id', $input );
+
+				if( $ra_url != false ) {
+					$temp_ra = array();
+					$temp_ra['platform'] = $store;
+					$temp_ra['url']      = $ra_url;
+
+					if( $ra_id != false ) {
+						$temp_ra['id'] = $ra_id;
+					}
+
+					$manifest['related_applications'][] = $temp_ra;
+				}
 			}
 
 			file_put_contents( $path . 'manifest.json', json_encode( $manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . PHP_EOL );

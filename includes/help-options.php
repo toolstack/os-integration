@@ -3,7 +3,7 @@ function osintegration_create_help_screen() {
 	if( !is_admin() ) {
 		wp_die (__( 'Access denied!', 'os-integration' ) );
 	}
-	
+
 	$help_screen = WP_Screen::get();
 
 	$help_screen->add_help_tab(
@@ -83,6 +83,18 @@ function osintegration_create_help_screen() {
 
 		$help_screen->add_help_tab(
 		array(
+			'title'    => 	__( 'Related Apps', 'os-integration' ),
+			'id'       => 	'related_apps_tab',
+			'content'  => 	'<p>' . __( 'The releated apps section allows you to define application links to various stores where users can download them.  This is used both in the Progressive Web App manifest as well as the front end widget.', 'os-integration' ) . '</p>' .
+						 	'<p>' . __( '<b>App URL</b>: The url to the application for your site in the selected app store, this should include any id parameter required.  Leave blank to not use the selected app store.', 'os-integration' ) . '</p>' .
+							'<p>' . __( '<b>App ID</b>: The unique ID for your app in the selected app store.', 'os-integration' ) . '</p>'
+			,
+			'callback' => 	false
+		)
+	);
+
+		$help_screen->add_help_tab(
+		array(
 			'title'    => 	__( 'Advanced', 'os-integration' ),
 			'id'       => 	'advanced_tab',
 			'content'  => 	'<p>' . __( '<b>Allow WordPress Site Icon</b>: OS Integration will override WordPress\'s Site Icon settings and strip the meta information from the page headers. If you wish to use WordPress\'s Site Icons, you can override this behaviour by checking this option.  Note this option will only appear if you have WordPress 4.3 or later installed.', 'os-integration' ) . '</p>' .
@@ -92,5 +104,4 @@ function osintegration_create_help_screen() {
 			'callback' => 	false
 		)
 	);
-
-	}
+}

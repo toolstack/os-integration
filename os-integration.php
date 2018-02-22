@@ -108,6 +108,15 @@ function osintegration_add_defaults() {
 	}
 }
 
+function osintegration_store_list() {
+	return array(
+					'itunes'    => 'Apple iTunes',
+					'fdroid'    => 'F-Droid',
+					'play'      => 'Google Play',
+					'microsoft' => 'Microsoft Store'
+				);
+}
+
 // Init plugin options to white list our options.
 function osintegration_init() {
 	register_setting( 'osintegration_plugin_options', OSINTOPTIONNAME, 'osintegration_validate_options' );
@@ -167,10 +176,10 @@ function osintegration_wpinit() {
 	// If we're running WordPress 4.3 or above, disable the Site Icon meta data because we're going to generate our own.
 	GLOBAL $wp_version;
 
-	if( ! array_key_exists( 'wpsiteiconmeta', $options ) ) { 
-		$options['wpsiteiconmeta'] = false; 
+	if( ! array_key_exists( 'wpsiteiconmeta', $options ) ) {
+		$options['wpsiteiconmeta'] = false;
 	}
-	
+
 	if( version_compare( $wp_version, '4.2.99', '>' ) && array_key_exists( 'wpsiteiconmeta', $options ) && ! $options['wpsiteiconmeta'] && array_key_exists( 'squareimgurl', $options ) && $options['squareimgurl'] ) {
 		add_filter( 'site_icon_meta_tags', 'osintegration_site_icon_meta_tags_filter', 99, 1);
 	}

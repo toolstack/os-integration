@@ -33,8 +33,9 @@ function osintegration_options_page() {
 				<li><a href="#fragment-3"><span><?php _e( 'Progress Web App', 'os-integration' );?></span></a></li>
 				<li><a href="#fragment-4"><span><?php _e( 'Windows', 'os-integration' );?></span></a></li>
 				<li><a href="#fragment-5"><span><?php _e( 'iOS', 'os-integration' );?></span></a></li>
-				<li><a href="#fragment-6"><span><?php _e( 'Advanced', 'os-integration' );?></span></a></li>
-				<li><a href="#fragment-7"><span><?php _e( 'About', 'os-integration' );?></span></a></li>
+				<li><a href="#fragment-6"><span><?php _e( 'Related Apps', 'os-integration' );?></span></a></li>
+				<li><a href="#fragment-7"><span><?php _e( 'Advanced', 'os-integration' );?></span></a></li>
+				<li><a href="#fragment-8"><span><?php _e( 'About', 'os-integration' );?></span></a></li>
 			</ul>
 
 			<div id="fragment-0">
@@ -205,7 +206,9 @@ function osintegration_options_page() {
 					</tr>
 					<tr>
 						<th scope="row"><?php _e( 'Display mode', 'os-integration' ); ?></th>
-						<td><select name="osintegration_options[pwadisplaymode]">
+						<td>
+							<?php $options['pwadisplaymode'] = osintegration_getoption( 'pwadisplaymode', $options, 'standalone' ); ?>
+							<select name="osintegration_options[pwadisplaymode]">
 								<option value="browser" <?php selected( $options['pwadisplaymode'], 'browser' ); ?>><?php _e( 'Browser', 'os-integration' ); ?></option>
 								<option value="fullscreen" <?php selected( $options['pwadisplaymode'], 'fullscreen' ); ?>><?php _e( 'Fullscreen', 'os-integration' ); ?></option>
 								<option value="minimal-ui" <?php selected( $options['pwadisplaymode'], 'minimal-ui' ); ?>><?php _e( 'Minimal UI', 'os-integration' ); ?></option>
@@ -215,7 +218,9 @@ function osintegration_options_page() {
 					</tr>
 					<tr>
 						<th scope="row"><?php _e( 'Orientation', 'os-integration' ); ?></th>
-						<td><select name="osintegration_options[pwaorientation]">
+						<td>
+							<?php $options['pwaorientation'] = osintegration_getoption( 'pwaorientation', $options, 'any' ); ?>
+							<select name="osintegration_options[pwaorientation]">
 								<option value="any" <?php selected( $options['pwaorientation'], 'any' ); ?>><?php _e( 'Any', 'os-integration' ); ?></option>
 								<option value="landscape" <?php selected( $options['pwaorientation'], 'landscape' ); ?>><?php _e( 'Landscape', 'os-integration' ); ?></option>
 								<option value="landscape-primary" <?php selected( $options['pwaorientation'], 'landscape-primary' ); ?>><?php _e( 'Landscape primary', 'os-integration' ); ?></option>
@@ -258,7 +263,9 @@ function osintegration_options_page() {
 					</tr>
 					<tr>
 						<th><?php _e( 'Update Interval', 'os-integration' ); ?></th>
-						<td><select name="osintegration_options[notification_frequency]">
+						<td>
+							<?php $options['notification_frequency'] = osintegration_getoption( 'notification_frequency', $options, 360 ); ?>
+							<select name="osintegration_options[notification_frequency]">
 								<option value="30" <?php selected( $options['notification_frequency'], 30 ); ?>>30 minutes</option>
 								<option value="60" <?php selected( $options['notification_frequency'], 60 ); ?>>1 hour</option>
 								<option value="360" <?php selected( $options['notification_frequency'], 360 ); ?>>6 hours</option>
@@ -350,8 +357,8 @@ function osintegration_options_page() {
 					<tr>
 						<th scope="row"><?php _e( 'Web App Status Bar Style', 'os-integration' ); ?></th>
 						<td>
+							<?php $options['statusbarstyle'] = osintegration_getoption( 'statusbarstyle', $options, 2 ); ?>
 							<select name="osintegration_options[statusbarstyle]">
-								<?php $options['statusbarstyle'] = osintegration_getoption( 'statusbarstyle', $options, 2 ); ?>
 								<option value="2" <?php selected( $options['statusbarstyle'], 2 ); ?>>Default</option>
 								<option value="1" <?php selected( $options['statusbarstyle'], 1 ); ?>>Black</option>
 								<option value="0" <?php selected( $options['statusbarstyle'], 0 ); ?>>Translucent</option>
@@ -369,6 +376,39 @@ function osintegration_options_page() {
 			</div>
 
 			<div id="fragment-6">
+				<table class="form-table">
+<?php
+					foreach( osintegration_store_list() as $store => $name ) {
+?>
+					<tr>
+						<th scope="row" colspan="2"><img src="<?php echo plugins_url( 'os-integration/images/' . $store . '.png' ); ?>">&nbsp;<?php echo $name; ?></th>
+					</tr>
+					<tr>
+						<th scope="row"><?php _e( 'App URL:', 'os-integration' ); ?></th>
+						<td>
+							<input type="url" id="<?php echo $store . 'url'; ?>" name="osintegration_options[<?php echo $store . 'url'; ?>]" value="<?php echo osintegration_getoption( $store . 'url', $options, '' ); ?>" size="50" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php _e( 'App ID:', 'os-integration' ); ?></th>
+						<td>
+							<input type="text" id="<?php echo $store . 'id'; ?>" name="osintegration_options[<?php echo $store . 'id'; ?>]" value="<?php echo osintegration_getoption( $store . 'id', $options, '' ); ?>" size="5" />
+						</td>
+					</tr>
+<?php
+					}
+?>
+					<tr>
+						<td>
+							<p class="submit">
+								<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'os-integration' ); ?>" />
+							</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<div id="fragment-7">
 				<table class="form-table">
 <?php GLOBAL $wp_version; if( version_compare( $wp_version, '4.2.99', '>' ) ) { ?>
 				<tr>
@@ -417,7 +457,7 @@ foreach( $options as $key => $option ) {
 				</table>
 			</div>
 
-			<div id="fragment-7">
+			<div id="fragment-8">
 				<table class="form-table">
 					<tbody>
 						<tr valign="top">
