@@ -2,7 +2,7 @@
 /*
 Plugin Name: OS Integration
 Description: Integrate your site in to your users OS, Windows Live Tiles, icons for Apple and Android, iOS Web App!
-Version: 2.1
+Version: 3.0
 Plugin URI: http://toolstack.com/os-integration
 Author: Greg Ross
 Author URI: http://toolstack.com
@@ -26,7 +26,7 @@ This software is released under the GPL v2.0, see license.txt for details
  */
 
 // Define the plugin version.
-DEFINE( 'OSINTVER', '2.1' );
+DEFINE( 'OSINTVER', '3.0' );
 
 // Define the name of the WordPress option to use.
 DEFINE( 'OSINTOPTIONNAME', 'osintegration_options' );
@@ -186,10 +186,13 @@ function osintegration_wpinit() {
 }
 
 /*
-***********************
-Plugin Code Starts Here
-***********************
-*/
+ *************************
+ * Plugin Code Starts Here
+ *************************
+ */
+
+// Load the plugin's translated strings.
+load_plugin_textdomain( 'os-integration' );
 
 // Set-up Action and Filter Hooks
 
