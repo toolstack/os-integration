@@ -5,6 +5,7 @@ http://stackoverflow.com/questions/1056104/php-gd-how-to-copy-a-circle-from-one-
 http://www.php.net/manual/en/imagick.compositeimage.php
 http://msdn.microsoft.com/en-us/library/ie/hh761491.aspx
 http://msdn.microsoft.com/en-us/library/windows/apps/br212859.aspx
+https://developer.mozilla.org/en-US/docs/Web/Manifest
 
 iOS Icons (apple-touch-icon-???x???.png)
 iPhone and iPod touch		57x57

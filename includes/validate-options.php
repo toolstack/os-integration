@@ -8,10 +8,9 @@ function osintegration_validate_options( $input ) {
 	$input['notification_frequency'] = absint( $input['notification_frequency'] );
 
 	// don't let users shoot themselves in the foot by trying to set a value other than those MS accepts.
-	if( !in_array( $input['notification_frequency'], array( 30, 60, 360, 720, 1440 ) ) )
-		{
+	if( ! in_array( $input['notification_frequency'], array( 30, 60, 360, 720, 1440 ) ) ) {
 		$input['notification_frequency'] = 360;
-		}
+	}
 
 	// Create the various image sizes if the image or other options have been changed.
 	if( $options['squareimgurl'] != $input['squareimgurl']
@@ -22,8 +21,7 @@ function osintegration_validate_options( $input ) {
 		|| $options['widewebapp'] != $input['widewebapp']
 		|| $options['logo-position'] != $input['logo-position']
 		|| $options['enablepwa'] != $input['enablepwa']
-		|| $input['forcerebuild'] )
-		{
+		|| $input['forcerebuild'] )	{
 		// If the user forced a rebuild of the images, unset it now so we don't save it later.
 		unset( $input['forcerebuild'] );
 
@@ -39,57 +37,47 @@ function osintegration_validate_options( $input ) {
 		$wide_image_path = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $input['wideimgurl'] );
 
 		// Check to make sure the square image is a PNG file.
-		if( strtolower( substr( $square_image_path, -4 ) ) != '.png' && $square_image_path != '' )
-			{
-			$input['error_message'] = "<p><b>Error - Square image file is not a PNG!</b></p>";
+		if( strtolower( substr( $square_image_path, -4 ) ) != '.png' && $square_image_path != '' ) {
+			$input['error_message'] = '<p><b>' . __( 'Error - Square image file is not a PNG!', 'os-integration' ) . '</b></p>';
 			return $input;
-			}
+		}
 
 		// Check to make sure the wide image is a PNG file.
-		if( strtolower( substr( $wide_image_path, -4 ) ) != '.png' && $wide_image_path != '')
-			{
-			$input['error_message'] = "<p><b>Error - Wide image file is not a PNG!</b></p>";
+		if( strtolower( substr( $wide_image_path, -4 ) ) != '.png' && $wide_image_path != '' ) {
+			$input['error_message'] = '<p><b>' . __( 'Error - Wide image file is not a PNG!', 'os-integration' ) . '</b></p>';
 
 			return $input;
-			}
+		}
 
-		if( !is_dir( $path ) )
-			{
+		if( !is_dir( $path ) ) {
 			mkdir( $path, null, true );
-			}
+		}
 
 		// Flush out any old files before we create the new images.
 		$files_to_delete = scandir( $path );
-		foreach( $files_to_delete as $file )
-			{
-			if( !is_dir( $file ) )
-				{
+		foreach( $files_to_delete as $file ) {
+			if( !is_dir( $file ) ) {
 				@unlink( $path . $file );
-				}
 			}
+		}
 
 		// Load the square image in to the WordPress image editor and make the required sizes.
 		$squareimg = wp_get_image_editor( $square_image_path );
 
 		// Make sure the image exists.
-		if( !is_wp_error( $squareimg ) )
-			{
+		if( !is_wp_error( $squareimg ) ) {
 			$imgsize = $squareimg->get_size();
 
-			if( $imgsize['width'] != $imgsize['height'] || $imgsize['width'] < 451 )
-				{
-				$input['error_message'] .= "<p><b>Error - Square image has incorrect dimensions ({$imgsize['width']}x {$imgsize['height']})!</b></p>";
-				}
-			else
-				{
+			if( $imgsize['width'] != $imgsize['height'] || $imgsize['width'] < 450 ) {
+				$input['error_message'] .= '<p><b>' . sprintf( 'Error - Square image has incorrect dimensions (%sx%s)!', $imgsize['width'], $imgsize['height'] ) . '</b></p>';
+			} else {
 				// Save the image as a png in the dedicated os-integration folder before generating variants.
 				$info = pathinfo( $input['squareimgurl'] );
 				$path = trailingslashit( $upload_base_dir ) . 'os-integration/';
 				$filename = $info['filename'];
 				$out = $squareimg->save( $path . $filename . '.png', 'image/png' );
 
-				if( !is_wp_error( $out ) )
-					{
+				if( !is_wp_error( $out ) ) {
 					// Create the image sizes we needed.
 					$sizes_array = array(
 										array( 'width' => 16, 'height' => 16, 'crop' => true ),
@@ -114,37 +102,29 @@ function osintegration_validate_options( $input ) {
 					$resize = $squareimg->multi_resize( $sizes_array );
 
 					// Save the new image URLs in the plugin options for use when we generate the HTML.
-					if ( !is_wp_error( $resize ) )
-						{
+					if ( !is_wp_error( $resize ) ) {
 						$base = trailingslashit($upload_dir['baseurl']) . 'os-integration/';
 
 						$i = 0;
 						foreach( $sizes_array as $size ) {
 							$input['img_square_' . $size['width']] = $base . $resize[$i]['file'];
 							$i++;
-							}
 						}
-					else
-						{
-						$input['error_message'] = '<b>Error Generating Square Images</b>: ' . $resize->get_error_message();
-						}
+					} else {
+						$input['error_message'] = '<b>' . sprintf( __( 'Error Generating Square Images: %s%s', 'os-integration' ), '</b>', $resize->get_error_message() );
 					}
-				else
-					{
-					$input['error_message'] = '<b>Error Converting Square Image</b>: ' . $out->get_error_message();
-					}
+				} else {
+					$input['error_message'] = '<b>' . sprintf( __( 'Error Converting Square Image: %s%S', 'os-integration' ), '</b>', $out->get_error_message() );
 				}
 			}
-		else
-			{
-			$input['error_message'] = "<b>Error - Could not edit square image file</b>: " . $squareimg->get_error_message() . '<br><br>';
-			$input['error_message'] .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL: " . $input['imgurl'] . '<br>';
-			$input['error_message'] .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path: " . $image_path . '<br>';
-			}
+		} else {
+			$input['error_message'] = '<b>' . sprintf( __( 'Error - Could not edit square image file: %s%s', 'os-integration' ), '</b>', $squareimg->get_error_message() ) . '<br><br>';
+			$input['error_message'] .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . sprintf( __( 'URL: %s', 'os-integration' ), $input['imgurl'] ) . '<br>';
+			$input['error_message'] .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . sprintf( __( 'Path: %s', 'os-integration' ), $image_path ) . '<br>';
+		}
 
 		// If a wide image doesn't exist, create one from the square image (assuming of course it exists :)
-		if( !file_exists( $wide_image_path ) && file_exists( $square_image_path ) )
-			{
+		if( !file_exists( $wide_image_path ) && file_exists( $square_image_path ) ) {
 			// Get the file path information for the square image.
 			$img_path_info = pathinfo($square_image_path);
 
@@ -168,32 +148,26 @@ function osintegration_validate_options( $input ) {
 			// Store the url
 			$wide_image_url = str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $wide_image_path );
 			$input['wideimgurl'] = $wide_image_url;
-			}
-
+		}
+			
 		// Load the wide image in to the WordPress image editor and make the required sizes.
 		$wideimg = wp_get_image_editor( $wide_image_path );
 
 		// Make sure the image exists.
-		if( !is_wp_error( $wideimg ) )
-			{
+		if( !is_wp_error( $wideimg ) ) {
 			$imgsize = $wideimg->get_size();
 
-			if( $imgsize['height'] < 219 || $imgsize['width'] < 451 )
-				{
-				$input['error_message'] .= "<p><b>Error - Wide image has incorrect dimensions ({$imgsize['width']}x {$imgsize['height']})!</b></p>";
-				}
-			else
-				{
+			if( $imgsize['height'] < 219 || $imgsize['width'] < 451 ) {
+				$input['error_message'] .= '<p><b>' . sprintf( 'Error - Wide image has incorrect dimensions (%sx%s)!', $imgsize['width'], $imgsize['height'] ) . '</b></p>';
+			} else {
 				// Save the image as a png in the dedicated os-integration folder before generating variants.
-				if( $square_image_path != $wide_image_path )
-					{
+				if( $square_image_path != $wide_image_path ) {
 					$info = pathinfo( $input['wideimgurl'] );
 					$path = trailingslashit( $upload_base_dir ) . 'os-integration/' . $info['filename'];
 					$out = $wideimg->save( $path . '.png', 'image/png' );
-					}
+				}
 
-				if( !is_wp_error( $out ) )
-					{
+				if( !is_wp_error( $out ) ) {
 					// Create the image sizes we needed.
 					$sizes_array = array(
 										array ( 'width' => 96, 'height' => 46, 'crop' => true ),
@@ -208,9 +182,8 @@ function osintegration_validate_options( $input ) {
 					$resize = $wideimg->multi_resize( $sizes_array );
 
 					// Save the new image URLs in the plugin options for use when we generate the HTML.
-					if ( !is_wp_error( $resize ) )
-						{
-						$base = trailingslashit($upload_dir['baseurl']) . 'os-integration/';
+					if ( !is_wp_error( $resize ) ) {
+						$base = trailingslashit( $upload_dir['baseurl'] ) . 'os-integration/';
 						$input['img_wide_96']  = $base . $resize[0]['file'];
 						$input['img_wide_155'] = $base . $resize[1]['file'];
 						$input['img_wide_196'] = $base . $resize[2]['file'];
@@ -218,34 +191,26 @@ function osintegration_validate_options( $input ) {
 						$input['img_wide_256'] = $base . $resize[4]['file'];
 						$input['img_wide_310'] = $base . $resize[5]['file'];
 						$input['img_wide_450'] = $base . $resize[6]['file'];
-						}
-					else
-						{
-						$input['error_message'] = '<b>Error Generating Wide Images</b>: ' . $resize->get_error_message();
-						}
+					} else {
+						$input['error_message'] = '<b>' . sprintf( __( 'Error Generating Wide Images: %s%s', 'os-integration' ), '</b>', $resize->get_error_message() );
 					}
-				else
-					{
-					$input['error_message'] = '<b>Error Converting Wide Image</b>: ' . $out->get_error_message();
-					}
+				} else {
+					$input['error_message'] = '<b>' . sprintf( __( 'Error Converting Wide Image: %s%s', 'os-integration' ), '</b>', $out->get_error_message() );
 				}
 			}
-		else
-			{
-			$input['error_message'] = "<b>Error - Could not edit wide image file</b>: " . $wideimg->get_error_message() . '<br><br>';
-			$input['error_message'] .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL: " . $input['imgurl'] . '<br>';
-			$input['error_message'] .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path: " . $image_path . '<br>';
+		} else {
+			$input['error_message'] = '<b>' . sprintf( __( 'Error - Could not edit wide image file: %s%s', 'os-integration' ), '</b>', $wideimg->get_error_message() ) . '<br><br>';
+			$input['error_message'] .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . sprintf( __( 'URL: %s', 'os-integration' ), $input['imgurl'] ) . '<br>';
+			$input['error_message'] .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . sprintf( __( 'Path: %s', 'os-integration' ), $image_path ) . '<br>';
 			}
 
 		// Make sure we didn't have an error above.
-		if( array_key_exists( 'error_message', $input ) && $input['error_message'] == '' )
-			{
+		if( array_key_exists( 'error_message', $input ) && $input['error_message'] == '' ) {
 			// Create the iOS icon and web app backgrounds.
 			$path = trailingslashit( $upload_base_dir ) . 'os-integration/';
 			$base = trailingslashit($upload_dir['baseurl']) . 'os-integration/';
 
-			if( $input['widewebapp'] )
-				{
+			if( $input['widewebapp'] ) {
 				$iOSfilenames = array(
 										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-57x57.png', 'x' => 57, 'y' => 57, 'logo' => $path . basename( $input['img_square_57'] ), 'logo-position' => 1, 'logo-x' => 57, 'logo-y' => 57 ),
 										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-72x72.png', 'x' => 72, 'y' => 72, 'logo' => $path . basename( $input['img_square_72'] ), 'logo-position' => 1, 'logo-x' => 72, 'logo-y' => 72 ),
@@ -259,9 +224,7 @@ function osintegration_validate_options( $input ) {
 										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-1536x2008.png', 'x' => 1536, 'y' => 2008, 'logo' => $path . basename( $input['img_wide_450'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 450, 'logo-y' => 218 ),
 										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-1496x2048.png', 'x' => 1496, 'y' => 2048, 'logo' => $path . basename( $input['img_wide_450'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 450, 'logo-y' => 218 )
 									);
-				}
-			else
-				{
+			} else {
 				$iOSfilenames = array(
 										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-57x57.png', 'x' => 57, 'y' => 57, 'logo' => $path . basename( $input['img_square_57'] ), 'logo-position' => 1, 'logo-x' => 57, 'logo-y' => 57 ),
 										array( 'tag' => 'ios_icon_', 'name' => $path . 'iOS-Icon-72x72.png', 'x' => 72, 'y' => 72, 'logo' => $path . basename( $input['img_square_72'] ), 'logo-position' => 1, 'logo-x' => 72, 'logo-y' => 72 ),
@@ -275,10 +238,9 @@ function osintegration_validate_options( $input ) {
 										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-1536x2008.png', 'x' => 1536, 'y' => 2008, 'logo' => $path . basename( $input['img_square_450'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 450, 'logo-y' => 450 ),
 										array( 'tag' => 'ios_web_app_', 'name' => $path . 'iOS-Web-App-1496x2048.png', 'x' => 1496, 'y' => 2048, 'logo' => $path . basename( $input['img_square_450'] ), 'logo-position' => $input['logo-position'], 'logo-x' => 450, 'logo-y' => 450 )
 									);
-				}
+			}
 
-			foreach( $iOSfilenames as $item )
-				{
+			foreach( $iOSfilenames as $item ) {
 				// Create the blank background image.
 				osintegration_new_png( $item['name'], $item['x'], $item['y'], $input['background-color'] );
 
@@ -291,10 +253,9 @@ function osintegration_validate_options( $input ) {
 				// Store the url
 				$desc = $item['tag'] . $item['y'];
 				$input[$desc] = $base . basename( $item['name'] );
-				}
+			}
 
-			if( $input['enablefavicon'] )
-				{
+			if( $input['enablefavicon'] ) {
 				// Generate the ICO file
 				require_once( dirname( __FILE__ ) . '/includes/php-ico/class-php-ico.php' );
 
@@ -308,41 +269,37 @@ function osintegration_validate_options( $input ) {
 				$ico_lib->add_image( $path . basename( $input['img_square_16'] ), array( 16, 16 ) );
 
 				$ico_lib->save_ico( trailingslashit( $input['faviconpath'] ) . 'favicon.ico' );
-				}
 			}
+		}
 
 		// Deal with a user override of individual items
-		foreach( $input as $key => $value )
-			{
-			if( substr( $key, 0, 7 ) == 'adv_'  )
-				{
+		foreach( $input as $key => $value ) {
+			if( substr( $key, 0, 7 ) == 'adv_' ) {
 				$basekey = substr( $key, 4 );
 
-				if( $value != '' )
-					{
+				if( $value != '' ) {
 					$input[$basekey] = $value;
-					}
 				}
 			}
+		}
 
 		// Generate PWA Manifest
 		if( $input['enablepwa'] ) {
 			$path = trailingslashit( $upload_base_dir ) . 'os-integration/';
 
-			$manifest['shortname']        = $input['pwashortname'];
-			$manifest['name']             = $input['pwaname'];
-			$manifest['icons']            = array();
-			$manifest['start_url']        = $input['pwalandingurl'];
-			$manifest['background_color'] = $input['background-color'];
-			$manifest['display']          = osintegration_getoption( 'pwahidebrowser', $input ) ? 'standalone' : 'browser';
-
-			if( osintegration_getoption( 'pwalandscape', $input ) ) {
-				$manifest['orientation']      = 'landscape';
-			}
+			$manifest['shortname']        = osintegration_getoption( 'pwashortname', $input, get_bloginfo( 'name' ) );
+			$manifest['name']             = osintegration_getoption( 'pwaname', $input, get_bloginfo( 'name' ) );
+			$manifest['description']      = osintegration_getoption( 'pwadesc', $input, get_bloginfo( 'description' ) );
+			$manifest['start_url']        = osintegration_getoption( 'pwalandingurl', $input, get_bloginfo( 'url' ) );
+			$manifest['background_color'] = osintegration_getoption( 'background-color', $input, '#000000' );
+			$manifest['display']          = osintegration_getoption( 'pwadisplaymode', $input, 'standalone' );
+			$manifest['orientation']      = osintegration_getoption( 'pwaorientation', $input, 'any' );
 
 			if( osintegration_getoption( 'pwathemecolor', $input ) ) {
 				$manifest['theme_color']      = $input['pwathemecolor'];
 			}
+
+			$manifest['icons']            = array();
 
 			$sizes_array = array(
 								array( 'width' => 16, 'height' => 16, 'crop' => true ),
@@ -360,32 +317,26 @@ function osintegration_validate_options( $input ) {
 
 			foreach( $sizes_array as $size ) {
 				$icon['src']  = $input['img_square_' . $size['width']];
-				$icon['type'] = "image/png";
+				$icon['type'] = 'image/png';
 				$icon['sizes'] = $size['width'] . 'x' . $size['width'];
 
 				$manifest['icons'][] = $icon;
-				}
+			}
 
 			file_put_contents( $path . 'manifest.json', json_encode( $manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . PHP_EOL );
-			}
-
 		}
-	else
-		{
+	} else {
 		// If we're not generating new images, copy the old image settings over from the previous options array.
-		foreach( $options as $tag => $item )
-			{
-			if( !isset( $input[$tag] ) )
-				{
+		foreach( $options as $tag => $item ) {
+			if( !isset( $input[$tag] ) ) {
 				$chop = substr( $tag, 0, 4 );
 
-				if( $chop == 'img_' || $chop == 'ios_' )
-					{
+				if( $chop == 'img_' || $chop == 'ios_' ) {
 					$input[$tag] = $options[$tag];
-					}
 				}
 			}
 		}
+	}
 
 	return $input;
 }
@@ -406,13 +357,11 @@ function osintegration_validate_options( $input ) {
 //		8 = bottom center
 //		9 = bottom right
 //
-function osintegration_get_logo_position( $x, $y, $logoposition, $logox, $logoy )
-	{
-	// Initalize our position.
+function osintegration_get_logo_position( $x, $y, $logoposition, $logox, $logoy ) {
+	// Initialize our position.
 	$posx = $posy = 0;
 
-	switch( $logoposition )
-		{
+	switch( $logoposition ) {
 		case 1:		// top left
 			$posx = 0;
 			$posy = 0;
@@ -458,8 +407,7 @@ function osintegration_get_logo_position( $x, $y, $logoposition, $logox, $logoy 
 			$posy = ( $y - $logoy );
 
 			break;
-		}
-
-	return array( $posx, $posy );
 	}
 
+	return array( $posx, $posy );
+}

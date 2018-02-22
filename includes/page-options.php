@@ -1,17 +1,14 @@
 <?php
-function osintegration_options_page()
-	{
+function osintegration_options_page() {
 	$options = get_option( OSINTOPTIONNAME );
 
-	if( !array_key_exists( 'notification_frequency', $options ) )
-		{
+	if( !array_key_exists( 'notification_frequency', $options ) ) {
 		$options['notification_frequency'] = 360;
-		}
+	}
 
-	if( !function_exists( 'imagecreatetruecolor' ) && !class_exists( 'Imagick' ) )
-		{
-		echo '<div id="message" class="error fade"><p>' . __( 'PHP GD/Image Magic library is not installed, you will not be able to generate images!' ) . '</p></div>' . "\n";
-		}
+	if( !function_exists( 'imagecreatetruecolor' ) && !class_exists( 'Imagick' ) ) {
+		echo '<div id="message" class="error fade"><p>' . __( 'PHP GD/Image Magic library is not installed, you will not be able to generate images!' ) . '</p></div>' . PHP_EOL;
+	}
 
 ?>
 <div class="wrap">
@@ -23,54 +20,54 @@ function osintegration_options_page()
 		}
 	</style>
 	<script type="text/javascript">jQuery(document).ready(function() { jQuery("#tabs").tabs(); jQuery("#tabs").tabs("option", "active",1);} );</script>
-	<h2>OS Integration Settings</h2>
+	<h2><?php _e( 'OS Integration Settings', 'os-integration' ); ?></h2>
 	<br>
-	<?php if( osintegration_getOption( 'error_message', $options ) ) { echo '<div class="error">' . osintegration_getOption( 'error_message', $options ) . '</div>'; } ?>
+	<?php if( osintegration_getoption( 'error_message', $options ) ) { echo '<div class="error is-dismissible">' . osintegration_getoption( 'error_message', $options ) . '</div>'; } ?>
 	<form method="post" action="options.php" >
 		<?php settings_fields( 'osintegration_plugin_options' ); ?>
 		<div id="tabs">
 			<ul>
-				<li><a href="#fragment-0"><span><?php _e( 'Current Images' );?></span></a></li>
-				<li><a href="#fragment-1"><span><?php _e( 'General' );?></span></a></li>
-				<li><a href="#fragment-2"><span><?php _e( 'Fav Icon' );?></span></a></li>
-				<li><a href="#fragment-3"><span><?php _e( 'Progress Web App' );?></span></a></li>
-				<li><a href="#fragment-4"><span><?php _e( 'Windows' );?></span></a></li>
-				<li><a href="#fragment-5"><span><?php _e( 'iOS' );?></span></a></li>
-				<li><a href="#fragment-6"><span><?php _e( 'Advanced' );?></span></a></li>
-				<li><a href="#fragment-7"><span><?php _e( 'About' );?></span></a></li>
+				<li><a href="#fragment-0"><span><?php _e( 'Current Images', 'os-integration' );?></span></a></li>
+				<li><a href="#fragment-1"><span><?php _e( 'General', 'os-integration' );?></span></a></li>
+				<li><a href="#fragment-2"><span><?php _e( 'Fav Icon', 'os-integration' );?></span></a></li>
+				<li><a href="#fragment-3"><span><?php _e( 'Progress Web App', 'os-integration' );?></span></a></li>
+				<li><a href="#fragment-4"><span><?php _e( 'Windows', 'os-integration' );?></span></a></li>
+				<li><a href="#fragment-5"><span><?php _e( 'iOS', 'os-integration' );?></span></a></li>
+				<li><a href="#fragment-6"><span><?php _e( 'Advanced', 'os-integration' );?></span></a></li>
+				<li><a href="#fragment-7"><span><?php _e( 'About', 'os-integration' );?></span></a></li>
 			</ul>
 
 			<div id="fragment-0">
-				<h2>ICO</h2>
+				<h2><?php _e( 'ICO', 'os-integration' ); ?></h2>
 				<hr>
-				<img src="<?php echo osintegration_getOption( 'img_square_16', $options, '' );?>">
+				<img src="<?php echo osintegration_getoption( 'img_square_16', $options, '' );?>">
 				<br>
 				<br>
 
-				<h2>Fav Icons</h2>
+				<h2><?php _e( 'Fav Icons', 'os-integration' ); ?></h2>
 				<hr>
-				<img src="<?php echo osintegration_getOption( 'img_square_150', $options, '' );?>">
+				<img src="<?php echo osintegration_getoption( 'img_square_150', $options, '' );?>">
 				<br>
 				<br>
 
-				<h2>Live Tiles</h2>
+				<h2><?php _e( 'Live Tiles', 'os-integration' ); ?></h2>
 				<hr>
-				<img src="<?php echo osintegration_getOption( 'img_square_150', $options, '' );?>">
+				<img src="<?php echo osintegration_getoption( 'img_square_150', $options, '' );?>">
 				<br>
 				<br>
-				<img src="<?php echo osintegration_getOption( 'img_wide_310', $options, '' );?>">
+				<img src="<?php echo osintegration_getoption( 'img_wide_310', $options, '' );?>">
 				<br>
 				<br>
 
-				<h2>iOS Icons</h2>
+				<h2><?php _e( 'iOS Icons', 'os-integration' ); ?></h2>
 				<hr>
-				<img src="<?php echo osintegration_getOption( 'ios_icon_144', $options, '' );?>">
+				<img src="<?php echo osintegration_getoption( 'ios_icon_144', $options, '' );?>">
 				<br>
 				<br>
 
-				<h2>iOS Web App</h2>
+				<h2><?php _e( 'iOS Web App', 'os-integration' ); ?></h2>
 				<hr>
-				<img src="<?php echo osintegration_getOption( 'ios_web_app_460', $options, '' );?>">
+				<img src="<?php echo osintegration_getoption( 'ios_web_app_460', $options, '' );?>">
 				<br>
 				<br>
 
@@ -79,50 +76,50 @@ function osintegration_options_page()
 			<div id="fragment-1">
 				<table class="form-table">
 					<tr>
-						<th scope="row">Square Image<br/></th>
+						<th scope="row"><?php _e( 'Square Image', 'os-integration' ); ?><br/></th>
 						<td>
-							<input type="url" id="squareimgurl" name="osintegration_options[squareimgurl]" value="<?php echo osintegration_getOption( 'squareimgurl', $options, '' ); ?>" size="100"/>
+							<input type="url" id="squareimgurl" name="osintegration_options[squareimgurl]" value="<?php echo osintegration_getoption( 'squareimgurl', $options, '' ); ?>" size="100"/>
 							<br>
 							<input type="button" class="button" name="square_img_button" id="square_img_button" value="Select Image" />
 							<br><br>
-							<em>This image will be cropped and resized for the various image sizes, you must use a PNG image larger than 450x450 px.</em>
+							<em><?php _e( 'This image will be cropped and resized for the various image sizes, you must use a PNG image larger than 450x450 px.', 'os-integration' ); ?></em>
 						</td>
 						<td rowspan="2" width="150px" align="center" valign="top">
-							<h2>Preview</h2>
+							<h2><?php _e( 'Preview', 'os-integration' ); ?></h2>
 							<hr>
-							<div id="osintbgpreview" style="background-color: <?php echo osintegration_getOption( 'background-color', $options, "" ); ?>; width: 150px; height: 150px;">
-								<img id="osintimgpreview" width="150px" height="150px" src="<?php echo osintegration_getOption( 'squareimgurl', $options, '' ); ?>">
+							<div id="osintbgpreview" style="background-color: <?php echo osintegration_getoption( 'background-color', $options, "" ); ?>; width: 150px; height: 150px;">
+								<img id="osintimgpreview" width="150px" height="150px" src="<?php echo osintegration_getoption( 'squareimgurl', $options, '' ); ?>">
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Wide Image<br/></th>
+						<th scope="row"><?php _e( 'Wide Image', 'os-integration' ); ?><br/></th>
 						<td>
-							<input type="url" id="wideimgurl" name="osintegration_options[wideimgurl]" value="<?php echo osintegration_getOption( 'wideimgurl', $options, '' ); ?>" size="100"/>
+							<input type="url" id="wideimgurl" name="osintegration_options[wideimgurl]" value="<?php echo osintegration_getoption( 'wideimgurl', $options, '' ); ?>" size="100"/>
 							<br>
 							<input type="button" class="button" name="wide_img_button" id="wide_img_button" value="Select Image" />
 							<br><br>
-							<em>This image will be cropped and resized for the various image sizes, you must use a PNG image larger than 450x218 px.</em>
+							<em><?php _e( 'This image will be cropped and resized for the various image sizes, you must use a PNG image larger than 450x218 px.', 'os-integration' ); ?></em>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Background Color</th>
+						<th scope="row"><?php _e( 'Background Color', 'os-integration' ); ?></th>
 						<td colspan="2">
-							<input type="text" id="color" class="color-field" name="osintegration_options[background-color]" value="<?php echo osintegration_getOption( 'background-color', $options, '' ); ?>" />
+							<input type="text" id="color" class="color-field" name="osintegration_options[background-color]" value="<?php echo osintegration_getoption( 'background-color', $options, '' ); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Site Title</th>
+						<th scope="row"<?php _e( '>Site Title', 'os-integration' ); ?></th>
 						<td colspan="2">
-							<input type="text" id="title" name="osintegration_options[title]" value="<?php echo osintegration_getOption( 'title', $options, '' ); ?>" />
+							<input type="text" id="title" name="osintegration_options[title]" value="<?php echo osintegration_getoption( 'title', $options, '' ); ?>" />
 							<br><br>
-							<em>This will be used in Windows Live Tiles and iOS instead of the default WordPress site title.</em>
+							<em><?php _e( 'This will be used in Windows Live Tiles and iOS instead of the default WordPress site title.', 'os-integration' ); ?></em>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="3">
 							<p class="submit">
-								<input type="submit" class="button-primary" value="Save Changes" />
+								<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'os-integration' ); ?>" />
 							</p>
 						</td>
 					</tr>
@@ -132,33 +129,33 @@ function osintegration_options_page()
 			<div id="fragment-2">
 				<table class="form-table">
 					<tr>
-						<th scope="row">Enable Fav Icon</th>
+						<th scope="row"><?php _e( 'Enable Fav Icon', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="enablefavicon" name="osintegration_options[enablefavicon]"<?php if( osintegration_getOption( 'enablefavicon', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="enablefavicon" name="osintegration_options[enablefavicon]"<?php if( osintegration_getoption( 'enablefavicon', $options ) ) { echo " CHECKED"; } ?>/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Fav Icon Path</th>
+						<th scope="row"><?php _e( 'Fav Icon Path', 'os-integration' ); ?></th>
 						<td>
-							<input type="text" id="faviconpath" name="osintegration_options[faviconpath]" value="<?php if( osintegration_getOption( 'faviconpath', $options ) ) { echo osintegration_getOption( 'faviconpath', $options, '' ); } else { echo str_replace( '\\', '/', ABSPATH ); } ?>" size="50"/>
+							<input type="text" id="faviconpath" name="osintegration_options[faviconpath]" value="<?php if( osintegration_getoption( 'faviconpath', $options ) ) { echo osintegration_getoption( 'faviconpath', $options, '' ); } else { echo str_replace( '\\', '/', ABSPATH ); } ?>" size="50"/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Include 64px Image</th>
+						<th scope="row"><?php _e( 'Include 64px Image', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="favicon64" name="osintegration_options[favicon64]"<?php if( osintegration_getOption( 'favicon64', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="favicon64" name="osintegration_options[favicon64]"<?php if( osintegration_getoption( 'favicon64', $options ) ) { echo " CHECKED"; } ?>/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Include 96px Image</th>
+						<th scope="row"><?php _e( 'Include 96px Image', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="favicon96" name="osintegration_options[favicon96]"<?php if( osintegration_getOption( 'favicon96', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="favicon96" name="osintegration_options[favicon96]"<?php if( osintegration_getoption( 'favicon96', $options ) ) { echo " CHECKED"; } ?>/>
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<p class="submit">
-								<input type="submit" class="button-primary" value="Save Changes" />
+								<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'os-integration' ); ?>" />
 							</p>
 						</td>
 					</tr>
@@ -168,60 +165,77 @@ function osintegration_options_page()
 			<div id="fragment-3">
 				<table class="form-table">
 					<tr>
-						<th scope="row">Enable Progressive Web App</th>
+						<th scope="row"><?php _e( 'Enable Progressive Web App', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="enablepwa" name="osintegration_options[enablepwa]"<?php if( osintegration_getOption( 'enablepwa', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="enablepwa" name="osintegration_options[enablepwa]"<?php if( osintegration_getoption( 'enablepwa', $options ) ) { echo " CHECKED"; } ?>/>
 							<?php
-								if( strtolower( substr( get_bloginfo( 'url' ), 8 ) ) !== 'https://' ) {
+								if( strtolower( substr( get_bloginfo( 'url' ), 0, 8 ) ) !== 'https://' ) {
 							?>
 							<br>
 							<br>
-							<i>NOTE: Progressive Web Apps require your site to be delivered over https, you can still enable PWA if you do not have https enabled, but the clients will not see the "Add to home screen" option in their browser.</i>
+							<i><?php _e( 'NOTE: Progressive Web Apps require your site to be delivered over https, you can still enable PWA if you do not have https enabled, but the clients will not see the "Add to home screen" option in their browser.', 'os-integration' ); ?></i>
 							<?php
 								}
 							?>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">PWA Short Name</th>
+						<th scope="row"><?php _e( 'Short Name', 'os-integration' ); ?></th>
 						<td>
-							<input type="text" id="pwashortname" name="osintegration_options[pwashortname]" value="<?php if( osintegration_getOption( 'pwashortname', $options ) ) { echo osintegration_getOption( 'pwashortname', $options, '' ); } else { echo substr( str_replace( ' ', '', get_bloginfo( 'name' ) ), 0, 12 ); } ?>" size="20"/>
+							<input type="text" id="pwashortname" name="osintegration_options[pwashortname]" value="<?php if( osintegration_getoption( 'pwashortname', $options ) ) { echo osintegration_getoption( 'pwashortname', $options, '' ); } else { echo substr( get_bloginfo( 'name' ), 0, 12 ); } ?>" size="20"/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">PWA Name</th>
+						<th scope="row"><?php _e( 'Name', 'os-integration' ); ?></th>
 						<td>
-							<input type="text" id="pwaname" name="osintegration_options[pwaname]" value="<?php if( osintegration_getOption( 'pwaname', $options ) ) { echo osintegration_getOption( 'pwaname', $options, '' ); } else { echo get_bloginfo( 'name' ); } ?>" size="50"/>
+							<input type="text" id="pwaname" name="osintegration_options[pwaname]" value="<?php if( osintegration_getoption( 'pwaname', $options ) ) { echo osintegration_getoption( 'pwaname', $options, '' ); } else { echo get_bloginfo( 'name' ); } ?>" size="50"/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">PWA Landing URL</th>
+						<th scope="row"><?php _e( 'Description', 'os-integration' ); ?></th>
+						<td>
+							<input type="text" id="pwadesc" name="osintegration_options[pwadesc]" value="<?php if( osintegration_getoption( 'pwadesc', $options ) ) { echo osintegration_getoption( 'pwadesc', $options, '' ); } else { echo get_bloginfo( 'description' ); } ?>" size="50"/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php _e( 'Landing URL', 'os-integration' ); ?></th>
 						<td>
 							<input type="url" id="pwalandingurl" name="osintegration_options[pwalandingurl]" value="<?php if( ! isset( $options['pwalandingurl'] ) ) { echo get_bloginfo( 'url' ); } else { echo $options['pwalandingurl']; } ?>" size="50" />
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Hide browser controls</th>
-						<td>
-							<input type="checkbox" id="pwahidebrowser" name="osintegration_options[pwahidebrowser]"<?php if( osintegration_getOption( 'pwahidebrowser', $options ) ) { echo " CHECKED"; } ?>/>
-						</td>
+						<th scope="row"><?php _e( 'Display mode', 'os-integration' ); ?></th>
+						<td><select name="osintegration_options[pwadisplaymode]">
+								<option value="browser" <?php selected( $options['pwadisplaymode'], 'browser' ); ?>><?php _e( 'Browser', 'os-integration' ); ?></option>
+								<option value="fullscreen" <?php selected( $options['pwadisplaymode'], 'fullscreen' ); ?>><?php _e( 'Fullscreen', 'os-integration' ); ?></option>
+								<option value="minimal-ui" <?php selected( $options['pwadisplaymode'], 'minimal-ui' ); ?>><?php _e( 'Minimal UI', 'os-integration' ); ?></option>
+								<option value="standalone" <?php selected( $options['pwadisplaymode'], 'standalone' ); ?>><?php _e( 'Standalone', 'os-integration' ); ?></option>
+							</select>
+						</p></td>
 					</tr>
 					<tr>
-						<th scope="row">Landscape mode</th>
-						<td>
-							<input type="checkbox" id="pwalandscape" name="osintegration_options[pwalandscape]"<?php if( osintegration_getOption( 'pwalandscape', $options ) ) { echo " CHECKED"; } ?>/>
-						</td>
+						<th scope="row"><?php _e( 'Orientation', 'os-integration' ); ?></th>
+						<td><select name="osintegration_options[pwaorientation]">
+								<option value="any" <?php selected( $options['pwaorientation'], 'any' ); ?>><?php _e( 'Any', 'os-integration' ); ?></option>
+								<option value="landscape" <?php selected( $options['pwaorientation'], 'landscape' ); ?>><?php _e( 'Landscape', 'os-integration' ); ?></option>
+								<option value="landscape-primary" <?php selected( $options['pwaorientation'], 'landscape-primary' ); ?>><?php _e( 'Landscape primary', 'os-integration' ); ?></option>
+								<option value="landscape-secondary" <?php selected( $options['pwaorientation'], 'landscape-secondary' ); ?>><?php _e( 'Landscape Secondary', 'os-integration' ); ?></option>
+								<option value="portrait" <?php selected( $options['pwaorientation'], 'portrait' ); ?>><?php _e( 'Portrait', 'os-integration' ); ?></option>
+								<option value="portrait-primary" <?php selected( $options['pwaorientation'], 'portrait-primary' ); ?>><?php _e( 'Portrait primary', 'os-integration' ); ?></option>
+								<option value="portrait-secondary" <?php selected( $options['pwaorientation'], 'portrait-secondary' ); ?>><?php _e( 'Portrait secondary', 'os-integration' ); ?></option>
+							</select>
+						</p></td>
 					</tr>
 					<tr>
-						<th scope="row">Theme Color</th>
+						<th scope="row"><?php _e( 'Theme Color', 'os-integration' ); ?></th>
 						<td colspan="2">
-							<input type="text" id="pwathemecolor" class="color-field" name="osintegration_options[pwathemecolor]" value="<?php echo osintegration_getOption( 'pwathemecolor', $options, '' ); ?>" />
+							<input type="text" id="pwathemecolor" class="color-field" name="osintegration_options[pwathemecolor]" value="<?php echo osintegration_getoption( 'pwathemecolor', $options, '' ); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<td colspan="3">
 							<p class="submit">
-								<input type="submit" class="button-primary" value="Save Changes" />
+								<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'os-integration' ); ?>" />
 							</p>
 						</td>
 					</tr>
@@ -231,19 +245,19 @@ function osintegration_options_page()
 			<div id="fragment-4">
 				<table class="form-table">
 					<tr>
-						<th scope="row">Enable Live Tile</th>
+						<th scope="row"><?php _e( 'Enable Live Tile', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="enablelivetile" name="osintegration_options[enablelivetile]"<?php if( osintegration_getOption( 'enablelivetile', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="enablelivetile" name="osintegration_options[enablelivetile]"<?php if( osintegration_getoption( 'enablelivetile', $options ) ) { echo " CHECKED"; } ?>/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">RSS Feed URL</th>
+						<th scope="row"><?php _e( 'RSS Feed URL', 'os-integration' ); ?></th>
 						<td>
 							<input type="url" id="rssurl" name="osintegration_options[rssurl]" value="<?php if( ! isset( $options['rssurl'] ) ) { echo  get_bloginfo( 'rss2_url' ); } else { echo $options['rssurl']; } ?>" size="50" />
 						</td>
 					</tr>
 					<tr>
-						<th>Update Interval</th>
+						<th><?php _e( 'Update Interval', 'os-integration' ); ?></th>
 						<td><select name="osintegration_options[notification_frequency]">
 								<option value="30" <?php selected( $options['notification_frequency'], 30 ); ?>>30 minutes</option>
 								<option value="60" <?php selected( $options['notification_frequency'], 60 ); ?>>1 hour</option>
@@ -254,36 +268,36 @@ function osintegration_options_page()
 						</p></td>
 					</tr>
 					<tr>
-						<th scope="row" colspan=2><h2>Local XML File</h2></th>
+						<th scope="row" colspan=2><h2><?php _e( 'Local XML File', 'os-integration' ); ?></h2></th>
 					</tr>
 					<tr>
-						<th scope="row">Enable Local XML</th>
+						<th scope="row"><?php _e( 'Enable Local XML', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="localxml" name="osintegration_options[localxml]"<?php if( osintegration_getOption( 'localxml', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="localxml" name="osintegration_options[localxml]"<?php if( osintegration_getoption( 'localxml', $options ) ) { echo " CHECKED"; } ?>/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Include featured image</th>
+						<th scope="row"><?php _e( 'Include featured image', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="localfimage" name="osintegration_options[localfimage]"<?php if( osintegration_getOption( 'localfimage', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="localfimage" name="osintegration_options[localfimage]"<?php if( osintegration_getoption( 'localfimage', $options ) ) { echo " CHECKED"; } ?>/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Search body for featured image</th>
+						<th scope="row"><?php _e( 'Search body for featured image', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="searchbody" name="osintegration_options[searchbody]"<?php if( osintegration_getOption( 'searchbody', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="searchbody" name="osintegration_options[searchbody]"<?php if( osintegration_getoption( 'searchbody', $options ) ) { echo " CHECKED"; } ?>/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Use square image if no image found</th>
+						<th scope="row"><?php _e( 'Use square image if no image found', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="xmldefaultimage" name="osintegration_options[xmldefaultimage]"<?php if( osintegration_getOption( 'xmldefaultimage', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="xmldefaultimage" name="osintegration_options[xmldefaultimage]"<?php if( osintegration_getoption( 'xmldefaultimage', $options ) ) { echo " CHECKED"; } ?>/>
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<p class="submit">
-								<input type="submit" class="button-primary" value="Save Changes" />
+								<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'os-integration' ); ?>" />
 							</p>
 						</td>
 					</tr>
@@ -293,33 +307,33 @@ function osintegration_options_page()
 			<div id="fragment-5">
 				<table class="form-table">
 					<tr>
-						<th scope="row">Enable iOS Support</th>
+						<th scope="row"><?php _e( 'Enable iOS Support', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="enableios" name="osintegration_options[enableios]"<?php if( osintegration_getOption( 'enableios', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="enableios" name="osintegration_options[enableios]"<?php if( osintegration_getoption( 'enableios', $options ) ) { echo " CHECKED"; } ?>/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Enable Web App Support</th>
+						<th scope="row"><?php _e( 'Enable Web App Support', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="enablewebapp" name="osintegration_options[enablewebapp]"<?php if( osintegration_getOption( 'enablewebapp', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="enablewebapp" name="osintegration_options[enablewebapp]"<?php if( osintegration_getoption( 'enablewebapp', $options ) ) { echo " CHECKED"; } ?>/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Enable Link Override</th>
+						<th scope="row"><?php _e( 'Enable Link Override', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="enablelinkoverride" name="osintegration_options[enablelinkoverride]"<?php if( osintegration_getOption( 'enablelinkoverride', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="enablelinkoverride" name="osintegration_options[enablelinkoverride]"<?php if( osintegration_getoption( 'enablelinkoverride', $options ) ) { echo " CHECKED"; } ?>/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Use wide image for web app loading screen</th>
+						<th scope="row"><?php _e( 'Use wide image for web app loading screen', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="widewebapp" name="osintegration_options[widewebapp]"<?php if( osintegration_getOption( 'widewebapp', $options ) ) { echo " CHECKED"; } ?>/>
+							<input type="checkbox" id="widewebapp" name="osintegration_options[widewebapp]"<?php if( osintegration_getoption( 'widewebapp', $options ) ) { echo " CHECKED"; } ?>/>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Web App Logo Location</th>
+						<th scope="row"><?php _e( 'Web App Logo Location', 'os-integration' ); ?></th>
 						<td>
-							<?php $options['logo-position'] = osintegration_getOption( 'logo-position', $options, 1 ); ?>
+							<?php $options['logo-position'] = osintegration_getoption( 'logo-position', $options, 1 ); ?>
 							<select name="osintegration_options[logo-position]">
 								<option value="1" <?php selected( $options['logo-position'], 1 ); ?>>Top Left</option>
 								<option value="2" <?php selected( $options['logo-position'], 2 ); ?>>Top Middle</option>
@@ -334,10 +348,10 @@ function osintegration_options_page()
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Web App Status Bar Style</th>
+						<th scope="row"><?php _e( 'Web App Status Bar Style', 'os-integration' ); ?></th>
 						<td>
 							<select name="osintegration_options[statusbarstyle]">
-								<?php $options['statusbarstyle'] = osintegration_getOption( 'statusbarstyle', $options, 2 ); ?>
+								<?php $options['statusbarstyle'] = osintegration_getoption( 'statusbarstyle', $options, 2 ); ?>
 								<option value="2" <?php selected( $options['statusbarstyle'], 2 ); ?>>Default</option>
 								<option value="1" <?php selected( $options['statusbarstyle'], 1 ); ?>>Black</option>
 								<option value="0" <?php selected( $options['statusbarstyle'], 0 ); ?>>Translucent</option>
@@ -347,7 +361,7 @@ function osintegration_options_page()
 					<tr>
 						<td>
 							<p class="submit">
-								<input type="submit" class="button-primary" value="Save Changes" />
+								<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'os-integration' ); ?>" />
 							</p>
 						</td>
 					</tr>
@@ -358,47 +372,45 @@ function osintegration_options_page()
 				<table class="form-table">
 <?php GLOBAL $wp_version; if( version_compare( $wp_version, '4.2.99', '>' ) ) { ?>
 				<tr>
-						<th scope="row">Allow WordPress Site Icon</th>
+						<th scope="row"><?php _e( 'Allow WordPress Site Icon', 'os-integration' ); ?></th>
 						<td>
-							<input type="checkbox" id="wpsiteiconmeta" name="osintegration_options[wpsiteiconmeta]"<?php if( osintegration_getOption( 'wpsiteiconmeta', $options ) ) { echo " CHECKED"; } ?>/><br>
+							<input type="checkbox" id="wpsiteiconmeta" name="osintegration_options[wpsiteiconmeta]"<?php if( osintegration_getoption( 'wpsiteiconmeta', $options ) ) { echo " CHECKED"; } ?>/><br>
 							<br>
-							<i>OS Integration will override WordPress's Site Icon settings and strip the meta information from the page headers.  If you wish to use WordPress's Site Icons, you can override this behaviour by checking this option.</i>
+							<i><?php _e( "OS Integration will override WordPress's Site Icon settings and strip the meta information from the page headers.  If you wish to use WordPress's Site Icons, you can override this behaviour by checking this option.", 'os-integration' ); ?></i>
 						</td>
 					</tr>
 <?php } ?>
 					<tr>
-						<th scope="row">Force rebuild</th>
+						<th scope="row"><?php _e( 'Force rebuild', 'os-integration' ); ?></th>
 						<td>
 							<input type="checkbox" id="forcerebuild" name="osintegration_options[forcerebuild]"/><br>
 							<br>
-							<i>OS Integration only builds new icons/images when the selected square/wide images change, this option will force a one time rebuild of everything when you select "Save Changes".</i>
+							<i><?php _e( 'OS Integration only builds new icons/images when the selected square/wide images change, this option will force a one time rebuild of everything when you select "Save Changes".', 'os-integration' ); ?></i>
 						</td>
 					</tr>
 					<tr>
 						<td colspan=2>
-							<h2>Override individual image files to be used</h2>
+							<h2><?php _e( 'Override individual image files to be used', 'os-integration' ); ?></h2>
 						</td>
 					</tr>
 <?php
-foreach( $options as $key => $option )
-	{
-	if( substr( $key, 0, 4 ) == 'img_' || substr( $key, 0, 4) == 'ios_' )
-		{
+foreach( $options as $key => $option ) {
+	if( substr( $key, 0, 4 ) == 'img_' || substr( $key, 0, 4) == 'ios_' ) {
 ?>
 					<tr>
 						<th scope="row"><?php echo $key; ?>:</th>
 						<td>
-							<input type="url" id="adv_<?php echo $key;?>" name="osintegration_options[adv_<?php echo $key;?>]" value="<?php echo osintegration_getOption( 'adv_' . $key, $options, '' );?>" size="100"/>
+							<input type="url" id="adv_<?php echo $key;?>" name="osintegration_options[adv_<?php echo $key;?>]" value="<?php echo osintegration_getoption( 'adv_' . $key, $options, '' );?>" size="100"/>
 						</td>
 					</tr>
 <?php
-		}
 	}
+}
 ?>
 					<tr>
 						<td>
 							<p class="submit">
-								<input type="submit" class="button-primary" value="Save Changes" />
+								<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'os-integration' ); ?>" />
 							</p>
 						</td>
 					</tr>
@@ -413,7 +425,7 @@ foreach( $options as $key => $option )
 						</tr>
 
 						<tr valign="top">
-							<td scope="row" align="center"><h2><?php echo sprintf( __( 'OS Integration V%s' ), OSINTVER ); ?></h2></td>
+							<td scope="row" align="center"><h2><?php echo sprintf( __( 'OS Integration V%s', 'os-integration' ), OSINTVER ); ?></h2></td>
 						</tr>
 
 						<tr valign="top">
@@ -441,22 +453,22 @@ foreach( $options as $key => $option )
 								<p><?php _e( 'Here are a few things to do submitting a support request:' ); ?></p>
 
 								<ul style="list-style-type: disc; list-style-position: inside; padding-left: 25px;">
-									<li><?php echo sprintf( __('Have you read the %s?' ), '<a title="' . __('FAQs') . '" href="http://os-integration.com/?page_id=19" target="_blank">' . __('FAQs'). '</a>');?></li>
-									<li><?php echo sprintf( __('Have you search the %s for a similar issue?' ), '<a href="http://wordpress.org/support/plugin/os-integration" target="_blank">' . __('support forum') . '</a>');?></li>
-									<li><?php _e('Have you search the Internet for any error messages you are receiving?' );?></li>
-									<li><?php _e('Make sure you have access to your PHP error logs.' );?></li>
+									<li><?php echo sprintf( __( 'Have you read the %s?', 'os-integration' ), '<a title="' . __( 'FAQs', 'os-integration' ) . '" href="http://os-integration.com/?page_id=19" target="_blank">' . __( 'FAQs', 'os-integration' ). '</a>');?></li>
+									<li><?php echo sprintf( __( 'Have you search the %s for a similar issue?', 'os-integration' ), '<a href="http://wordpress.org/support/plugin/os-integration" target="_blank">' . __( 'support forum', 'os-integration' ) . '</a>');?></li>
+									<li><?php _e( 'Have you search the Internet for any error messages you are receiving?' );?></li>
+									<li><?php _e( 'Make sure you have access to your PHP error logs.' );?></li>
 								</ul>
 
-								<p><?php _e('And a few things to double-check:' );?></p>
+								<p><?php _e( 'And a few things to double-check:' );?></p>
 
 								<ul style="list-style-type: disc; list-style-position: inside; padding-left: 25px;">
-									<li><?php _e('Have you double checked the plugin settings?' );?></li>
-									<li><?php _e('Do you have all the required PHP extensions installed?' );?></li>
-									<li><?php _e('Are you getting a blank or incomplete page displayed in your browser?  Did you view the source for the page and check for any fatal errors?' );?></li>
-									<li><?php _e('Have you checked your PHP and web server error logs?' );?></li>
+									<li><?php _e( 'Have you double checked the plugin settings?' );?></li>
+									<li><?php _e( 'Do you have all the required PHP extensions installed?' );?></li>
+									<li><?php _e( 'Are you getting a blank or incomplete page displayed in your browser?  Did you view the source for the page and check for any fatal errors?' );?></li>
+									<li><?php _e( 'Have you checked your PHP and web server error logs?' );?></li>
 								</ul>
 
-								<p><?php _e('Still not having any luck?' );?> <?php echo sprintf(__('Then please open a new thread on the %s.' ), '<a href="http://wordpress.org/support/plugin/os-integration" target="_blank">' . __('WordPress.org support forum') . '</a>');?></p>
+								<p><?php _e( 'Still not having any luck?' );?> <?php echo sprintf( __( 'Then please open a new thread on the %s.', 'os-integration' ), '<a href="http://wordpress.org/support/plugin/os-integration" target="_blank">' . __( 'WordPress.org support forum', 'os-integration' ) . '</a>');?></p>
 							</td>
 						</tr>
 
@@ -468,4 +480,4 @@ foreach( $options as $key => $option )
 	</form>
 </div>
 <?php
-	}
+}
