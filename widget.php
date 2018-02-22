@@ -66,7 +66,7 @@ class OSIntegration_Widget extends WP_Widget {
 			}
 
 			if( $store_list !== '' ) {
-				echo '<li>' . $store_list . '</li>';
+				echo '<li style="text-align:center;">' . $store_list . '</li>';
 			}
 
 			echo '</ul>';
