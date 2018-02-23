@@ -73,7 +73,7 @@ You should then look at enabling SSL on your entire site as you will otherwise h
 
 == Changelog ==
 = 3.0 =
-* Release date: TBD
+* Release date: February 22, 2018
 * Added: PWA support.
 * Added: Language translation support.
 
