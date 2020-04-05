@@ -3,7 +3,7 @@ Contributors: GregRoss
 Tags: Windows 8, Internet Explorer, live tile, App, tiles, start screen, pinned site, favicon, iOS, Android, Windows Phone 8.1, WebApp, web app, site icon, progressive, pwa
 Requires at least: 3.5
 Requires PHP: 5.4
-Tested up to: 4.9
+Tested up to: 5.4
 Stable tag: 3.0
 Description: Integrate your site in to your users OS; Windows Live Tiles, icons for Apple and Android, iOS Web App and now Progressive Web App support!
 License: GPLv2
