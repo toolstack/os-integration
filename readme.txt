@@ -144,3 +144,4 @@ You should then look at enabling SSL on your entire site as you will otherwise h
 == Upgrade Notice ==
 = 3.0 =
 * Support for Progressive Web Apps is now available, go to the settings to enable it.
+
